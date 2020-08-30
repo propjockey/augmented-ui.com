@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>augmented-ui v2 Mixin Mixer</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#a88d00">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia_1.9to1.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="632">
+  <link rel="stylesheet" type="text/css" href="/modules/augmented-ui.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+      margin: 0px;
+      padding: 0px;
+      color: black;
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"]:checked + label {
+      outline: 12px solid lime;
+      box-shadow: inset 0px 0px 5px lime;
+    }
+    .mixin-mixer {
+      --w: max(1550px, calc(100vw - 25px));
+      width: var(--w);
+      height: calc(var(--w) / 17 * 13);
+      display: grid;
+      grid-template-columns: 7fr 3fr 7fr;
+      grid-template-rows: 5fr 3fr 5fr;
+      padding: 5px;
+    }
+    .tl-mixin,
+    .tr-mixin,
+    .bl-mixin,
+    .br-mixin {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      grid-gap: 10px;
+      padding: 5px;
+      background: #f8f8f8;
+    }
+    .t-mixin,
+    .b-mixin {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      grid-gap: 10px;
+      padding: 5px;
+      background: #f0f0f0;
+    }
+    .tr-mixin,
+    .bl-mixin,
+    .b-mixin,
+    .l-mixin {
+      direction: rtl;
+    }
+    .tr-mixin > *,
+    .bl-mixin > *,
+    .b-mixin > *,
+    .l-mixin > * {
+      direction: ltr;
+    }
+    .l-mixin,
+    .r-mixin {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      grid-gap: 10px;
+      padding: 5px;
+      background: #f0f0f0;
+    }
+    label {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    label > [data-augmented-ui] {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      --aug-border: initial;
+      top: 0px;
+      left: 0px;
+    }
+    .mixin-mixer > :not(.output) label::after {
+      position: absolute;
+      top: 50%;
+      content: attr(for);
+      text-align: center;
+      width: 100%;
+      transform-origin: 50% 50%;
+      color: black;
+      font-size: calc(var(--w) / 185);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .tl-mixin label::after {
+      transform: rotateZ(-45deg) translateY(100%);
+    }
+    .t-mixin label::after {
+      transform: rotateZ(0deg) translateY(100%);
+    }
+    .tr-mixin label::after {
+      transform: rotateZ(45deg) translateY(100%);
+    }
+    .r-mixin label::after {
+      transform: rotateZ(90deg) translateY(100%);
+    }
+    .br-mixin label::after {
+      transform: rotateZ(-45deg) translateY(-100%);
+    }
+    .b-mixin label::after {
+      transform: rotateZ(0deg) translateY(-100%);
+    }
+    .bl-mixin label::after {
+      transform: rotateZ(45deg) translateY(-100%);
+    }
+    .l-mixin label::after {
+      transform: rotateZ(-90deg) translateY(100%);
+    }
+    body {
+      --hsl1: hsl(0deg, 100%, 57%);
+      --hsl2: hsl(315deg, 100%, 57%);
+      --hsl3: hsl(270deg, 100%, 57%);
+      --hsl4: hsl(225deg, 100%, 57%);
+      --hsl5: hsl(180deg, 100%, 57%);
+      --hsl6: hsl(135deg, 100%, 57%);
+      --hsl7: hsl(90deg, 100%, 57%);
+      --hsl8: hsl(45deg, 100%, 57%);
+    }
+    .tl-mixin [data-augmented-ui] {
+      transform: translate(0%, 0%);
+      background: radial-gradient(at top left, var(--hsl1), transparent 50%), #555;
+    }
+    .t-mixin [data-augmented-ui] {
+      transform: translate(-25%, 0%);
+      background: radial-gradient(at top center, var(--hsl2), transparent 50%), #555;
+    }
+    .tr-mixin [data-augmented-ui] {
+      transform: translate(-50%, 0%);
+      background: radial-gradient(at top right, var(--hsl3), transparent 50%), #555;
+    }
+    .r-mixin [data-augmented-ui] {
+      transform: translate(-50%, -25%);
+      background: radial-gradient(at center right, var(--hsl4), transparent 50%), #555;
+    }
+    .br-mixin [data-augmented-ui] {
+      transform: translate(-50%, -50%);
+      background: radial-gradient(at bottom right, var(--hsl5), transparent 50%), #555;
+    }
+    .b-mixin [data-augmented-ui] {
+      transform: translate(-25%, -50%);
+      background: radial-gradient(at bottom center, var(--hsl6), transparent 50%), #555;
+    }
+    .bl-mixin [data-augmented-ui] {
+      transform: translate(0%, -50%);
+      background: radial-gradient(at bottom left, var(--hsl7), transparent 50%), #555;
+    }
+    .l-mixin [data-augmented-ui] {
+      transform: translate(0%, -25%);
+      background: radial-gradient(at center left, var(--hsl8), transparent 50%), #555;
+    }
+    .output {
+      display: grid;
+      grid-template-columns: 20px 1fr 20px;
+      grid-template-rows: 20px 1fr 20px;
+      align-items: center;
+      position: relative;
+    }
+    .output > * {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      margin: auto;
+    }
+    .output input[type="radio"] + label {
+      display: block;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(red, transparent);
+      position: absolute;
+      z-index: 999;
+      font-weight: bold;
+      color: black;
+      text-align: center;
+      padding: 2px;
+      border-radius: 5px;
+    }
+    .output input[type="radio"]:checked + label {
+      display: none;
+    }
+    .output > .aug {
+      height: 100%;
+      width: 100%;
+      cursor: auto;
+      background: radial-gradient(at top left,      var(--hsl1), transparent 40%),
+                  radial-gradient(at top center,    var(--hsl2), transparent 40%),
+                  radial-gradient(at top right,     var(--hsl3), transparent 40%),
+                  radial-gradient(at center right,  var(--hsl4), transparent 40%),
+                  radial-gradient(at bottom right,  var(--hsl5), transparent 40%),
+                  radial-gradient(at bottom center, var(--hsl6), transparent 40%),
+                  radial-gradient(at bottom left,   var(--hsl7), transparent 40%),
+                  radial-gradient(at center left,   var(--hsl8), transparent 40%), black;
+    }
+    #code-out {
+      position: absolute;
+      height: 100%;
+      width: 66%;
+      left: 100%;
+      top: 0px;
+      font-size: 16px;
+      cursor: auto;
+    }
+    .extra-mixins {
+      position: absolute;
+      height: 100%;
+      width: 66%;
+      right: 100%;
+      top: 0px;
+      background: white;
+      cursor: auto;
+    }
+    .extra-mixins label {
+      display: block;
+      font-weight: bold;
+      vertical-align: middle;
+      line-height: 20px;
+      font-size: 20px;
+      margin: 5px;
+    }
+    .extra-mixins label input[type="radio"] {
+      display: inline-block;
+    }
+    .extra-mixins span,
+    .extra-mixins div {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mixin-mixer">
+    <div class="tl-mixin">
+      <input type="radio" name="tl" id="tl-clip">          <label title="tl-clip" for="tl-clip"><div data-augmented-ui="tl-clip"></div></label>
+      <input type="radio" name="tl" id="tl-clip-x">        <label title="tl-clip-x" for="tl-clip-x"><div data-augmented-ui="tl-clip-x"></div></label>
+      <input type="radio" name="tl" id="tl-clip-y">        <label title="tl-clip-y" for="tl-clip-y"><div data-augmented-ui="tl-clip-y"></div></label>
+      <input type="radio" name="tl" id="tl-clip-inset">    <label title="tl-clip-inset" for="tl-clip-inset"><div data-augmented-ui="tl-clip-inset"></div></label>
+      <input type="radio" name="tl" id="tl-2-clip-x">      <label title="tl-2-clip-x" for="tl-2-clip-x"><div data-augmented-ui="tl-2-clip-x"></div></label>
+      <input type="radio" name="tl" id="tl-2-clip-y">      <label title="tl-2-clip-y" for="tl-2-clip-y"><div data-augmented-ui="tl-2-clip-y"></div></label>
+      <input type="radio" name="tl" id="tl-2-clip-xy">     <label title="tl-2-clip-xy" for="tl-2-clip-xy"><div data-augmented-ui="tl-2-clip-xy"></div></label>
+      <input type="radio" name="tl" id="tl-rect">          <label title="tl-rect" for="tl-rect"><div data-augmented-ui="tl-rect"></div></label>
+      <input type="radio" name="tl" id="tl-rect-x">        <label title="tl-rect-x" for="tl-rect-x"><div data-augmented-ui="tl-rect-x"></div></label>
+      <input type="radio" name="tl" id="tl-rect-y">        <label title="tl-rect-y" for="tl-rect-y"><div data-augmented-ui="tl-rect-y"></div></label>
+      <input type="radio" name="tl" id="tl-2-rect">        <label title="tl-2-rect" for="tl-2-rect"><div data-augmented-ui="tl-2-rect"></div></label>
+      <input type="radio" name="tl" id="tl-2-rect-x">      <label title="tl-2-rect-x" for="tl-2-rect-x"><div data-augmented-ui="tl-2-rect-x"></div></label>
+      <input type="radio" name="tl" id="tl-2-rect-y">      <label title="tl-2-rect-y" for="tl-2-rect-y"><div data-augmented-ui="tl-2-rect-y"></div></label>
+      <input type="radio" name="tl" id="tl-2-rect-xy">     <label title="tl-2-rect-xy" for="tl-2-rect-xy"><div data-augmented-ui="tl-2-rect-xy"></div></label>
+      <input type="radio" name="tl" id="tl-2-rect-inset">  <label title="tl-2-rect-inset" for="tl-2-rect-inset"><div data-augmented-ui="tl-2-rect-inset"></div></label>
+      <input type="radio" name="tl" id="tl-step-inset">    <label title="tl-step-inset" for="tl-step-inset"><div data-augmented-ui="tl-step-inset"></div></label>
+      <input type="radio" name="tl" id="tl-2-step-inset">  <label title="tl-2-step-inset" for="tl-2-step-inset"><div data-augmented-ui="tl-2-step-inset"></div></label>
+      <input type="radio" name="tl" id="tl-round">         <label title="tl-round" for="tl-round"><div data-augmented-ui="tl-round"></div></label>
+      <input type="radio" name="tl" id="tl-round-x">       <label title="tl-round-x" for="tl-round-x"><div data-augmented-ui="tl-round-x"></div></label>
+      <input type="radio" name="tl" id="tl-round-y">       <label title="tl-round-y" for="tl-round-y"><div data-augmented-ui="tl-round-y"></div></label>
+      <input type="radio" name="tl" id="tl-round-inset">   <label title="tl-round-inset" for="tl-round-inset"><div data-augmented-ui="tl-round-inset"></div></label>
+      <input type="radio" name="tl" id="tl-2-round">       <label title="tl-2-round" for="tl-2-round"><div data-augmented-ui="tl-2-round"></div></label>
+      <input type="radio" name="tl" id="tl-2-round-x">     <label title="tl-2-round-x" for="tl-2-round-x"><div data-augmented-ui="tl-2-round-x"></div></label>
+      <input type="radio" name="tl" id="tl-2-round-y">     <label title="tl-2-round-y" for="tl-2-round-y"><div data-augmented-ui="tl-2-round-y"></div></label>
+      <input type="radio" name="tl" id="tl-2-round-xy">    <label title="tl-2-round-xy" for="tl-2-round-xy"><div data-augmented-ui="tl-2-round-xy"></div></label>
+      <input type="radio" name="tl" id="tl-2-round-inset"> <label title="tl-2-round-inset" for="tl-2-round-inset"><div data-augmented-ui="tl-2-round-inset"></div></label>
+      <input type="radio" name="tl" id="tl-scoop">         <label title="tl-scoop" for="tl-scoop"><div data-augmented-ui="tl-scoop"></div></label>
+      <input type="radio" name="tl" id="tl-scoop-x">       <label title="tl-scoop-x" for="tl-scoop-x"><div data-augmented-ui="tl-scoop-x"></div></label>
+      <input type="radio" name="tl" id="tl-scoop-y">       <label title="tl-scoop-y" for="tl-scoop-y"><div data-augmented-ui="tl-scoop-y"></div></label>
+      <input type="radio" name="tl" id="tl-scoop-inset">   <label title="tl-scoop-inset" for="tl-scoop-inset"><div data-augmented-ui="tl-scoop-inset"></div></label>
+      <input type="radio" name="tl" id="tl-2-scoop">       <label title="tl-2-scoop" for="tl-2-scoop"><div data-augmented-ui="tl-2-scoop"></div></label>
+      <input type="radio" name="tl" id="tl-2-scoop-x">     <label title="tl-2-scoop-x" for="tl-2-scoop-x"><div data-augmented-ui="tl-2-scoop-x"></div></label>
+      <input type="radio" name="tl" id="tl-2-scoop-y">     <label title="tl-2-scoop-y" for="tl-2-scoop-y"><div data-augmented-ui="tl-2-scoop-y"></div></label>
+      <input type="radio" name="tl" id="tl-2-scoop-xy">    <label title="tl-2-scoop-xy" for="tl-2-scoop-xy"><div data-augmented-ui="tl-2-scoop-xy"></div></label>
+      <input type="radio" name="tl" id="tl-2-scoop-inset"> <label title="tl-2-scoop-inset" for="tl-2-scoop-inset"><div data-augmented-ui="tl-2-scoop-inset"></div></label>
+    </div>
+    <div class="t-mixin">
+      <input type="radio" name="t" id="t-clip">     <label title="t-clip" for="t-clip"><div data-augmented-ui="t-clip"></div></label>
+      <input type="radio" name="t" id="t-rect">     <label title="t-rect" for="t-rect"><div data-augmented-ui="t-rect"></div></label>
+      <input type="radio" name="t" id="t-scoop">    <label title="t-scoop" for="t-scoop"><div data-augmented-ui="t-scoop"></div></label>
+      <input type="radio" name="t" id="t-clip-x">   <label title="t-clip-x" for="t-clip-x"><div data-augmented-ui="t-clip-x"></div></label>
+      <input type="radio" name="t" id="t-rect-x">   <label title="t-rect-x" for="t-rect-x"><div data-augmented-ui="t-rect-x"></div></label>
+      <input type="radio" name="t" id="t-scoop-x">  <label title="t-scoop-x" for="t-scoop-x"><div data-augmented-ui="t-scoop-x"></div></label>
+      <input type="radio" name="t" id="t-clip-y">   <label title="t-clip-y" for="t-clip-y"><div data-augmented-ui="t-clip-y"></div></label>
+      <input type="radio" name="t" id="t-rect-y">   <label title="t-rect-y" for="t-rect-y"><div data-augmented-ui="t-rect-y"></div></label>
+      <input type="radio" name="t" id="t-scoop-y">  <label title="t-scoop-y" for="t-scoop-y"><div data-augmented-ui="t-scoop-y"></div></label>
+      <input type="radio" name="t" id="t-clip-xy">  <label title="t-clip-xy" for="t-clip-xy"><div data-augmented-ui="t-clip-xy"></div></label>
+      <input type="radio" name="t" id="t-rect-xy">  <label title="t-rect-xy" for="t-rect-xy"><div data-augmented-ui="t-rect-xy"></div></label>
+      <input type="radio" name="t" id="t-scoop-xy"> <label title="t-scoop-xy" for="t-scoop-xy"><div data-augmented-ui="t-scoop-xy"></div></label>
+      <input type="radio" name="t" id="t-round-x">  <label title="t-round-x" for="t-round-x"><div data-augmented-ui="t-round-x"></div></label>
+      <input type="radio" name="t" id="t-round-xy"> <label title="t-round-xy" for="t-round-xy"><div data-augmented-ui="t-round-xy"></div></label>
+      <input type="radio" name="t" id="t-step-xy">  <label title="t-step-xy" for="t-step-xy"><div data-augmented-ui="t-step-xy"></div></label>
+    </div>
+    <div class="tr-mixin">
+      <input type="radio" name="tr" id="tr-clip">          <label title="tr-clip" for="tr-clip"><div data-augmented-ui="tr-clip"></div></label>
+      <input type="radio" name="tr" id="tr-clip-x">        <label title="tr-clip-x" for="tr-clip-x"><div data-augmented-ui="tr-clip-x"></div></label>
+      <input type="radio" name="tr" id="tr-clip-y">        <label title="tr-clip-y" for="tr-clip-y"><div data-augmented-ui="tr-clip-y"></div></label>
+      <input type="radio" name="tr" id="tr-clip-inset">    <label title="tr-clip-inset" for="tr-clip-inset"><div data-augmented-ui="tr-clip-inset"></div></label>
+      <input type="radio" name="tr" id="tr-2-clip-x">      <label title="tr-2-clip-x" for="tr-2-clip-x"><div data-augmented-ui="tr-2-clip-x"></div></label>
+      <input type="radio" name="tr" id="tr-2-clip-y">      <label title="tr-2-clip-y" for="tr-2-clip-y"><div data-augmented-ui="tr-2-clip-y"></div></label>
+      <input type="radio" name="tr" id="tr-2-clip-xy">     <label title="tr-2-clip-xy" for="tr-2-clip-xy"><div data-augmented-ui="tr-2-clip-xy"></div></label>
+      <input type="radio" name="tr" id="tr-rect">          <label title="tr-rect" for="tr-rect"><div data-augmented-ui="tr-rect"></div></label>
+      <input type="radio" name="tr" id="tr-rect-x">        <label title="tr-rect-x" for="tr-rect-x"><div data-augmented-ui="tr-rect-x"></div></label>
+      <input type="radio" name="tr" id="tr-rect-y">        <label title="tr-rect-y" for="tr-rect-y"><div data-augmented-ui="tr-rect-y"></div></label>
+      <input type="radio" name="tr" id="tr-2-rect">        <label title="tr-2-rect" for="tr-2-rect"><div data-augmented-ui="tr-2-rect"></div></label>
+      <input type="radio" name="tr" id="tr-2-rect-x">      <label title="tr-2-rect-x" for="tr-2-rect-x"><div data-augmented-ui="tr-2-rect-x"></div></label>
+      <input type="radio" name="tr" id="tr-2-rect-y">      <label title="tr-2-rect-y" for="tr-2-rect-y"><div data-augmented-ui="tr-2-rect-y"></div></label>
+      <input type="radio" name="tr" id="tr-2-rect-xy">     <label title="tr-2-rect-xy" for="tr-2-rect-xy"><div data-augmented-ui="tr-2-rect-xy"></div></label>
+      <input type="radio" name="tr" id="tr-2-rect-inset">  <label title="tr-2-rect-inset" for="tr-2-rect-inset"><div data-augmented-ui="tr-2-rect-inset"></div></label>
+      <input type="radio" name="tr" id="tr-step-inset">    <label title="tr-step-inset" for="tr-step-inset"><div data-augmented-ui="tr-step-inset"></div></label>
+      <input type="radio" name="tr" id="tr-2-step-inset">  <label title="tr-2-step-inset" for="tr-2-step-inset"><div data-augmented-ui="tr-2-step-inset"></div></label>
+      <input type="radio" name="tr" id="tr-round">         <label title="tr-round" for="tr-round"><div data-augmented-ui="tr-round"></div></label>
+      <input type="radio" name="tr" id="tr-round-x">       <label title="tr-round-x" for="tr-round-x"><div data-augmented-ui="tr-round-x"></div></label>
+      <input type="radio" name="tr" id="tr-round-y">       <label title="tr-round-y" for="tr-round-y"><div data-augmented-ui="tr-round-y"></div></label>
+      <input type="radio" name="tr" id="tr-round-inset">   <label title="tr-round-inset" for="tr-round-inset"><div data-augmented-ui="tr-round-inset"></div></label>
+      <input type="radio" name="tr" id="tr-2-round">       <label title="tr-2-round" for="tr-2-round"><div data-augmented-ui="tr-2-round"></div></label>
+      <input type="radio" name="tr" id="tr-2-round-x">     <label title="tr-2-round-x" for="tr-2-round-x"><div data-augmented-ui="tr-2-round-x"></div></label>
+      <input type="radio" name="tr" id="tr-2-round-y">     <label title="tr-2-round-y" for="tr-2-round-y"><div data-augmented-ui="tr-2-round-y"></div></label>
+      <input type="radio" name="tr" id="tr-2-round-xy">    <label title="tr-2-round-xy" for="tr-2-round-xy"><div data-augmented-ui="tr-2-round-xy"></div></label>
+      <input type="radio" name="tr" id="tr-2-round-inset"> <label title="tr-2-round-inset" for="tr-2-round-inset"><div data-augmented-ui="tr-2-round-inset"></div></label>
+      <input type="radio" name="tr" id="tr-scoop">         <label title="tr-scoop" for="tr-scoop"><div data-augmented-ui="tr-scoop"></div></label>
+      <input type="radio" name="tr" id="tr-scoop-x">       <label title="tr-scoop-x" for="tr-scoop-x"><div data-augmented-ui="tr-scoop-x"></div></label>
+      <input type="radio" name="tr" id="tr-scoop-y">       <label title="tr-scoop-y" for="tr-scoop-y"><div data-augmented-ui="tr-scoop-y"></div></label>
+      <input type="radio" name="tr" id="tr-scoop-inset">   <label title="tr-scoop-inset" for="tr-scoop-inset"><div data-augmented-ui="tr-scoop-inset"></div></label>
+      <input type="radio" name="tr" id="tr-2-scoop">       <label title="tr-2-scoop" for="tr-2-scoop"><div data-augmented-ui="tr-2-scoop"></div></label>
+      <input type="radio" name="tr" id="tr-2-scoop-x">     <label title="tr-2-scoop-x" for="tr-2-scoop-x"><div data-augmented-ui="tr-2-scoop-x"></div></label>
+      <input type="radio" name="tr" id="tr-2-scoop-y">     <label title="tr-2-scoop-y" for="tr-2-scoop-y"><div data-augmented-ui="tr-2-scoop-y"></div></label>
+      <input type="radio" name="tr" id="tr-2-scoop-xy">    <label title="tr-2-scoop-xy" for="tr-2-scoop-xy"><div data-augmented-ui="tr-2-scoop-xy"></div></label>
+      <input type="radio" name="tr" id="tr-2-scoop-inset"> <label title="tr-2-scoop-inset" for="tr-2-scoop-inset"><div data-augmented-ui="tr-2-scoop-inset"></div></label>
+    </div>
+    <div class="l-mixin">
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="l" id="l-round-y">  <label title="l-round-y" for="l-round-y"><div data-augmented-ui="l-round-y"></div></label>
+      <input type="radio" name="l" id="l-clip-xy">  <label title="l-clip-xy" for="l-clip-xy"><div data-augmented-ui="l-clip-xy"></div></label>
+      <input type="radio" name="l" id="l-clip-y">   <label title="l-clip-y" for="l-clip-y"><div data-augmented-ui="l-clip-y"></div></label>
+      <input type="radio" name="l" id="l-clip-x">   <label title="l-clip-x" for="l-clip-x"><div data-augmented-ui="l-clip-x"></div></label>
+      <input type="radio" name="l" id="l-clip">     <label title="l-clip" for="l-clip"><div data-augmented-ui="l-clip"></div></label>
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="l" id="l-round-xy"> <label title="l-round-xy" for="l-round-xy"><div data-augmented-ui="l-round-xy"></div></label>
+      <input type="radio" name="l" id="l-rect-xy">  <label title="l-rect-xy" for="l-rect-xy"><div data-augmented-ui="l-rect-xy"></div></label>
+      <input type="radio" name="l" id="l-rect-y">   <label title="l-rect-y" for="l-rect-y"><div data-augmented-ui="l-rect-y"></div></label>
+      <input type="radio" name="l" id="l-rect-x">   <label title="l-rect-x" for="l-rect-x"><div data-augmented-ui="l-rect-x"></div></label>
+      <input type="radio" name="l" id="l-rect">     <label title="l-rect" for="l-rect"><div data-augmented-ui="l-rect"></div></label>
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="l" id="l-step-xy">  <label title="l-step-xy" for="l-step-xy"><div data-augmented-ui="l-step-xy"></div></label>
+      <input type="radio" name="l" id="l-scoop-xy"> <label title="l-scoop-xy" for="l-scoop-xy"><div data-augmented-ui="l-scoop-xy"></div></label>
+      <input type="radio" name="l" id="l-scoop-y">  <label title="l-scoop-y" for="l-scoop-y"><div data-augmented-ui="l-scoop-y"></div></label>
+      <input type="radio" name="l" id="l-scoop-x">  <label title="l-scoop-x" for="l-scoop-x"><div data-augmented-ui="l-scoop-x"></div></label>
+      <input type="radio" name="l" id="l-scoop">    <label title="l-scoop" for="l-scoop"><div data-augmented-ui="l-scoop"></div></label>
+    </div>
+    <div class="output">
+      <div><input type="radio" name="tl" id="none-tl" checked><label for="none-tl">X</label></div>
+      <div><input type="radio" name="t" id="none-t" checked><label for="none-t">X</label></div>
+      <div><input type="radio" name="tr" id="none-tr" checked><label for="none-tr">X</label></div>
+      <div><input type="radio" name="l" id="none-l" checked><label for="none-l">X</label></div>
+      <div class="aug" data-augmented-ui="both"></div>
+      <div><input type="radio" name="r" id="none-r" checked><label for="none-r">X</label></div>
+      <div><input type="radio" name="bl" id="none-bl" checked><label for="none-bl">X</label></div>
+      <div><input type="radio" name="b" id="none-b" checked><label for="none-b">X</label></div>
+      <div><input type="radio" name="br" id="none-br" checked><label for="none-br">X</label></div>
+      <div class="extra-mixins">
+        <span>Plus:</span>
+        <label><input type="radio" name="extras" id="border"> border</label>
+        <label><input type="radio" name="extras" id="inlay"> inlay</label>
+        <label><input type="radio" name="extras" id="both" checked> both</label>
+        <label><input type="radio" name="extras" id="no-extra"> none</label>
+        <div>
+          Check out the augmented-ui docs for
+          <a href="/docs/index.html#border-and-inlay">border and inlay properties</a>
+          you can use to customize their size/distance, background, and opacity.
+        </div>
+      </div>
+      <textarea id="code-out"><div data-augmented-ui="
+  both
+" class="styleme"></div></textarea>
+    </div>
+    <div class="r-mixin">
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="r" id="r-round-y">  <label title="r-round-y" for="r-round-y"><div data-augmented-ui="r-round-y"></div></label>
+      <input type="radio" name="r" id="r-clip-xy">  <label title="r-clip-xy" for="r-clip-xy"><div data-augmented-ui="r-clip-xy"></div></label>
+      <input type="radio" name="r" id="r-clip-y">   <label title="r-clip-y" for="r-clip-y"><div data-augmented-ui="r-clip-y"></div></label>
+      <input type="radio" name="r" id="r-clip-x">   <label title="r-clip-x" for="r-clip-x"><div data-augmented-ui="r-clip-x"></div></label>
+      <input type="radio" name="r" id="r-clip">     <label title="r-clip" for="r-clip"><div data-augmented-ui="r-clip"></div></label>
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="r" id="r-round-xy"> <label title="r-round-xy" for="r-round-xy"><div data-augmented-ui="r-round-xy"></div></label>
+      <input type="radio" name="r" id="r-rect-xy">  <label title="r-rect-xy" for="r-rect-xy"><div data-augmented-ui="r-rect-xy"></div></label>
+      <input type="radio" name="r" id="r-rect-y">   <label title="r-rect-y" for="r-rect-y"><div data-augmented-ui="r-rect-y"></div></label>
+      <input type="radio" name="r" id="r-rect-x">   <label title="r-rect-x" for="r-rect-x"><div data-augmented-ui="r-rect-x"></div></label>
+      <input type="radio" name="r" id="r-rect">     <label title="r-rect" for="r-rect"><div data-augmented-ui="r-rect"></div></label>
+      <span class="empty"></span>
+      <span class="empty"></span>
+      <input type="radio" name="r" id="r-step-xy">  <label title="r-step-xy" for="r-step-xy"><div data-augmented-ui="r-step-xy"></div></label>
+      <input type="radio" name="r" id="r-scoop-xy"> <label title="r-scoop-xy" for="r-scoop-xy"><div data-augmented-ui="r-scoop-xy"></div></label>
+      <input type="radio" name="r" id="r-scoop-y">  <label title="r-scoop-y" for="r-scoop-y"><div data-augmented-ui="r-scoop-y"></div></label>
+      <input type="radio" name="r" id="r-scoop-x">  <label title="r-scoop-x" for="r-scoop-x"><div data-augmented-ui="r-scoop-x"></div></label>
+      <input type="radio" name="r" id="r-scoop">    <label title="r-scoop" for="r-scoop"><div data-augmented-ui="r-scoop"></div></label>
+    </div>
+    <div class="bl-mixin">
+      <input type="radio" name="bl" id="bl-2-scoop-inset"> <label title="bl-2-scoop-inset" for="bl-2-scoop-inset"><div data-augmented-ui="bl-2-scoop-inset"></div></label>
+      <input type="radio" name="bl" id="bl-2-scoop-xy">    <label title="bl-2-scoop-xy" for="bl-2-scoop-xy"><div data-augmented-ui="bl-2-scoop-xy"></div></label>
+      <input type="radio" name="bl" id="bl-2-scoop-y">     <label title="bl-2-scoop-y" for="bl-2-scoop-y"><div data-augmented-ui="bl-2-scoop-y"></div></label>
+      <input type="radio" name="bl" id="bl-2-scoop-x">     <label title="bl-2-scoop-x" for="bl-2-scoop-x"><div data-augmented-ui="bl-2-scoop-x"></div></label>
+      <input type="radio" name="bl" id="bl-2-scoop">       <label title="bl-2-scoop" for="bl-2-scoop"><div data-augmented-ui="bl-2-scoop"></div></label>
+      <input type="radio" name="bl" id="bl-scoop-inset">   <label title="bl-scoop-inset" for="bl-scoop-inset"><div data-augmented-ui="bl-scoop-inset"></div></label>
+      <input type="radio" name="bl" id="bl-scoop-y">       <label title="bl-scoop-y" for="bl-scoop-y"><div data-augmented-ui="bl-scoop-y"></div></label>
+      <input type="radio" name="bl" id="bl-scoop-x">       <label title="bl-scoop-x" for="bl-scoop-x"><div data-augmented-ui="bl-scoop-x"></div></label>
+      <input type="radio" name="bl" id="bl-scoop">         <label title="bl-scoop" for="bl-scoop"><div data-augmented-ui="bl-scoop"></div></label>
+      <input type="radio" name="bl" id="bl-2-round-inset"> <label title="bl-2-round-inset" for="bl-2-round-inset"><div data-augmented-ui="bl-2-round-inset"></div></label>
+      <input type="radio" name="bl" id="bl-2-round-xy">    <label title="bl-2-round-xy" for="bl-2-round-xy"><div data-augmented-ui="bl-2-round-xy"></div></label>
+      <input type="radio" name="bl" id="bl-2-round-y">     <label title="bl-2-round-y" for="bl-2-round-y"><div data-augmented-ui="bl-2-round-y"></div></label>
+      <input type="radio" name="bl" id="bl-2-round-x">     <label title="bl-2-round-x" for="bl-2-round-x"><div data-augmented-ui="bl-2-round-x"></div></label>
+      <input type="radio" name="bl" id="bl-2-round">       <label title="bl-2-round" for="bl-2-round"><div data-augmented-ui="bl-2-round"></div></label>
+      <input type="radio" name="bl" id="bl-round-inset">   <label title="bl-round-inset" for="bl-round-inset"><div data-augmented-ui="bl-round-inset"></div></label>
+      <input type="radio" name="bl" id="bl-round-y">       <label title="bl-round-y" for="bl-round-y"><div data-augmented-ui="bl-round-y"></div></label>
+      <input type="radio" name="bl" id="bl-round-x">       <label title="bl-round-x" for="bl-round-x"><div data-augmented-ui="bl-round-x"></div></label>
+      <input type="radio" name="bl" id="bl-round">         <label title="bl-round" for="bl-round"><div data-augmented-ui="bl-round"></div></label>
+      <input type="radio" name="bl" id="bl-2-step-inset">  <label title="bl-2-step-inset" for="bl-2-step-inset"><div data-augmented-ui="bl-2-step-inset"></div></label>
+      <input type="radio" name="bl" id="bl-step-inset">    <label title="bl-step-inset" for="bl-step-inset"><div data-augmented-ui="bl-step-inset"></div></label>
+      <input type="radio" name="bl" id="bl-2-rect-inset">  <label title="bl-2-rect-inset" for="bl-2-rect-inset"><div data-augmented-ui="bl-2-rect-inset"></div></label>
+      <input type="radio" name="bl" id="bl-2-rect-xy">     <label title="bl-2-rect-xy" for="bl-2-rect-xy"><div data-augmented-ui="bl-2-rect-xy"></div></label>
+      <input type="radio" name="bl" id="bl-2-rect-y">      <label title="bl-2-rect-y" for="bl-2-rect-y"><div data-augmented-ui="bl-2-rect-y"></div></label>
+      <input type="radio" name="bl" id="bl-2-rect-x">      <label title="bl-2-rect-x" for="bl-2-rect-x"><div data-augmented-ui="bl-2-rect-x"></div></label>
+      <input type="radio" name="bl" id="bl-2-rect">        <label title="bl-2-rect" for="bl-2-rect"><div data-augmented-ui="bl-2-rect"></div></label>
+      <input type="radio" name="bl" id="bl-rect-y">        <label title="bl-rect-y" for="bl-rect-y"><div data-augmented-ui="bl-rect-y"></div></label>
+      <input type="radio" name="bl" id="bl-rect-x">        <label title="bl-rect-x" for="bl-rect-x"><div data-augmented-ui="bl-rect-x"></div></label>
+      <input type="radio" name="bl" id="bl-rect">          <label title="bl-rect" for="bl-rect"><div data-augmented-ui="bl-rect"></div></label>
+      <input type="radio" name="bl" id="bl-2-clip-xy">     <label title="bl-2-clip-xy" for="bl-2-clip-xy"><div data-augmented-ui="bl-2-clip-xy"></div></label>
+      <input type="radio" name="bl" id="bl-2-clip-y">      <label title="bl-2-clip-y" for="bl-2-clip-y"><div data-augmented-ui="bl-2-clip-y"></div></label>
+      <input type="radio" name="bl" id="bl-2-clip-x">      <label title="bl-2-clip-x" for="bl-2-clip-x"><div data-augmented-ui="bl-2-clip-x"></div></label>
+      <input type="radio" name="bl" id="bl-clip-inset">    <label title="bl-clip-inset" for="bl-clip-inset"><div data-augmented-ui="bl-clip-inset"></div></label>
+      <input type="radio" name="bl" id="bl-clip-y">        <label title="bl-clip-y" for="bl-clip-y"><div data-augmented-ui="bl-clip-y"></div></label>
+      <input type="radio" name="bl" id="bl-clip-x">        <label title="bl-clip-x" for="bl-clip-x"><div data-augmented-ui="bl-clip-x"></div></label>
+      <input type="radio" name="bl" id="bl-clip">          <label title="bl-clip" for="bl-clip"><div data-augmented-ui="bl-clip"></div></label>
+    </div>
+    <div class="b-mixin">
+      <input type="radio" name="b" id="b-step-xy">  <label title="b-step-xy" for="b-step-xy"><div data-augmented-ui="b-step-xy"></div></label>
+      <input type="radio" name="b" id="b-round-xy"> <label title="b-round-xy" for="b-round-xy"><div data-augmented-ui="b-round-xy"></div></label>
+      <input type="radio" name="b" id="b-round-x">  <label title="b-round-x" for="b-round-x"><div data-augmented-ui="b-round-x"></div></label>
+      <input type="radio" name="b" id="b-scoop-xy"> <label title="b-scoop-xy" for="b-scoop-xy"><div data-augmented-ui="b-scoop-xy"></div></label>
+      <input type="radio" name="b" id="b-rect-xy">  <label title="b-rect-xy" for="b-rect-xy"><div data-augmented-ui="b-rect-xy"></div></label>
+      <input type="radio" name="b" id="b-clip-xy">  <label title="b-clip-xy" for="b-clip-xy"><div data-augmented-ui="b-clip-xy"></div></label>
+      <input type="radio" name="b" id="b-scoop-y">  <label title="b-scoop-y" for="b-scoop-y"><div data-augmented-ui="b-scoop-y"></div></label>
+      <input type="radio" name="b" id="b-rect-y">   <label title="b-rect-y" for="b-rect-y"><div data-augmented-ui="b-rect-y"></div></label>
+      <input type="radio" name="b" id="b-clip-y">   <label title="b-clip-y" for="b-clip-y"><div data-augmented-ui="b-clip-y"></div></label>
+      <input type="radio" name="b" id="b-scoop-x">  <label title="b-scoop-x" for="b-scoop-x"><div data-augmented-ui="b-scoop-x"></div></label>
+      <input type="radio" name="b" id="b-rect-x">   <label title="b-rect-x" for="b-rect-x"><div data-augmented-ui="b-rect-x"></div></label>
+      <input type="radio" name="b" id="b-clip-x">   <label title="b-clip-x" for="b-clip-x"><div data-augmented-ui="b-clip-x"></div></label>
+      <input type="radio" name="b" id="b-scoop">    <label title="b-scoop" for="b-scoop"><div data-augmented-ui="b-scoop"></div></label>
+      <input type="radio" name="b" id="b-rect">     <label title="b-rect" for="b-rect"><div data-augmented-ui="b-rect"></div></label>
+      <input type="radio" name="b" id="b-clip">     <label title="b-clip" for="b-clip"><div data-augmented-ui="b-clip"></div></label>
+    </div>
+    <div class="br-mixin">
+      <input type="radio" name="br" id="br-2-scoop-inset"> <label title="br-2-scoop-inset" for="br-2-scoop-inset"><div data-augmented-ui="br-2-scoop-inset"></div></label>
+      <input type="radio" name="br" id="br-2-scoop-xy">    <label title="br-2-scoop-xy" for="br-2-scoop-xy"><div data-augmented-ui="br-2-scoop-xy"></div></label>
+      <input type="radio" name="br" id="br-2-scoop-y">     <label title="br-2-scoop-y" for="br-2-scoop-y"><div data-augmented-ui="br-2-scoop-y"></div></label>
+      <input type="radio" name="br" id="br-2-scoop-x">     <label title="br-2-scoop-x" for="br-2-scoop-x"><div data-augmented-ui="br-2-scoop-x"></div></label>
+      <input type="radio" name="br" id="br-2-scoop">       <label title="br-2-scoop" for="br-2-scoop"><div data-augmented-ui="br-2-scoop"></div></label>
+      <input type="radio" name="br" id="br-scoop-inset">   <label title="br-scoop-inset" for="br-scoop-inset"><div data-augmented-ui="br-scoop-inset"></div></label>
+      <input type="radio" name="br" id="br-scoop-y">       <label title="br-scoop-y" for="br-scoop-y"><div data-augmented-ui="br-scoop-y"></div></label>
+      <input type="radio" name="br" id="br-scoop-x">       <label title="br-scoop-x" for="br-scoop-x"><div data-augmented-ui="br-scoop-x"></div></label>
+      <input type="radio" name="br" id="br-scoop">         <label title="br-scoop" for="br-scoop"><div data-augmented-ui="br-scoop"></div></label>
+      <input type="radio" name="br" id="br-2-round-inset"> <label title="br-2-round-inset" for="br-2-round-inset"><div data-augmented-ui="br-2-round-inset"></div></label>
+      <input type="radio" name="br" id="br-2-round-xy">    <label title="br-2-round-xy" for="br-2-round-xy"><div data-augmented-ui="br-2-round-xy"></div></label>
+      <input type="radio" name="br" id="br-2-round-y">     <label title="br-2-round-y" for="br-2-round-y"><div data-augmented-ui="br-2-round-y"></div></label>
+      <input type="radio" name="br" id="br-2-round-x">     <label title="br-2-round-x" for="br-2-round-x"><div data-augmented-ui="br-2-round-x"></div></label>
+      <input type="radio" name="br" id="br-2-round">       <label title="br-2-round" for="br-2-round"><div data-augmented-ui="br-2-round"></div></label>
+      <input type="radio" name="br" id="br-round-inset">   <label title="br-round-inset" for="br-round-inset"><div data-augmented-ui="br-round-inset"></div></label>
+      <input type="radio" name="br" id="br-round-y">       <label title="br-round-y" for="br-round-y"><div data-augmented-ui="br-round-y"></div></label>
+      <input type="radio" name="br" id="br-round-x">       <label title="br-round-x" for="br-round-x"><div data-augmented-ui="br-round-x"></div></label>
+      <input type="radio" name="br" id="br-round">         <label title="br-round" for="br-round"><div data-augmented-ui="br-round"></div></label>
+      <input type="radio" name="br" id="br-2-step-inset">  <label title="br-2-step-inset" for="br-2-step-inset"><div data-augmented-ui="br-2-step-inset"></div></label>
+      <input type="radio" name="br" id="br-step-inset">    <label title="br-step-inset" for="br-step-inset"><div data-augmented-ui="br-step-inset"></div></label>
+      <input type="radio" name="br" id="br-2-rect-inset">  <label title="br-2-rect-inset" for="br-2-rect-inset"><div data-augmented-ui="br-2-rect-inset"></div></label>
+      <input type="radio" name="br" id="br-2-rect-xy">     <label title="br-2-rect-xy" for="br-2-rect-xy"><div data-augmented-ui="br-2-rect-xy"></div></label>
+      <input type="radio" name="br" id="br-2-rect-y">      <label title="br-2-rect-y" for="br-2-rect-y"><div data-augmented-ui="br-2-rect-y"></div></label>
+      <input type="radio" name="br" id="br-2-rect-x">      <label title="br-2-rect-x" for="br-2-rect-x"><div data-augmented-ui="br-2-rect-x"></div></label>
+      <input type="radio" name="br" id="br-2-rect">        <label title="br-2-rect" for="br-2-rect"><div data-augmented-ui="br-2-rect"></div></label>
+      <input type="radio" name="br" id="br-rect-y">        <label title="br-rect-y" for="br-rect-y"><div data-augmented-ui="br-rect-y"></div></label>
+      <input type="radio" name="br" id="br-rect-x">        <label title="br-rect-x" for="br-rect-x"><div data-augmented-ui="br-rect-x"></div></label>
+      <input type="radio" name="br" id="br-rect">          <label title="br-rect" for="br-rect"><div data-augmented-ui="br-rect"></div></label>
+      <input type="radio" name="br" id="br-2-clip-xy">     <label title="br-2-clip-xy" for="br-2-clip-xy"><div data-augmented-ui="br-2-clip-xy"></div></label>
+      <input type="radio" name="br" id="br-2-clip-y">      <label title="br-2-clip-y" for="br-2-clip-y"><div data-augmented-ui="br-2-clip-y"></div></label>
+      <input type="radio" name="br" id="br-2-clip-x">      <label title="br-2-clip-x" for="br-2-clip-x"><div data-augmented-ui="br-2-clip-x"></div></label>
+      <input type="radio" name="br" id="br-clip-inset">    <label title="br-clip-inset" for="br-clip-inset"><div data-augmented-ui="br-clip-inset"></div></label>
+      <input type="radio" name="br" id="br-clip-y">        <label title="br-clip-y" for="br-clip-y"><div data-augmented-ui="br-clip-y"></div></label>
+      <input type="radio" name="br" id="br-clip-x">        <label title="br-clip-x" for="br-clip-x"><div data-augmented-ui="br-clip-x"></div></label>
+      <input type="radio" name="br" id="br-clip">          <label title="br-clip" for="br-clip"><div data-augmented-ui="br-clip"></div></label>
+    </div>
+  </div>
+
+  <script>
+    var x = document.querySelector(".mixin-mixer")
+    var o = document.querySelector(".output .aug")
+    var c = document.querySelector("#code-out")
+    x.addEventListener("change", function () {
+      var augs = []
+      augs.push(document.querySelector("[name=tl]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=t]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=tr]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=r]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=br]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=b]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=bl]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=l]:checked").id.replace(/none-.*/, ""))
+      augs.push(document.querySelector("[name=extras]:checked").id.replace("no-extra", ""))
+      var augString = augs.join(" ").replace(/ +/g, " ").trim()
+      o.setAttribute("data-augmented-ui", augString)
+      c.value = `<div data-augmented-ui="\n  ${augString}\n" class="styleme"></div>`
+    }, true)
+  </script>
+</body>
+</html>

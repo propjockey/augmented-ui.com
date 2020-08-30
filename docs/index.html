@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>augmented-ui v2 documentation</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#a88d00">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia_1.9to1.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="632">
+  <link rel="stylesheet" type="text/css" href="/modules/augmented-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="/modules/css-media-vars.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146833088-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-146833088-1');
+  </script>
+
+  <style>
+    html {
+      --sm-fs: var(--media-lte-sm) 10px;
+      --md-fs: var(--media-md) 13px;
+      font-size: var(--sm-fs, var(--md-fs, 16px));
+      height: 100%;
+      overflow: hidden;
+      --c0: 200, 100%;
+      --c1: 40, 32%;
+      --c2: 330, 2%;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+      margin: 0px;
+      padding: 0px;
+      color: hsl(var(--c0), 36%);
+    }
+    #x {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+    }
+
+    a {
+      text-decoration: underline;
+      text-decoration-color: black;
+    }
+
+    h1 a,
+    h2 a,
+    h3 a,
+    h4 a,
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      outline: none;
+    }
+
+    body {
+      --sm-nav-width: var(--media-lte-sm) 0px;
+      --md-nav-width: var(--media-md) 20vw;
+      --nav-width: var(--sm-nav-width, var(--md-nav-width, 15rem));
+      --md-main-width: var(--media-lte-md) calc(100vw - var(--nav-width));
+      --main-width: var(--md-main-width, calc(1200px - var(--nav-width)));
+      --header-height: 10rem;
+
+      --inset: 1rem;
+
+      background: repeating-linear-gradient(
+        to right,
+        rgba(0, 0, 32, 0.03) 0px,
+        rgba(0, 0, 32, 0.03) 1px,
+        transparent 1px,
+        transparent 25px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 32, 0.03) 0px,
+        rgba(0, 0, 32, 0.03) 1px,
+        transparent 1px,
+        transparent 25px
+      ),
+      linear-gradient(
+        to right,
+        hsl(var(--c2), 19%) calc(var(--nav-width) - calc(3rem + var(--inset))),
+        hsl(var(--c2), 0%) var(--nav-width)
+      ) top 0px left 0px / var(--nav-width) calc(var(--header-height) - 7rem) no-repeat,
+      linear-gradient(
+        135deg,
+        hsl(var(--c2), 19%) 1rem,
+        hsl(var(--c1), 98.5%) 1rem,
+        hsl(var(--c1), 98.5%)
+      ) top calc(var(--header-height) - 7rem) left calc(1rem + var(--inset)) / var(--nav-width) 2rem no-repeat,
+      linear-gradient(
+        45deg,
+        transparent 1rem,
+        hsl(var(--c1), 98.5%) 1rem,
+        hsl(var(--c1), 98.5%)
+      ) top 0px left calc(1rem + var(--inset)) / var(--nav-width) var(--header-height) no-repeat,
+      linear-gradient(
+        to right,
+        hsl(var(--c2), 19%) calc(var(--nav-width) - 3rem),
+        hsl(var(--c2), 0%) var(--nav-width),
+        hsl(var(--c1), 98.5%) var(--nav-width),
+        hsl(var(--c0), 99.5%),
+        hsl(var(--c1), 99.5%) calc(var(--nav-width) + var(--main-width))
+      );
+    }
+    #body {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      display: grid;
+      grid-template-areas: "nav-header header" "nav main";
+      grid-template-columns: var(--nav-width) var(--main-width);
+      grid-template-rows: var(--header-height) 1fr;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+    /*
+      #body {
+        perspective: 1077px;
+        perspective-origin: 47.5% 15rem;
+        transform-style: preserve-3d;
+      }
+      #body * {
+        transform-style: preserve-3d;
+      }
+      h2 {
+        transform-origin: 0px 50%;
+        transform: rotateY(20deg);
+      }
+      h3 {
+        transform: translateZ(-0.25rem);
+      }
+    */
+    header {
+      grid-area: header;
+      padding: 1rem;
+      padding-top: 0.25rem;
+      margin-bottom: 5rem;
+    }
+    .social {
+      position: fixed;
+      z-index: 999;
+      left: 0px;
+      top: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: var(--nav-width);
+      padding-right: 2rem;
+    }
+    .social svg {
+      height: 2.5rem;
+      width: auto;
+    }
+    nav {
+      z-index: 999;
+      height: calc(100vh - var(--header-height));
+      top: var(--header-height);
+      left: 0px;
+      width: var(--nav-width);
+      overflow-y: auto;
+      position: fixed;
+      padding-top: 2rem;
+      padding-bottom: 20rem;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(0, 0, 32, 0.1) 0px,
+        rgba(0, 0, 32, 0.1) 1px,
+        transparent 1px,
+        transparent 50px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 32, 0.1) 0px,
+        rgba(0, 0, 32, 0.1) 1px,
+        transparent 1px,
+        transparent 50px
+      ) top var(--header-height) left 0px,
+      linear-gradient(
+        to right,
+        hsl(var(--c2), 19%) calc(var(--nav-width) - 3rem),
+        hsl(var(--c2), 0%) var(--nav-width)
+      );
+    }
+    nav > * {
+      display: block;
+      margin: 0.25rem;
+      margin-left: auto;
+      padding: 0.25rem;
+      max-width: 12rem;
+    }
+    nav a {
+      color: hsl(var(--c0), 96.5%);
+    }
+    nav a + span,
+    nav a + a.category {
+      margin-top: 2rem;
+    }
+    nav span,
+    nav a.category {
+      transform: translateZ(0.25rem);
+      color: hsl(var(--c0), 46.5%);
+    }
+    nav::-webkit-scrollbar {
+      width: 1rem;
+    }
+    nav {
+      scrollbar-width: auto;
+      scrollbar-color: hsl(var(--c1), 98.5%) transparent;
+    }
+    nav::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    nav::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--c1), 98.5%) ;
+      border-radius: 0px;
+      border: 1px solid black;
+    }
+    main {
+      grid-area: main;
+      padding: 1rem;
+      padding-bottom: 60vh;
+    }
+
+    article {
+      line-height: 1.5;
+    }
+
+    .text-article {
+      padding: 1rem;
+      margin-bottom: 5rem;
+    }
+
+    .text-article > h2 {
+      font-size: 2.75rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      color: hsl(var(--c0), 2%);
+      white-space: nowrap;
+    }
+
+    code {
+      color: hsl(var(--c0), 5%);
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    code.highlight {
+      background: #e8e8e8;
+    }
+
+    #pitch figure {
+      display: grid;
+      grid-template-columns: 50% 1fr;
+      align-items: center;
+      grid-gap: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+    #pitch .core-pitch-figure {
+      display: grid;
+      grid-template-columns: 50% 1fr;
+      align-items: center;
+      grid-gap: 1rem;
+      margin-top: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .core-pitch-figure figcaption {
+      display: grid;
+      grid-template-columns: 1fr 33%;
+      grid-gap: 0.25rem;
+    }
+    .pitch-mixin {
+      height: 340px;
+      padding-top: 120px;
+      text-align: center;
+      font-weight: bold;
+      color: black;
+      --aug-tr1: 25px;
+      --aug-b-extend1: 50%;
+
+      --aug-border-all: 7px;
+      --aug-border-bg: radial-gradient(
+        at top, gold 25%, transparent 50%),
+        url("/img/what_a_save.gif") 50% 50% / 100% 100%;
+
+      --aug-inlay-all: 4px;
+      --aug-inlay-bg: radial-gradient(gold, black);
+      --aug-inlay-opacity: 0.5;
+    }
+    .pitch-core {
+      height: 340px;
+      padding-top: 140px;
+      text-align: center;
+      font-weight: bold;
+      color: black;
+      --aug-border: initial;
+      --aug-border-all: 7px;
+      --aug-border-bg: radial-gradient(
+        at top, gold 25%, transparent 50%),
+        url("/img/what_a_save.gif") 50% 50% / 100% 100%;
+
+      --aug-inlay: initial;
+      --aug-inlay-all: 4px;
+      --aug-inlay-bg: radial-gradient(gold, black);
+      --aug-inlay-opacity: 0.5;
+
+      --aug-clip-b1: initial;
+      --aug-clip-b2: initial;
+      --aug-b-extend1: 50%;
+    }
+    .pitch-core:not(:hover) {
+      --aug-clip-tl1: initial;
+      --aug-tl-inset1: 30px;
+      --aug-tl1-alt-join-in: initial;
+      --aug-scoop-tr1: initial;
+      --aug-tr1: 25px;
+    }
+    .pitch-core:hover {
+      --aug-clip-t1: initial;
+      --aug-clip-t2: initial;
+      --aug-clip-r1: initial;
+      --aug-clip-r2: initial;
+      --aug-clip-l1: initial;
+      --aug-clip-l2: initial;
+      --aug-t-extend1: 50%;
+      --aug-r-extend1: 50%;
+      --aug-l-extend1: 50%;
+    }
+
+    #pitch ul {
+      list-style-position: outside;
+    }
+    #pitch li {
+      color: black;
+      margin-left: 2rem;
+      margin-top: 0.5rem;
+    }
+    #pitch li p {
+      padding-left: 1rem;
+      color: hsl(var(--c0), 32%);
+    }
+    .showborder,
+    .showinlay {
+      color: #000000;
+      text-align: center;
+      padding: 20px;
+      padding-top: 40px;
+      width: 30%;
+      height: 100px;
+      margin: 0.25rem auto;
+      background: gold;
+      --aug-inlay-all: 7px;
+      --aug-l-center: 50%;
+      --aug-t-center: 50%;
+      vertical-align: top;
+    }
+    #announc3ment {
+      --aug-clip-tl1: initial;
+      --aug-round-tr1: initial;
+      --aug-clip-br1: initial;
+      --aug-round-bl1: initial;
+      --aug-border: initial;
+      --aug-inlay: initial;
+      --aug-border-all: 4px;
+      --aug-inlay-all: 2px;
+      --aug-border-bg: gold;
+      --aug-inlay-bg: black;
+      --aug-inlay-opacity: 0.95;
+      --aug-tl1: 40px;
+      --aug-br1: 40px;
+      --aug-tr1: 10px;
+      --aug-bl1: 10px;
+      color: #cccccc;
+      text-align: center;
+      padding: 20px;
+      width: 50%;
+      margin: 0.25rem auto;
+      font-size: 0.75rem;
+      background: url("/img/chubie.png") right 30px bottom 10px / auto 75% no-repeat;
+    }
+    #announc3ment:hover {
+      --aug-inlay-opacity: 0.5;
+    }
+    #announc3ment::before {
+      transition: opacity 1s ease-in;
+    }
+    #announc3ment:hover::before {
+      transition: opacity 1s ease-in 3s;
+    }
+    #announc3ment b {
+      color: white;
+      font-size: 1rem;
+    }
+    .mixin-example-list {
+      list-style: none;
+      display: block;
+      max-width: 600px;
+    }
+    .mixin-example-list li {
+      margin: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 75px;
+      grid-gap: 1fr;
+      grid-template-rows: 75px;
+      align-items: center;
+    }
+    .mixin-example-list li div {
+      background: gold;
+      height: 75px;
+    }
+    .article-note {
+      padding: 1rem;
+      background: hsla(var(--c1), 94.5%, 0.25);
+    }
+    .borderinlay-props {
+      display: grid;
+      grid-template-columns: 175px 175px 175px 1fr;
+      grid-gap: 5px;
+    }
+    .borderinlay-props [colspan="4"] {
+      grid-column-end: span 4;
+    }
+    .borderinlay-props code {
+      margin: 0px;
+    }
+    #logo {
+      --size: 1.5rem;
+      width: var(--size);
+      height: var(--size);
+      padding-top: calc(var(--size) / 40 * 12);
+      font-family: sans-serif;
+      font-size: calc(var(--size) / 4);
+      font-weight: bold;
+      text-align: center;
+      --aug-border: initial;
+      --aug-border-all: calc(var(--size) / 20);
+      --aug-clip-tl1: initial;
+      --aug-tl1: calc(var(--size) / 40 * 12);
+      --aug-clip-tr1: initial;
+      --aug-tr1: calc(var(--size) / 40 * 12);
+      --aug-clip-b1: initial;
+      --aug-clip-b2: initial;
+      --aug-b1: calc(var(--size) / 10);
+      --aug-b2: calc(var(--size) / 10);
+      --aug-b-extend1: calc(var(--size) * 0.35);
+    }
+    #logo {
+      position: fixed;
+      z-index: 999;
+      --size: calc(var(--header-height) - 5rem);
+      color: hsl(var(--c2), 19%);
+      top: calc(var(--header-height) - 1rem);
+      left: calc(var(--nav-width) - 4rem);
+      transform: translate(-100%, -100%);
+      text-decoration: none;
+    }
+    .handson > * {
+      display: inline-block;
+      margin: 1rem;
+      margin-right: 0.5rem;
+    }
+    .handson [data-augmented-ui] {
+      color: black;
+      background: #fafafa;
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+      padding-right: 14px;
+      --aug-border-all: 1px;
+      --aug-br1: 4px;
+      --aug-br-inset2: 57%;
+      width: 175px;
+    }
+  </style>
+</head>
+<body>
+  <form style="display:none;" name="fiddleform" method="post" action="http://jsfiddle.net/api/post/library/pure/" target="_blank">
+    <textarea name="css"></textarea>
+    <textarea name="html"></textarea>
+    <input type="hidden" name="resources" value="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+  </form>
+  <form style="display:none;" name="codepenform" method="post" action="https://codepen.io/pen/define/" target="_blank">
+    <input type="hidden" name="data" value="">
+  </form>
+  <script>
+    function postToCodepen (css, html) {
+      const codepenform = document.forms["codepenform"]
+      const codpenData = {
+        editors: "110", // hide js panel
+        html: html,
+        css: css,
+        css_external: "https://unpkg.com/augmented-ui@2/augmented-ui.min.css"
+      }
+      codepenform.querySelector("[name='data']").value = JSON.stringify(codpenData)
+      codepenform.submit()
+      return false
+    }
+    function postToJsfiddle (css, html) {
+      const fiddleform = document.forms["fiddleform"]
+      fiddleform.querySelector("[name='css']").value = css
+      fiddleform.querySelector("[name='html']").value = html
+      fiddleform.submit()
+      return false
+    }
+    function innerHTML (selector) {
+      return document.querySelector(selector).innerHTML
+    }
+  </script>
+  <div class="social">
+    <a href="https://www.npmjs.com/package/augmented-ui" title="Install augmented-ui from NPM!" style="padding-top: 0.75rem;"><svg style="height: 1.25rem;" viewBox="0 0 905 290"><path fill="#ffffff" d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z"></path></svg></a>
+    <a href="https://github.com/propjockey/augmented-ui" title="Leave a star for augmented-ui on GitHub!"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 34 34"><path fill="#ffffff" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+    <a href="https://twitter.com/James0x57" title="Follow augmented-ui development on Twitter!"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -15 400 385"><path fill="#ffffff" d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23"/></svg></a>
+  </div>
+  <a href="http://augmented-ui.com" title="augmented-ui home" id="logo" data-augmented-ui>&lt;aug&gt;</a>
+  <nav id="nav" augmented-ui="l-clip-y r-clip-y both">
+    <a href="#top" class="category">augmented-ui docs</a>
+    <a href="#pitch">Introduction</a>
+    <a href="#browser-support">Browser Support</a>
+    <a href="#install">Installing augmented-ui</a>
+    <a href="#namespace">Namespacing</a>
+    <a href="#specificity">Selector Specificity</a>
+    <a href="#nesting">Nesting</a>
+
+    <a href="#border-and-inlay" class="category">Border &amp; Inlay</a>
+    <a href="#add-borderinlay">Adding a Border or Inlay</a>
+    <a href="#using-delegates">Using Delegates</a>
+    <a href="#border-properties">Border Properties</a>
+    <a href="#inlay-properties">Inlay Properties</a>
+
+    <a href="#mixins" class="category">Mixins</a>
+    <a href="#corner-mixins">Corner Region Mixins</a>
+    <a href="#edge-mixins">Edge Region Mixins</a>
+    <a href="#mixin-properties">Mixin Properties</a>
+    <a href="#mixin-mixer">Mixin Mixer</a>
+    <a href="#allregion-mixins">All Region Mixins</a>
+
+    <a href="#core" class="category">Core</a>
+    <a href="#core-region-properties">Region Properties</a>
+    <a href="#core-augs">Core Augs</a>
+    <a href="#core-aug-properties">Aug Position Properties</a>
+
+    <span>Other</span>
+    <a href="#ecosystem-compatibility">Ecosystem Compatibility</a>
+    <a href="#supporting-augmented-ui">Supporting augmented-ui</a>
+  </nav>
+  <div id="x"></div>
+
+  <!-- had to wrap these separate from the nav because nav is position: fixed and therefore can't be in 3D context -->
+  <div id="body">
+    <header id="top">
+      <h1 style="color: black;">augmented-ui technical documentation</h1>
+      <p>Integrate your apps with technology</p><br>
+      <p><dfn>augmented-ui</dfn> enables you to create cyberpunk and sci-fi inspired ui for any size element, on any web page or app, for free, with very little effort.</p>
+    </header>
+
+    <main>
+      <article class="text-article" id="pitch">
+        <h2><a href="#pitch">The Pitch and an Introduction</a></h2><br>
+        <p>
+          Traditional Sci-Fi web design is tedious and difficult to scale, requiring extra elements or images for each clip, all rotated and carefully positioned to cover corners, often required to match against solid color backgrounds and solid color borders to stay hidden. <b>augmented-ui removes all these limitations.</b> No scripts to install, no extra elements to rotate, no images, and no need to redo everything if the size, content, or context changes. You can even use multiple gradients and gifs in the borders and backgrounds if you wanted to. All this with a handful of custom CSS properties. (<a href="#browser-support">+ ~93% global compatibility!</a>)<br>
+          <br>
+          Version 2 is a complete rewrite, built on (and because of) the discovery of the CSS Space Toggle trick.<br>
+          As a result, <b>augmented-ui v2 doesn't just augment your element, now it augments CSS itself.</b><br>
+          <br>
+          Like standard CSS properties, the core of augmented-ui expands your design options with over 150 --custom-properties. Accessing these core properties just requires adding the <b>data-augmented-ui</b> attribute to your element:<br>
+          <code class="highlight">&lt;div data-augmented-ui&gt;&lt;/div&gt;</code><br>
+          It may appear to do nothing on its own but now you can use --css-variable toggles to shape your element in over 250,000 unique ways, then use --css-variable properties to customize the size and alignment of every bend in an infinite number of ways, and use --even-more-options for an augmented inlay and augmented border that follow the shape and can be painted with the full power of the multi-layered CSS <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">&lt;background&gt;</a> value type!<br>
+          <br>
+          <b>augmented-ui's simplicity</b> in previous versions could be credited to how the augs (individual shapes assigned to positions along the perimeter) were applied just by putting their name in the element attribute's value:<br>
+          <code class="highlight">&lt;div data-augmented-ui="tl-clip br-clip both"&gt;&lt;/div&gt;</code><br>
+          This OOCSS-like pattern has returned as a separate layer of mixins.<br>
+          <br>
+          <b>Mixins are the fastest way to get started</b>, especially for anyone already familiar with augmented-ui. They are essentially a higher-level api that set the low-level core toggles (and some properties) for you. Since there are a handful of technical nuances in core to be aware of, and since Space Toggle is a new technique, using the mixin layer lets you completely avoid both of these concerns until you're interested in diving deeper!
+        </p>
+        <br>
+        <div>
+          Example of the mixin approach with some customization:<br>
+          <figure>
+            <figcaption>
+              <code style="white-space: pre; font-size: 0.75rem;">
+  .pitch-mixin {
+    --aug-tr: 25px;
+    --aug-b-extend1: 50%;
+
+    --aug-border-all: 7px;
+    --aug-border-bg: radial-gradient(
+      at top, gold 25%, transparent 50%),
+      url("/img/what_a_save.gif") 50% 50% / 100% 100%;
+
+    --aug-inlay-all: 4px;
+    --aug-inlay-bg: radial-gradient(gold, black);
+    --aug-inlay-opacity: 0.5;
+  }
+              </code>
+            </figcaption>
+            <div class="pitch-mixin" data-augmented-ui="tl-clip-x tr-scoop b-clip-x both">
+              &lt;div class="pitch-mixin"<br>
+              data-augmented-ui="<br>
+              tl-clip tr-scoop b-clip-x both"&gt;
+            </div>
+          </figure>
+          Same example using the core approach with an additional :hover state defined in the CSS itself - a feature that would require JS if you were using mixins. (note: using core directly also helps keep your design decisions primarily in the CSS!)<br>
+          <figure class="core-pitch-figure">
+            <div class="pitch-core" data-augmented-ui>
+              &lt;div class="pitch-core"<br>
+              data-augmented-ui&gt;
+            </div>
+            <figcaption>
+              <code style="white-space: pre; font-size: 0.75rem;">
+  .pitch-core {
+    --aug-border: initial;
+    --aug-border-all: 7px;
+    --aug-border-bg: radial-gradient(
+      at top, gold 25%, transparent 50%),
+      url("/img/what_a_save.gif")
+      50% 50% / 100% 100%;
+
+    --aug-inlay: initial;
+    --aug-inlay-all: 4px;
+    --aug-inlay-bg: radial-gradient(
+      at center center, gold, black);
+    --aug-inlay-opacity: 0.5;
+
+    --aug-clip-b1: initial;
+    --aug-clip-b2: initial;
+    --aug-b-extend1: 50%;
+  }
+              </code>
+              <code style="white-space: pre; font-size: 0.75rem;">
+  .pitch-core<b>:not(:hover)</b> {
+    --aug-clip-tl1: initial;
+    --aug-tl-inset1: 30px;
+    --aug-tl1-alt-join-in: initial;
+
+    --aug-scoop-tr1: initial;
+    --aug-tr1: 25px;
+  }
+  .pitch-core<b>:hover</b> {
+    --aug-clip-t1: initial;
+    --aug-clip-t2: initial;
+    --aug-clip-r1: initial;
+    --aug-clip-r2: initial;
+    --aug-clip-l1: initial;
+    --aug-clip-l2: initial;
+    --aug-t-extend1: 50%;
+    --aug-r-extend1: 50%;
+    --aug-l-extend1: 50%;
+  }
+              </code>
+            </figcaption>
+          </figure>
+          Since core can change augs based on any CSS selector logic now, there's no more need for js libraries packed with more edge cases than use cases like <a href="https://github.com/propjockey/aug-attr-spliced.js">aug-attr-spliced.js</a>! Hooray!<br>
+        </div>
+        <br style="display:none;">
+        <b style="display:none;">But wait, there's more!</b><br>
+        <br style="display:none;">
+        <div style="display:none;" class="article-note">
+          <h3 id="medieval-fantasy"><a href="#medieval-fantasy">Old-fashioned and medieval-fantasy</a></h3><br>
+          <p>
+            <b>Not just Sci-Fi anymore!</b> With the new options available in v2, augmented-ui may even be suitable for some of your medieval needs. Here is a small set of examples with codepen links to go hands-on!<br>
+            TODO: examples!<br>
+            Though not yet documented, you'll find these examples in a separate "medieval-mixins.css" file, included on install, and ready to use.
+          </p>
+        </div>
+        <br>
+        <p>
+          Thank you for checking out augmented-ui!
+        </p>
+      </article>
+
+      <article class="text-article" id="browser-support">
+        <h2><a href="#browser-support">Browser Support</a></h2><br>
+        <style>
+          #browser-support td {
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 2px;
+          }
+          #browser-support .unsupported td {
+            background: #c44230;
+            color: white;
+          }
+          #browser-support .supported td {
+            background: #67c16c;
+            color: white;
+          }
+          .global-user-support {
+            font-size: 1rem;
+          }
+          .global-user-support span {
+            color: #67c16c;
+            font-weight: bold;
+            font-size: 2rem;
+          }
+          #browser-support ol {
+            list-style-position: inside;
+          }
+          #browser-support li {
+            padding: 0.25rem;
+          }
+        </style>
+        <div class="global-user-support">
+          <span>92.96%</span> <b>Global User Support</b><br>
+          (according to browser usage percentages from caniuse.com in mid August 2020)
+        </div>
+        <br>
+        <table style="border-top: 1px solid black; border-bottom: 1px solid black;">
+          <tr>
+            <td>Browser</td>
+            <td>IE</td>
+            <td>Edge</td>
+            <td>Firefox</td>
+            <td>Chrome</td>
+            <td>Safari</td>
+            <td>Opera</td>
+            <td>iOS Safari</td>
+            <td>Opera Mini</td>
+            <td>Android Browser</td>
+            <td>Opera Mobile</td>
+            <td>Chrome for Android</td>
+            <td>Firefox for Android</td>
+            <td>UC Browser</td>
+            <td>Samsung Internet</td>
+          </tr>
+          <tr class="unsupported">
+            <td>Unsupported</td>
+            <td>1.65%</td>
+            <td>0.91%</td>
+            <td>0.36%</td>
+            <td>0.55%</td>
+            <td>0.16%</td>
+            <td>0.24%</td>
+            <td>0.56%</td>
+            <td>0.91%</td>
+            <td>0.17%</td>
+            <td>0.00%</td>
+            <td style="background: none;"></td>
+            <td style="background: none;"></td>
+            <td>0.00%</td>
+            <td>0.30%</td>
+          </tr>
+          <tr class="supported">
+            <td>Supported Since Version</td>
+            <td style="background: none;"></td>
+            <td>79+</td>
+            <td>54+</td>
+            <td>51+</td>
+            <td>9.1+</td>
+            <td>38+</td>
+            <td>11.2+</td>
+            <td style="background: none;"></td>
+            <td>81+</td>
+            <td>46+</td>
+            <td>84</td>
+            <td>68</td>
+            <td>12+</td>
+            <td>5+</td>
+          </tr>
+          <tr class="supported">
+            <td>Supported Global Usage</td>
+            <td style="background: none;"></td>
+            <td>1.89%</td>
+            <td>3.70%</td>
+            <td>30.66%</td>
+            <td>3.70%</td>
+            <td>1.07%</td>
+            <td>11.20%</td>
+            <td style="background: none;"></td>
+            <td>0.00%</td>
+            <td>0.01%</td>
+            <td>35.38%</td>
+            <td>0.26%</td>
+            <td>1.47%</td>
+            <td>3.62%</td>
+          </tr>
+        </table>
+        <br>
+        <p>
+          augmented-ui v2 has no built in fallbacks (except for -webkit-clip-path support). If you need to support older browsers, you can use this CSS @supports statement to overwrite your site's older styles for browsers that support augmented-ui.
+          <code class="highlight" style="display: block; font-size: 0.8rem; padding: 0.2rem;">
+            @supports (--foo: , 0 0) and ((clip-path: polygon(0 0, 100% 0, 50% 50%)) or (-webkit-clip-path: polygon(0 0, 100% 0, 50% 50%))) {<br>
+            &nbsp;&nbsp;/* augmented-ui styles here */<br>
+            }
+          </code>
+          <br>
+          The most important design/styling considerations you should be aware of when also supporting older browsers are:<br>
+          <ol>
+            <li>If you use an augmented inlay as a background, be mindful of text readability when augmented-ui is unsupported.</li>
+            <li>If you put text behind an augmented element, it may be obstructed when augmented-ui isn't available since the element won't be clipped.</li>
+            <li>augmented elements create their own <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context">stacking context</a> so you may need to force the new stacking context manually in old browsers if you run into z-index differences in your designs.</li>
+          </ol>
+        </p>
+      </article>
+
+      <article class="text-article" id="install">
+        <h2><a href="#install">Installing augmented-ui</a></h2><br>
+        <p>
+          Install with NPM:<br>
+          <code class="highlight">$ npm install augmented-ui</code><br>
+          Then include the <code class="highlight">/node_modules/augmented-ui/augmented-ui.min.css</code> file once, before any stylesheets that use it.<br>
+          <br>
+          OR<br>
+          <br>
+          Use your favorite NPM CDN and include it on your page before other stylesheets for small projects. Like so:<br>
+          <code class="highlight">&lt;link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css"&gt;</code><br>
+          <br>
+          Note: Many CSS linters and minifiers, including the most popular today, have parsing bugs that will block your project build, produce invalid CSS when minifying, or incorrectly call parts of augmented-ui's CSS a syntax error. If your project is built with Create React App, for example, you'll need to copy the augmented-ui CSS file into your app's public folder and manually include it in the index.html file to avoid the automatic minification. Read more here: <a href="#ecosystem-compatibility">Ecosystem Compatibility</a><br>
+          <br>
+        </p>
+      </article>
+
+      <article class="text-article" id="namespace">
+        <h2><a href="#namespace">augmented-ui namespacing</a></h2><br>
+        <p>
+          Every user-facing css variable is prefixed with <b>--aug-</b> so it doesn't step on the toes of other libraries you may be using.<br>
+          Every internal css variable starts with <b>--aug_</b> for a similar reason. (These should not be overwritten directly.)<br>
+          <br>
+          There is 1 primary html attribute: <code class="highlight">data-augmented-ui</code><br>
+          plus 3 lesser used html attributes: <code class="highlight">data-augmented-ui-reset</code>, <code class="highlight">data-augmented-ui-border</code>, <code class="highlight">data-augmented-ui-inlay</code><br>
+          <br>
+          The value for <b>data-augmented-ui</b> is where all mixins are added (if you use them). Its individual mixin names are not namespaced since they only appear inside this specific attribute's value.<br>
+          <br>
+          There are no reserved class names, ids, or elements.
+        </p>
+      </article>
+
+      <article class="text-article" id="specificity">
+        <h2><a href="#specificity">Selector Specificity</a></h2><br>
+        <p>
+          Since augmented-ui uses attribute selectors for everything, you'll need to use at least a class selector in weight to override the built in defaults:<br>
+          <br>
+          <code class="highlight">div { --aug-t: 50px; }</code> uses a type selector and will NOT override the defaults, but <code class="highlight">.divclass { --aug-t: 50px; }</code> would.<br>
+          <br>
+          See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#Selector_Types">CSS Selector Specificity</a> on MDN for more information.
+        </p>
+      </article>
+
+      <article class="text-article" id="nesting">
+        <h2><a href="#nesting">Nesting augmented elements</a></h2><br>
+        <style>
+          .nesting-example {
+            --scale: 1.75;
+            --aug-clip-tl1: initial;
+            --aug-clip-tl2: initial;
+            --aug-clip-tr1: initial;
+            --aug-clip-tr2: initial;
+            --aug-clip-br1: initial;
+            --aug-clip-br2: initial;
+            --aug-clip-bl1: initial;
+            --aug-clip-bl2: initial;
+            --aug-border: initial;
+            --aug-border-bg: #e89a10;
+            --aug-border-all: calc(4px * var(--scale));
+            --aug-border-opacity: 0.80;
+            --aug-inlay: initial;
+            --aug-inlay-bg: #996e29;
+            --aug-inlay-all: 0px;
+            --aug-inlay-opacity: 0.80;
+            width: calc(130px * var(--scale));
+            height: calc(92px * var(--scale));
+            --aug-tl1: calc(20px * var(--scale));
+            --aug-tl-extend2: calc(16px * var(--scale));
+            --aug-tl2: calc(23px * var(--scale));
+            --aug-tr1: calc(23px * var(--scale));
+            --aug-tr-extend1: calc(10px * var(--scale));
+            --aug-tr2: calc(20px * var(--scale));
+            --aug-br1: calc(23px * var(--scale));
+            --aug-br-extend2: calc(16px * var(--scale));
+            --aug-br2: calc(23px * var(--scale));
+            --aug-bl1: calc(20px * var(--scale));
+            --aug-bl-extend1: calc(10px * var(--scale));
+            --aug-bl2: calc(20px * var(--scale));
+            --aug-tl2-alt-join-in: initial;
+            --aug-tr1-alt-join-out: initial;
+            --aug-br2-alt-join-in: initial;
+            --aug-bl1-alt-join-out: initial;
+            list-style: none;
+            position: relative;
+          }
+          .nesting-example > .nested {
+            color: transparent;
+            text-shadow: 0 0 0 #c4aa81;
+            --aug-clip-tl1: initial;
+            --aug-clip-tr1: initial;
+            --aug-clip-br1: initial;
+            --aug-clip-bl1: initial;
+            position: absolute;
+            text-align: center;
+            font-size: calc(25px * var(--scale));
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            --aug-inlay: initial;
+            --aug-inlay-all: 0px;
+            --aug-inlay-bg: #996e29;
+            --aug-inlay-opacity: 0.125;
+            --aug-border: initial;
+            --aug-border-all: 1px;
+            --aug-border-bg: white;
+            --aug-border-opacity: 0.125;
+          }
+          .nesting-example > .nested:hover {
+            --aug-inlay-bg: #eac410;
+            --aug-inlay-opacity: 1;
+            text-shadow: 0 0 0 #2b1f0a;
+          }
+          .nesting-example > .nesting-top {
+            left: calc(67.5px * var(--scale));
+            top: calc(24px * var(--scale));
+            width: calc(44px * var(--scale));
+            height: calc(34px * var(--scale));
+            --aug-tl1: calc(17px * var(--scale));
+            --aug-tr1: calc(16px * var(--scale));
+            --aug-br1: calc(16px * var(--scale));
+            --aug-bl1: calc(14px * var(--scale));
+          }
+          .nesting-example > .nesting-left {
+            left: calc(30px * var(--scale));
+            top: calc(47.5px * var(--scale));
+            width: calc(44px * var(--scale));
+            height: calc(34px * var(--scale));
+            --aug-tl1: calc(16px * var(--scale));
+            --aug-tr1: calc(14px * var(--scale));
+            --aug-br1: calc(18px * var(--scale));
+            --aug-bl1: calc(16px * var(--scale));
+          }
+          .nesting-example > .nesting-right {
+            left: calc(98px * var(--scale));
+            top: calc(45.5px * var(--scale));
+            width: calc(42px * var(--scale));
+            padding-top: 3%;
+            height: calc(32px * var(--scale));
+            font-size: calc(18px * var(--scale));
+            --aug-tl1: calc(17px * var(--scale));
+            --aug-tr1: calc(14px * var(--scale));
+            --aug-br1: calc(16px * var(--scale));
+            --aug-bl1: calc(13px * var(--scale));
+          }
+          .nesting-example > .nesting-bottom {
+            left: calc(60.5px * var(--scale));
+            top: calc(68px * var(--scale));
+            width: calc(43px * var(--scale));
+            height: calc(34px * var(--scale));
+            --aug-tl1: calc(16px * var(--scale));
+            --aug-tr1: calc(13px * var(--scale));
+            --aug-br1: calc(19px * var(--scale));
+            --aug-bl1: calc(16px * var(--scale));
+          }
+          /* default hover stuff for example clarity */
+          .nesting-example > .nesting-top {
+            --aug-inlay-bg: #eac410;
+            --aug-inlay-opacity: 1;
+            text-shadow: 0 0 0 #2b1f0a;
+          }
+          .nesting-example:hover > .nesting-top:not(:hover),
+          .nesting-example > .nested:hover ~ .nesting-top {
+            --aug-inlay-bg: #996e29;
+            --aug-inlay-opacity: 0.125;
+            text-shadow: 0 0 0 #c4aa81;
+          }
+        </style>
+        <p>
+          You can nest augmented elements but it usually* requires a reset layer in between<br>
+          <code>[data-augmented-ui] [data-augmented-ui-reset] [data-augmented-ui]</code><br>
+          <br>
+          <code>
+            &lt;div data-augmented-ui&gt;<br>
+            &nbsp;&nbsp;Augmented Parent Container<br>
+            &nbsp;&nbsp;&lt;ul <b>data-augmented-ui-reset</b>&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- reset layer --&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;li data-augmented-ui&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Augmented descendant with unique configuration<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;li data-augmented-ui&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Augmented descendant with unique configuration<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br>
+            &nbsp;&nbsp;&lt;/ul&gt;<br>
+            &lt;/div&gt;
+          </code><br>
+          <br>
+          The CSS Spec is in progress of changing to remove this newly adopted necessity and make the previous 4 years of behavior the new spec.<br>
+          <br>
+          * There is an edge case where you may not need the reset layer if the augmented children use a subset of the augs (or all the same augs), in the same positions, as the augmented ancestor. It is still recommended to use the reset layer for consistency though, at least until the spec changes.<br>
+          <br>
+        </p>
+        <figure>
+          <ul class="nesting-example" data-augmented-ui data-note="This adds ~300 false positives to the IACVT/unset UseCounter in Chrome 86+">
+            <li data-augmented-ui class="nested nesting-left">☢</li>
+            <li data-augmented-ui class="nested nesting-right">✋</li>
+            <li data-augmented-ui class="nested nesting-bottom">⛉</li>
+            <li data-augmented-ui class="nested nesting-top">⚑</li>
+          </ul>
+          <figcaption>
+            For example, this figure is an augmented &lt;ul&gt; with augmented &lt;li&gt; direct descendants. Both the parent and child use clip augs in tl1, tr1, br1, and bl1 positions without the children using additional augs that the parent didn't, so the edge case is satisfied.
+          </figcaption>
+        </figure>
+        <br>
+        <p style="color: black;">
+          Technical nuance: This edge case result is the same in either Invalid-at-Computed-Value-Time implementation because both the parent and child would resolve specific internal variables of augmented-ui (since they're derived from the same toggles being flipped to `initial`) to the same simple values (like '0px' or ' '), AND they don't do further computation themselves. Therefore when the child inherits the parent's resolved value, it's the same answer the child would have resolved to (more efficiently) if the previous 4 years of browser behavior was still implemented. <a href="https://github.com/w3c/csswg-drafts/issues/5370">A rep from W3C and from Mozilla agree with updating the spec and reverting the change, Safari is open to the change as well</a>, a Chromium member is holding it up for not-so-altruistic reasons though since they made the call to change it a few months ago without realizing or measuring the damage it could cause. People are complex though, so please do not add negativity to the discussion even though it's a bit frustrating. When your position's autonomy and authority imply you have to make the right decisions robotically, any indication that you didn't would cause most people anxiety. Beyond that, these things are questioned in public forum, which would cause anyone even more anxiety when requesting you change your decisions - almost worse when there's a pile of evidence showing it was a bad call. It's not an easy position to be in, everyone reacts differently, so please allow it to play out, and please keep any support for the change positive without dogpiling. I'm sure it'll land where it needs to, even if it's delayed unnecessarily for now.
+        </p>
+      </article>
+
+      <article class="text-article" id="border-and-inlay">
+        <h2><a href="#border-and-inlay">augmented border and inlay</a></h2><br>
+        <p style="display: inline-block; width: 67%;">
+          A border in augmented-ui is the ::after pseudo element with a background applied, clipped to remove the center. A border may be delegated to a child element instead, allowing it to be painted with anything you can render in dom. The border's background is only applied when CSS feature detection knows the center can be clipped away to avoid obstructing visibility of content in older browsers.
+        </p>
+        <div style="display: inline-block;" class="showborder" data-augmented-ui="tl-2-clip-x tr-scoop b-scoop-x border">border</div><br>
+        <br>
+        <div style="display: inline-block;" class="showinlay" data-augmented-ui="tr-2-clip-y bl-round t-clip-x l-rect inlay">inlay</div>
+        <p style="display: inline-block; width: 67%;">
+          An inlay in augmented-ui is the ::before pseudo element with a background applied, clipped a distance from the border or outer edge. An inlay may be delegated to a child element instead, allowing it to be anything you can render in dom.
+        </p><br>
+        <br>
+        <p>
+          Both the border and inlay follow a degradation of the equipped aug path to maintain a constant distance from the outer shape.
+        </p>
+        <br>
+        <h3 id="add-borderinlay" style="color: black;"><a href="#add-borderinlay">Adding a Border or Inlay</a></h3>
+        <div style="display: grid; grid-template-columns: 25% 2fr 1fr; align-items: center;">
+          <span></span><b>Using Mixins</b><b>Using core toggles in CSS</b>
+          <b>Add border</b><code>&lt;div data-augmented-ui="border"&gt;</code><code class="highlight">--aug-border: initial;</code>
+          <b>Add inlay</b><code>&lt;div data-augmented-ui="inlay"&gt;</code><code class="highlight">--aug-inlay: initial;</code>
+          <b>Shorthand to add both</b><code>&lt;div data-augmented-ui="both"&gt;</code><span></span>
+          <b>Enable delegated border</b><code>&lt;div data-augmented-ui="delegated-border"&gt;</code>
+          <code class="highlight">
+            --aug-border: initial;<br>
+            --aug-delegated-border: initial;
+          </code>
+          <b>Enable delegated inlay</b><code>&lt;div data-augmented-ui="delegated-inlay"&gt;</code>
+          <code class="highlight">
+            --aug-inlay: initial;<br>
+            --aug-delegated-inlay: initial;
+          </code>
+        </div>
+        <br>
+        <div id="announc3ment" data-secret="JF2CO4ZAO5UGC5BAORUGKICJNRWHK3LJNZQXI2JAO5QW45DFMQQGC3DMEBQWY33OM4XCASSKGJMEONKCIFHE4VKXJFNEISSOLJKFGNCJINLE4WSXI5FTIM2UIZMVQQZUKBMT2===" data-augmented-ui>
+          <b>Deus Ex: Alien Intervention</b><br>
+          The trillogy concludes Aug 2021.
+        </div>
+        <br>
+        <h3 id="using-delegates" style="color: black;"><a href="#using-delegates">Using Border/Inlay Delegates</a></h3>
+        <div style="display: grid; grid-template-columns: 25% 2fr 1fr; align-items: center;">
+          <b>Designate delegate border</b><code class="highlight" style="grid-column-end: span 2;">&lt;div data-augmented-ui-border&gt;</code>
+          <div style="grid-column-end: span 3;">Any element, with any content, can be used as the delegate border if the parent enables it. All augs and settings are determined by properties of the parent.</div>
+          <b>Designate delegate inlay</b><code class="highlight" style="grid-column-end: span 2;">&lt;div data-augmented-ui-inlay&gt;</code>
+          <div style="grid-column-end: span 3;">Any element, with any content, can be used as the delegate inlay if the parent enables it. All augs and settings are determined by properties of the parent.</div>
+        </div>
+        <br>
+        <h3 id="border-properties" style="color: black;"><a href="#border-properties">Border Properties</a></h3>
+        <div class="borderinlay-props">
+          <div style="font-weight: bold;">Property</div>
+          <div style="font-weight: bold;">Default Value</div>
+          <div style="font-weight: bold;">CSS Value Type</div>
+          <div style="font-weight: bold;">Description</div>
+
+          <div colspan="4" style="background: #ccc; height: 2px;"></div>
+
+          <code>--aug-border-bg</code>      <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#currentColor">currentColor</a></div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">&lt;background&gt;</a></div>
+          <div>Background of the border, anything from a simple color to a fancy multi-layered gradient pattern</div>
+
+          <code>--aug-border-opacity</code> <div>1.0</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/opacity#Values">&lt;alpha-value&gt;</a></div>
+          <div>Opacity of the border. The element's background will be rendered under it. The inlay's background will not be rendered under it.</div>
+
+          <code>--aug-border-all</code>     <div>4px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on all sides. This property is the least specific and is overwritten by all other border size options no matter what order they appear in.</div>
+
+          <code>--aug-border-y</code>       <div>var(--aug-border-all)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on top and bottom</div>
+
+          <code>--aug-border-x</code>       <div>var(--aug-border-all)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on left and right</div>
+
+          <code>--aug-border-top</code>     <div>var(--aug-border-y)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on top</div>
+
+          <code>--aug-border-right</code>   <div>var(--aug-border-x)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on right</div>
+
+          <code>--aug-border-bottom</code>  <div>var(--aug-border-y)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on bottom</div>
+
+          <code>--aug-border-left</code>    <div>var(--aug-border-x)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Size of the border on left</div>
+        </div>
+        <br>
+        <h3 id="inlay-properties" style="color: black;"><a href="#inlay-properties">Inlay Properties</a></h3>
+        <div class="borderinlay-props">
+          <div style="font-weight: bold;">Property</div>
+          <div style="font-weight: bold;">Default Value</div>
+          <div style="font-weight: bold;">CSS Value Type</div>
+          <div style="font-weight: bold;">Description</div>
+
+          <div colspan="4" style="background: #ccc; height: 2px;"></div>
+
+          <code>--aug-inlay-bg</code>      <div>rgba(128, 128, 128, 0.5)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">&lt;background&gt;</a></div>
+          <div>Background of the inlay, anything from a simple color to a fancy multi-layered gradient pattern</div>
+
+          <code>--aug-inlay-opacity</code> <div>1.0</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/opacity#Values">&lt;alpha-value&gt;</a></div>
+          <div>Opacity of the inlay. The element's background will be rendered under it.</div>
+
+          <code>--aug-inlay-all</code>     <div>3px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance the inlay is inset from the border (or outer edge if there is no border) on all sides. This property is the least specific and is overwritten by all other inlay distance options no matter what order they appear in.</div>
+
+          <code>--aug-inlay-y</code>       <div>var(--aug-inlay-all)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on top and bottom</div>
+
+          <code>--aug-inlay-x</code>       <div>var(--aug-inlay-all)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on left and right</div>
+
+          <code>--aug-inlay-top</code>     <div>var(--aug-inlay-y)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on top</div>
+
+          <code>--aug-inlay-right</code>   <div>var(--aug-inlay-x)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on right</div>
+
+          <code>--aug-inlay-bottom</code>  <div>var(--aug-inlay-y)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on bottom</div>
+
+          <code>--aug-inlay-left</code>    <div>var(--aug-inlay-x)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div>Distance to the inlay on left</div>
+        </div>
+      </article>
+
+      <article class="text-article" id="mixins">
+        <h2><a href="#mixins">augmented-ui mixins</a></h2><br>
+        <style>
+          #mixins h3 {
+            color: black;
+            margin-top: 2rem;
+          }
+          .mixin-set {
+            display: flex;
+            flex-wrap: wrap;
+          }
+          .mixin-set > div {
+            width: 190px;
+            height: 150px;
+            margin: 5px;
+          }
+          .mixin-set [data-augmented-ui] {
+            width: 110px;
+            height: 110px;
+            margin-left: auto;
+            margin-right: auto;
+            background: linear-gradient(to bottom right, orange, gold);
+          }
+          .mixin-set span {
+            text-align: center;
+            display: block;
+            color: black;
+            font-size: 0.87rem;
+          }
+          .all-mixin-set {
+            display: flex;
+            flex-wrap: wrap;
+          }
+          .all-mixin-set > div {
+            width: 100%;
+            height: auto;
+            margin: 5px;
+            padding: 5px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            grid-gap: 5px;
+          }
+          .all-mixin-set > div + div {
+            border-top: 3px solid #e8e8e8;
+            padding-top: 1rem;
+          }
+          .all-mixin-set div[data-augmented-ui] {
+            margin-left: auto;
+            margin-right: auto;
+            background: radial-gradient(circle at center, gold 20%, orange);
+            color: black;
+          }
+          .all-mixin-set span {
+            display: block;
+            color: black;
+            font-size: 0.87rem;
+            grid-column-end: span 2;
+          }
+          .all-mixin-set i {
+            font-style: normal;
+            display: inline-block;
+            padding-top: 5px;
+            vertical-align: middle;
+            font-weight: bold;
+          }
+        </style>
+        <p>
+          mixins are equipped to an element by placing their name in the value of the <b>data-augmented-ui</b> attribute:<br>
+          <code class="highlight">&lt;div data-augmented-ui="tl-clip-x br-clip b-rect border"&gt;&lt;/div&gt;</code><br>
+          <br>
+          There are <b>8 mixin regions</b>: tl, t, tr, r, br, b, bl, l<br>
+          These correspond to the corners and edges of the augmented element. (ex: br = bottom right, t = top)<br>
+          Most mixins specify one or two augs for a single region along with corresponding properties to customize the look.<br>
+          <br>
+          Additionally, there are a few mixins you can add to the data-augmented-ui attribute to enable the <a href="#border-and-inlay">augmented border and/or inlay</a>: <b>border</b>, <b>inlay</b>, <b>both</b><br>
+          Similar to standard CSS properties like top/left/right/bottom that only do something after position is set, augmented-ui's border and inlay properties won't do anything without first initializing the corresponding feature with one of these mixins (or flipping the core toggles directly).
+        </p>
+        <div class="mixin-set">
+          <div>
+            <div data-augmented-ui="tl-clip-x br-clip b-rect border" style="color: black;"></div>
+            <span>tl-clip-x br-clip b-rect border</span>
+          </div>
+        </div>
+        <h3 id="corner-mixins"><a href="#corner-mixins">Corner Region Mixins</a></h3>
+        <div>
+          Each corner region, top left (tl), top right (tr), bottom right (br), and bottom left (bl) has 35 mixins to choose from. Each of them initialize one or two augs within the region and customize additional core region properties for you.<br>
+          <br>
+          The first part of the mixin name is the region, the rest determines the shape applied to that region. For example these are the same mixin placed in different corner regions:
+          <div class="mixin-set">
+            <div>
+              <div data-augmented-ui="tl-2-clip-x"></div>
+              <span>tl-2-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tr-2-clip-x"></div>
+              <span>tr-2-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="br-2-clip-x"></div>
+              <span>br-2-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="bl-2-clip-x"></div>
+              <span>bl-2-clip-x</span>
+            </div>
+          </div>
+          Here is the complete list of all 35 mixins available for each corner region:
+          <div class="mixin-set">
+            <div>
+              <div data-augmented-ui="tl-clip"></div>
+              <span>[corner region]-clip</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-clip-x"></div>
+              <span>[corner region]-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-clip-y"></div>
+              <span>[corner region]-clip-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-clip-inset"></div>
+              <span>[corner region]-clip-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-clip-x"></div>
+              <span>[corner region]-2-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-clip-y"></div>
+              <span>[corner region]-2-clip-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-clip-xy"></div>
+              <span>[corner region]-2-clip-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-rect"></div>
+              <span>[corner region]-rect</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-rect-x"></div>
+              <span>[corner region]-rect-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-rect-y"></div>
+              <span>[corner region]-rect-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-rect"></div>
+              <span>[corner region]-2-rect</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-rect-x"></div>
+              <span>[corner region]-2-rect-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-rect-y"></div>
+              <span>[corner region]-2-rect-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-rect-xy"></div>
+              <span>[corner region]-2-rect-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-rect-inset"></div>
+              <span>[corner region]-2-rect-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-step-inset"></div>
+              <span>[corner region]-step-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-step-inset"></div>
+              <span>[corner region]-2-step-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-round"></div>
+              <span>[corner region]-round</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-round-x"></div>
+              <span>[corner region]-round-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-round-y"></div>
+              <span>[corner region]-round-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-round-inset"></div>
+              <span>[corner region]-round-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-round"></div>
+              <span>[corner region]-2-round</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-round-x"></div>
+              <span>[corner region]-2-round-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-round-y"></div>
+              <span>[corner region]-2-round-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-round-xy"></div>
+              <span>[corner region]-2-round-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-round-inset"></div>
+              <span>[corner region]-2-round-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-scoop"></div>
+              <span>[corner region]-scoop</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-scoop-x"></div>
+              <span>[corner region]-scoop-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-scoop-y"></div>
+              <span>[corner region]-scoop-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-scoop-inset"></div>
+              <span>[corner region]-scoop-inset</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-scoop"></div>
+              <span>[corner region]-2-scoop</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-scoop-x"></div>
+              <span>[corner region]-2-scoop-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-scoop-y"></div>
+              <span>[corner region]-2-scoop-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-scoop-xy"></div>
+              <span>[corner region]-2-scoop-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="tl-2-scoop-inset"></div>
+              <span>[corner region]-2-scoop-inset</span>
+            </div>
+          </div>
+        </div>
+        <h3 id="edge-mixins"><a href="#edge-mixins">Edge Region Mixins</a></h3>
+        <div>
+          Each edge region, top (t), right (r), bottom (b), and left (l) has 15 mixins to choose from. Each of them initialize two augs within the region and customize additional core region properties for you.<br>
+          <br>
+          14 of them are available for every edge. This set is the only exception where top/bottom and left/right don't have the x/y variant:
+          <div class="mixin-set">
+            <div>
+              <div data-augmented-ui="t-round-x"></div>
+              <span>t-round-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="b-round-x"></div>
+              <span>b-round-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="r-round-y"></div>
+              <span>r-round-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="l-round-y"></div>
+              <span>l-round-y</span>
+            </div>
+          </div>
+          Here are the remaining 14 mixins available for each edge region:
+          <div class="mixin-set">
+            <div>
+              <div data-augmented-ui="t-clip"></div>
+              <span>[edge region]-clip</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-clip-x"></div>
+              <span>[edge region]-clip-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-clip-y"></div>
+              <span>[edge region]-clip-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-clip-xy"></div>
+              <span>[edge region]-clip-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-rect"></div>
+              <span>[edge region]-rect</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-rect-x"></div>
+              <span>[edge region]-rect-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-rect-y"></div>
+              <span>[edge region]-rect-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-rect-xy"></div>
+              <span>[edge region]-rect-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-step-xy"></div>
+              <span>[edge region]-step-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-round-xy"></div>
+              <span>[edge region]-round-xy</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-scoop"></div>
+              <span>[edge region]-scoop</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-scoop-x"></div>
+              <span>[edge region]-scoop-x</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-scoop-y"></div>
+              <span>[edge region]-scoop-y</span>
+            </div>
+            <div>
+              <div data-augmented-ui="t-scoop-xy"></div>
+              <span>[edge region]-scoop-xy</span>
+            </div>
+          </div>
+        </div>
+        <h3 id="mixin-properties"><a href="#mixin-properties">Mixin Properties</a></h3>
+        <div>
+          Each of the 8 mixin regions have a property to scale the mixin:<br>
+          <code class="highlight">--aug-tl</code>,
+          <code class="highlight">--aug-t</code>,
+          <code class="highlight">--aug-tr</code>,
+          <code class="highlight">--aug-r</code>,
+          <code class="highlight">--aug-br</code>,
+          <code class="highlight">--aug-b</code>,
+          <code class="highlight">--aug-bl</code>,
+          <code class="highlight">--aug-l</code><br>
+          They all default to 15px (when a mixin is in the region) and have the same CSS Value Type:<br>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> (Typically px and does not support %)<br>
+          <br>
+          These properties do not exist in core, they are part of the mixin layer. They are a shortcut to set multiple core properties of the corresponding region to the same value (or a multiple of that value). You can override any of the default mixin proportions by setting the core properties directly.<br>
+          Bonus: Using mixins as a starting point and overriding some of these values with core is a great way to learn everything available as needed! Feel free to reach out on <a href="https://twitter.com/James0x57">Twitter @James0x57</a> with any questions!
+        </div>
+        <h3 id="mixin-mixer"><a href="#mixin-mixer">Mixin Mixer</a></h3>
+        <p>
+          Check out the Mixin Mixer in a desktop browser to quickly generate HTML from a visual editor with every region mixin to get started even faster:
+          <a style="display: block;" href="/mixinmixer/"><img src="/img/mixinmixer.png" alt="preview of mixin mixer wysiwyg editor"></a>
+        </p>
+        <h3 id="allregion-mixins"><a href="#allregion-mixins">All Region Mixins</a></h3>
+        <p>
+          I've also included a handful of special mixins that configure all the regions to make specific shapes that are common in movie and game UI. If there are any specific shapes you'd like to see, please feel free to reach out on Twitter! Even if it doesn't make it into the library, I'd be happy to help.
+        </p>
+        <div class="all-mixin-set">
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hex</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hex border" style="--aug-all-height: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default height is 32px.<br>
+              <i data-augmented-ui="all-hex border">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hex-alt</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hex-alt border" style="--aug-all-width: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default width is 32px.<br>
+              <i data-augmented-ui="all-hex-alt border" style="padding-top: 4px;">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-triangle-up</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-triangle-up border" style="--aug-all-width: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default width is 32px.<br>
+              <i data-augmented-ui="all-triangle-up border" style="--aug-border-all: 2px;">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-triangle-down</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-triangle-down border" style="--aug-all-width: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default width is 32px.<br>
+              <i data-augmented-ui="all-triangle-down border" style="padding-top: 0px; --aug-border-all: 2px;">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-triangle-right</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-triangle-right border" style="--aug-all-height: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default height is 32px.<br>
+              <i data-augmented-ui="all-triangle-right border" style="--aug-border-all: 2px;">!&nbsp;&nbsp;</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-triangle-left</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-triangle-left border" style="--aug-all-height: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default height is 32px.<br>
+              <i data-augmented-ui="all-triangle-left border" style="--aug-border-all: 2px;">&nbsp;&nbsp;!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hexangle-up</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hexangle-up border" style="--aug-all-width: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default width is 32px.<br>
+              <i data-augmented-ui="all-hexangle-up border">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hexangle-down</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hexangle-down border" style="--aug-all-width: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default width is 32px.<br>
+              <i data-augmented-ui="all-hexangle-down border" style="padding-top: 1px;">!</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hexangle-right</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hexangle-right border" style="--aug-all-height: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default height is 32px.<br>
+              <i data-augmented-ui="all-hexangle-right border">!&nbsp;</i> Inlay not supported.
+            </p>
+          </div>
+          <div>
+            <span>&lt;div data-augmented-ui="<strong>all-hexangle-left</strong> border"&gt;</span>
+            <div><div data-augmented-ui="all-hexangle-left border" style="--aug-all-height: 110px;"></div></div>
+            <p>
+              Do not size with standard CSS properties, instead use a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">&lt;length&gt;</a> value in either:<br>
+              <code class="highlight">--aug-all-width</code> or <code class="highlight">--aug-all-height</code> (not both)<br>
+              This allows it to maintane its aspect ratio. Default height is 32px.<br>
+              <i data-augmented-ui="all-hexangle-left border">&nbsp;!</i> Inlay not supported.
+            </p>
+          </div>
+        </div>
+        <br>
+        <div class="article-note" id="mulit-layered-bgborders">
+          <h4><a href="#mulit-layered-bgborders">Take advantage of the multi-layered &lt;background&gt; borders!</a></h4><br>
+          <style>
+            .reticle-figure > * {
+              display: inline-block;
+              vertical-align: middle;
+            }
+            .reticle-figure figcaption {
+              width: calc(100% - 11rem);
+            }
+            .reticle-figure code {
+              display: block;
+            }
+            .reticle-figure i {
+              font-style: normal;
+              font-weight: bold;
+              color: black;
+            }
+          </style>
+          <style id="reticle-css">
+            .reticle {
+              --aug-all-width: 150px;
+              color: #00bfff;
+              --reticle-color: currentColor;
+              --reticle-size: calc(var(--aug-all-width) * 0.25);
+              --aug-border-bg: radial-gradient(
+                circle at top center,
+                var(--reticle-color) var(--reticle-size),
+                transparent var(--reticle-size)
+              ), radial-gradient(
+                circle at bottom 13.92% right 6.89%,
+                var(--reticle-color) var(--reticle-size),
+                transparent var(--reticle-size)
+              ), radial-gradient(
+                circle at bottom 13.92% left 6.89%,
+                var(--reticle-color) var(--reticle-size),
+                transparent var(--reticle-size)
+              );
+              transform-origin: 50% 56%;
+              transform: rotateZ(0deg);
+              transition: transform 0.75s ease-out, color 0.75s ease-out;
+              background: radial-gradient(
+                circle at 50% 56%,
+                var(--reticle-color) 0.25rem,
+                transparent 0.25rem
+              );
+            }
+            .reticle:hover {
+              transform: rotateZ(720deg);
+              color: red;
+            }
+          </style>
+          <p>
+            Using multiple gradients positioned in the background of an augmented border can produce results even more useful than the shape alone.
+          </p>
+          <figure class="reticle-figure">
+            <div data-augmented-ui="all-hexangle-up border" class="reticle"></div>
+            <figcaption>
+              <code>&lt;div data-augmented-ui="<b>all-hexangle-up border</b>" class="reticle"&gt;&lt;/div&gt;</code>
+              <code>
+                .reticle {<br>
+                &nbsp;&nbsp;<b>--aug-all-width</b>: 150px;<br>
+                &nbsp;&nbsp;--reticle-color: #00bfff;<br>
+                &nbsp;&nbsp;--reticle-size: calc(var(--aug-all-width) * 0.25);<br>
+                &nbsp;&nbsp;<b>--aug-border-bg</b>: <i>radial-gradient</i><b>(</b><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;circle at top center,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;var(--reticle-color) var(--reticle-size),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;transparent var(--reticle-size)<br>
+                &nbsp;&nbsp;<b>)</b>, <i>radial-gradient</i><b>(</b><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;circle at bottom 13.92% right 6.89%,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;var(--reticle-color) var(--reticle-size),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;transparent var(--reticle-size)<br>
+                &nbsp;&nbsp;<b>)</b>, <i>radial-gradient</i><b>(</b><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;circle at bottom 13.92% left 6.89%,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;var(--reticle-color) var(--reticle-size),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;transparent var(--reticle-size)<br>
+                &nbsp;&nbsp;<b>)</b>;<br>
+                }
+              </code>
+            </figcaption>
+          </figure>
+          <script>
+            var reticleCSS = innerHTML('#reticle-css')
+            var reticleHTML = `<div data-augmented-ui="all-hexangle-up border" class="reticle"></div>`
+          </script>
+          <div class="handson">
+            <b>Try it out!</b>
+            <button data-augmented-ui="br-clip-y border" onclick="postToCodepen(reticleCSS, reticleHTML)">with codepen</button>
+            <button data-augmented-ui="br-clip-y border" onclick="postToJsfiddle(reticleCSS, reticleHTML)">with jsfiddle</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="text-article" id="core">
+        <h2><a href="#core">augmented-ui core</a></h2><br>
+        <style>
+          #core {
+            --inset1: linear-gradient(violet, violet);
+            --inset2: linear-gradient(green, green);
+            --extend1: linear-gradient(rgba(255,0,0,0.5), rgba(255,0,0,0.5));
+            --extend2: linear-gradient(deepskyblue, deepskyblue);
+          }
+          .core-edge-positions {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: inline-block;
+          }
+          .core-positions {
+            width: 400px;
+            height: 400px;
+            --aug-tl-inset1: 25px;
+            --aug-tl-inset2: 25px;
+            --aug-tl-extend1: 25px;
+            --aug-tl-extend2: 25px;
+            --aug-step-tl1: initial;
+            --aug-step-tl2: initial;
+            --aug-tl1: 25px;
+            --aug-tl2: 25px;
+
+            --aug-t-inset1: 25px;
+            --aug-t-extend1: 25px;
+            --aug-step-t1: initial;
+            --aug-step-t2: initial;
+            --aug-t1: 25px;
+            --aug-t2: 25px;
+
+            --aug-tr-inset1: 25px;
+            --aug-tr-inset2: 25px;
+            --aug-tr-extend1: 25px;
+            --aug-tr-extend2: 25px;
+            --aug-step-tr1: initial;
+            --aug-step-tr2: initial;
+            --aug-tr1: 25px;
+            --aug-tr2: 25px;
+
+            --aug-r-inset1: 25px;
+            --aug-r-extend1: 25px;
+            --aug-step-r1: initial;
+            --aug-step-r2: initial;
+            --aug-r1: 25px;
+            --aug-r2: 25px;
+
+            --aug-br-inset1: 25px;
+            --aug-br-inset2: 25px;
+            --aug-br-extend1: 25px;
+            --aug-br-extend2: 25px;
+            --aug-step-br1: initial;
+            --aug-step-br2: initial;
+            --aug-br1: 25px;
+            --aug-br2: 25px;
+
+            --aug-b-inset1: 25px;
+            --aug-b-extend1: 25px;
+            --aug-step-b1: initial;
+            --aug-step-b2: initial;
+            --aug-b1: 25px;
+            --aug-b2: 25px;
+
+            --aug-bl-inset1: 25px;
+            --aug-bl-inset2: 25px;
+            --aug-bl-extend1: 25px;
+            --aug-bl-extend2: 25px;
+            --aug-step-bl1: initial;
+            --aug-step-bl2: initial;
+            --aug-bl1: 25px;
+            --aug-bl2: 25px;
+
+            --aug-l-inset1: 25px;
+            --aug-l-extend1: 25px;
+            --aug-step-l1: initial;
+            --aug-step-l2: initial;
+            --aug-l1: 25px;
+            --aug-l2: 25px;
+
+            --tlinset1: var(--inset1) 0px 100px / 25px 5px no-repeat;
+            --tlinset2: var(--inset2) 100px 0px / 5px 25px no-repeat;
+            --tlextend1: var(--extend1) 50px 50px / 5px 25px no-repeat;
+            --tlextend2: var(--extend2) 50px 50px / 25px 5px no-repeat;
+
+            --trinset1: var(--inset1) calc(100% - 100px) 0px / 5px 25px no-repeat;
+            --trinset2: var(--inset2) 100% 100px / 25px 5px no-repeat;
+            --trextend1: var(--extend1) calc(100% - 50px) 50px / 25px 5px no-repeat;
+            --trextend2: var(--extend2) calc(100% - 50px) 50px / 5px 25px no-repeat;
+
+            --brinset1: var(--inset1) 100% calc(100% - 100px) / 25px 5px no-repeat;
+            --brinset2: var(--inset2) calc(100% - 100px) 100% / 5px 25px no-repeat;
+            --brextend1: var(--extend1) calc(100% - 50px) calc(100% - 50px) / 5px 25px no-repeat;
+            --brextend2: var(--extend2) calc(100% - 50px) calc(100% - 50px) / 25px 5px no-repeat;
+
+            --blinset1: var(--inset1) 100px 100% / 5px 25px no-repeat;
+            --blinset2: var(--inset2) 0px calc(100% - 100px) / 25px 5px no-repeat;
+            --blextend1: var(--extend1) 50px calc(100% - 50px) / 25px 5px no-repeat;
+            --blextend2: var(--extend2) 50px calc(100% - 50px) / 5px 25px no-repeat;
+
+            --tinset1: var(--inset1) calc(50% - 25px - 12.5px - 2.5px) 0px / 5px 25px no-repeat;
+            --textend1: var(--extend1) 50% 50px / 25px 5px no-repeat;
+            --rinset1: var(--inset1) 100% calc(50% - 25px - 12.5px - 2.5px) / 25px 5px no-repeat;
+            --rextend1: var(--extend1) calc(100% - 50px) 50% / 5px 25px no-repeat;
+            --binset1: var(--inset1) calc(50% + 25px + 12.5px + 2.5px) 100% / 5px 25px no-repeat;
+            --bextend1: var(--extend1) 50% calc(100% - 50px) / 25px 5px no-repeat;
+            --linset1: var(--inset1) 0px calc(50% + 25px + 12.5px + 2.5px) / 25px 5px no-repeat;
+            --lextend1: var(--extend1) 50px 50% / 5px 25px no-repeat;
+
+            --allinset1: var(--tlinset1), var(--trinset1), var(--brinset1), var(--blinset1),
+                         var(--tinset1), var(--rinset1), var(--binset1), var(--linset1);
+            --allinset2: var(--tlinset2), var(--trinset2), var(--brinset2), var(--blinset2);
+            --allextend1: var(--tlextend1), var(--trextend1), var(--brextend1), var(--blextend1),
+                          var(--textend1), var(--rextend1), var(--bextend1), var(--lextend1);
+            --allextend2: var(--tlextend2), var(--trextend2), var(--brextend2), var(--blextend2);
+
+            --noneselected: linear-gradient(transparent, transparent);
+            --centeroffset: var(--noneselected);
+
+            --selected: var(--noneselected);
+            --opacity: 1;
+
+            --aug-border: initial;
+            --aug-border-all: 5px;
+            --aug-border-bg: var(--allextend1), var(--allinset1), var(--allinset2), var(--allextend1), var(--allextend2);
+            --aug-border-opacity: var(--opacity);
+
+            background: var(--selected), #e8e8e8;
+            --aug-inlay: initial;
+            --aug-inlay-all: 0px;
+            --aug-inlay-bg: white;
+            display: inline-block;
+          }
+          .augpos {
+            width: 25px;
+            height: 25px;
+            background: gold;
+            color: black;
+            position: absolute;
+            text-align: center;
+            opacity: var(--augpos, var(--opacity));
+          }
+          .tl1 { left: 25px; top: 75px; }
+          .tl2 { left: 75px; top: 25px; }
+          .tr1 { right: 75px; top: 25px; }
+          .tr2 { right: 25px; top: 75px; }
+          .br1 { right: 25px; bottom: 75px; }
+          .br2 { right: 75px; bottom: 25px; }
+          .bl1 { left: 75px; bottom: 25px; }
+          .bl2 { left: 25px; bottom: 75px; }
+          .t1 { left: calc(50% - 25px - 12.5px); top: 25px; }
+          .t2 { right: calc(50% - 25px - 12.5px); top: 25px; }
+          .r1 { right: 25px; top: calc(50% - 25px - 12.5px); }
+          .r2 { right: 25px; bottom: calc(50% - 25px - 12.5px); }
+          .b1 { right: calc(50% - 25px - 12.5px); bottom: 25px; }
+          .b2 { left: calc(50% - 25px - 12.5px); bottom: 25px; }
+          .l1 { left: 25px; bottom: calc(50% - 25px - 12.5px); }
+          .l2 { left: 25px; top: calc(50% - 25px - 12.5px); }
+          .region {
+            position: absolute;
+            text-align: center;
+            color: #777777;
+            background: #f2f2f2;
+            width: 40px;
+            height: 40px;
+            font-size: 1.75rem;
+          }
+          .region-tl { left: 75px; top: 75px; border-bottom-right-radius: 50%; }
+          .region-t { left: calc(50% - 20px); top: 75px; border-bottom-left-radius: 50% 30%; border-bottom-right-radius: 50% 30%; }
+          .region-tr { right: 75px; top: 75px; border-bottom-left-radius: 50%; }
+          .region-r { right: 75px; top: calc(50% - 20px); border-top-left-radius: 30% 50%; border-bottom-left-radius: 30% 50%; }
+          .region-l { left: 75px; top: calc(50% - 20px); border-top-right-radius: 30% 50%; border-bottom-right-radius: 30% 50%; }
+          .region-bl { left: 75px; bottom: 75px; border-top-right-radius: 50%; }
+          .region-b { left: calc(50% - 20px); bottom: 75px; border-top-left-radius: 50% 30%; border-top-right-radius: 50% 30%; }
+          .region-br { right: 75px; bottom: 75px; border-top-left-radius: 50%; }
+
+          .legend-details {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: 25px 75px 150px 1fr 250px;
+            grid-template-rows: 25px
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr;
+            grid-gap: 5px;
+          }
+          .position-props {
+            grid-template-columns: 25px 125px 150px 1fr 250px;
+            grid-template-rows: 25px
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr
+                                2px 25px 1fr;
+          }
+          .legend-details [colspan="2"] {
+            grid-column-end: span 2;
+          }
+          .legend-details [colspan="5"] {
+            grid-column-end: span 5;
+          }
+          .legend-details [rowspan="2"] {
+            grid-row-end: span 2;
+          }
+          .legend-details code {
+            white-space: nowrap;
+            background: #e8e8e8;
+          }
+
+          .legend {
+            display: inline-block;
+            vertical-align: top;
+            margin-left: 2rem;
+            width: 120px;
+          }
+          .legend > * {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+            white-space: nowrap;
+            cursor: pointer;
+          }
+          .legend > *::before {
+            content: "";
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background: var(--bg);
+            margin-right: 5px;
+            vertical-align: middle;
+          }
+
+          #core h3 {
+            color: black;
+            margin-top: 2rem;
+          }
+          h4 {
+            color: black;
+          }
+
+          .center-offset {
+            background: black;
+            position: absolute;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            opacity: var(--centeroffset, var(--opacity));
+          }
+          .center-offset-t { top: 0px; left: 50%; transform: translate(-50%, -50%); }
+          .center-offset-r { top: 50%; right: 0px; transform: translate(50%, -50%); }
+          .center-offset-b { bottom: 0px; left: 50%; transform: translate(-50%, 50%); }
+          .center-offset-l { top: 50%; left: 0px; transform: translate(-50%, -50%); }
+          .center-offset-t::before,
+          .center-offset-b::before {
+            content: "";
+            position: absolute;
+            left: -75%;
+            right: -75%;
+            top: 33.333%;
+            height: 33.333%;
+            border-radius: 50%;
+            background: black;
+          }
+          .center-offset-l::before,
+          .center-offset-r::before {
+            content: "";
+            position: absolute;
+            top: -75%;
+            bottom: -75%;
+            left: 33.333%;
+            width: 33.333%;
+            border-radius: 50%;
+            background: black;
+          }
+
+          .aug-set {
+            display: inline-grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            text-align: center;
+            width: 250px;
+            justify-items: center;
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid grey;
+            grid-gap: 5px;
+          }
+          .aug-set code {
+            margin: 0px;
+          }
+          .aug-set code::before {
+            content: "ex: ";
+            color: hsl(var(--c0), 28%);
+          }
+          .aug-set [data-augmented-ui] {
+            --aug-border: initial;
+            --aug-border-all: 2px;
+            background: gold;
+            width: 25px;
+            height: 25px;
+          }
+          .aug-set [data-augmented-ui]:nth-child(1) {
+            --aug-border-bg: linear-gradient(black, black) top left / 18px 18px no-repeat;
+          }
+          .aug-set [data-augmented-ui]:nth-child(2) {
+            --aug-border-bg: linear-gradient(black, black) top right / 18px 18px no-repeat;
+          }
+          .aug-set [data-augmented-ui]:nth-child(3) {
+            --aug-border-bg: linear-gradient(black, black) bottom right / 18px 18px no-repeat;
+          }
+          .aug-set [data-augmented-ui]:nth-child(4) {
+            --aug-border-bg: linear-gradient(black, black) bottom left / 18px 18px no-repeat;
+          }
+        </style>
+        <div class="core-edge-positions">
+          <div class="core-positions" data-augmented-ui>
+            <div class="augpos tl1">tl1</div>
+            <div class="augpos tl2">tl2</div>
+            <div class="augpos t1">t1</div>
+            <div class="augpos t2">t2</div>
+            <div class="augpos tr1">tr1</div>
+            <div class="augpos tr2">tr2</div>
+            <div class="augpos r1">r1</div>
+            <div class="augpos r2">r2</div>
+            <div class="augpos br1">br1</div>
+            <div class="augpos br2">br2</div>
+            <div class="augpos b1">b1</div>
+            <div class="augpos b2">b2</div>
+            <div class="augpos bl1">bl1</div>
+            <div class="augpos bl2">bl2</div>
+            <div class="augpos l1">l1</div>
+            <div class="augpos l2">l2</div>
+            <div class="region region-tl" title="Top Left region (tl)">tl</div>
+            <div class="region region-t" title="Top region (t)">t</div>
+            <div class="region region-tr" title="Top Right region (tr)">tr</div>
+            <div class="region region-r" title="Right region (r)">r</div>
+            <div class="region region-br" title="Bottom Right region (br)">br</div>
+            <div class="region region-b" title="Bottom region (b)">b</div>
+            <div class="region region-bl" title="Bottom Left region (bl)">bl</div>
+            <div class="region region-l" title="Left region (l)">l</div>
+          </div>
+          <div class="center-offset center-offset-t"></div>
+          <div class="center-offset center-offset-r"></div>
+          <div class="center-offset center-offset-b"></div>
+          <div class="center-offset center-offset-l"></div>
+        </div>
+        <script>
+          var hcs = function (which) {
+            var figure = document.querySelector("#core .core-positions")
+            figure.style.removeProperty("--selected")
+            figure.style.removeProperty("--opacity")
+            figure.style.removeProperty("--augpos")
+            figure.parentNode.style.removeProperty("--centeroffset")
+            if (which) {
+              figure.style.setProperty("--selected", "var(--" + which + ")")
+              figure.style.setProperty("--opacity", "0.125")
+              figure.parentNode.style.setProperty("--centeroffset", "0.125")
+              if (which === "noneselected") {
+                figure.style.setProperty("--augpos", "1")
+              } else if (which === "centeroffset") {
+                figure.parentNode.style.setProperty("--centeroffset", "1")
+              }
+            }
+          }
+        </script>
+        <div class="legend">
+          <div style="--bg: #f2f2f2; cursor: auto;">region name</div>
+          <div tabindex="1" onfocus="hcs('noneselected')" onblur="hcs()" style="--bg: gold;">aug position</div>
+          <div tabindex="1" onfocus="hcs('allinset1')" onblur="hcs()" style="--bg: var(--inset1);">inset1</div>
+          <div tabindex="1" onfocus="hcs('allinset2')" onblur="hcs()" style="--bg: var(--inset2);">inset2</div>
+          <div tabindex="1" onfocus="hcs('allextend1')" onblur="hcs()" style="--bg: red;">extend1</div>
+          <div tabindex="1" onfocus="hcs('allextend2')" onblur="hcs()" style="--bg: var(--extend2);">extend2</div>
+          <div tabindex="1" onfocus="hcs('centeroffset')" onblur="hcs()" style="--bg: black;">center &amp; offset</div>
+        </div>
+        <h3 id="core-region-properties"><a href="#core-region-properties">Region Properties</a></h3>
+        <div class="legend-details">
+          <div colspan="2" style="font-weight: bold; text-align: center;">Feature</div>
+          <div style="font-weight: bold;">Default Value</div>
+          <div style="font-weight: bold;">CSS Value Type</div>
+          <div style="font-weight: bold;">Property List</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: var(--inset1);"></div>
+          <div style="font-weight: bold;">inset1</div>
+          <div>0px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl-inset1</code>,
+            <code>--aug-t-inset1</code>,
+            <code>--aug-tr-inset1</code>,
+            <code>--aug-r-inset1</code>,
+            <code>--aug-br-inset1</code>,
+            <code>--aug-b-inset1</code>,
+            <code>--aug-bl-inset1</code>,
+            <code>--aug-l-inset1</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">How far the region's first aug is inset from its starting edge, clockwise</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: var(--inset2);"></div>
+          <div style="font-weight: bold;">inset2</div>
+          <div>0px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl-inset2</code>,
+            <code>--aug-tr-inset2</code>,
+            <code>--aug-br-inset2</code>,
+            <code>--aug-bl-inset2</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">How far the region's second aug (or first aug if there is only one equipped) is inset from its ending edge, clockwise</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: red;"></div>
+          <div style="font-weight: bold;">extend1</div>
+          <div>0px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl-extend1</code>,
+            <code>--aug-t-extend1</code>,
+            <code>--aug-tr-extend1</code>,
+            <code>--aug-r-extend1</code>,
+            <code>--aug-br-extend1</code>,
+            <code>--aug-b-extend1</code>,
+            <code>--aug-bl-extend1</code>,
+            <code>--aug-l-extend1</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">Distance after the region's first aug, parallel to its starting edge, clockwise. Behaves as 0px unless both positions in the region have an aug equipped.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: var(--extend2);"></div>
+          <div style="font-weight: bold;">extend2</div>
+          <div>0px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl-extend2</code>,
+            <code>--aug-tr-extend2</code>,
+            <code>--aug-br-extend2</code>,
+            <code>--aug-bl-extend2</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">Distance before the region's second aug, parallel to its ending edge, clockwise. Behaves as 0px unless both positions in the region have an aug equipped.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: black;"></div>
+          <div style="font-weight: bold;">center</div>
+          <div>calc(...)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-t-center</code>,
+            <code>--aug-r-center</code>,
+            <code>--aug-b-center</code>,
+            <code>--aug-l-center</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">Specifies the center placement of an edge region. By default this is a calculation centering it half way between the innermost points of the corner regions, along the same edge. Set it to 50% to center it in the middle of the element's edge without considering the corner regions.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div style="background: black;"></div>
+          <div style="font-weight: bold;">offset</div>
+          <div>0px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-t-offset</code>,
+            <code>--aug-r-offset</code>,
+            <code>--aug-b-offset</code>,
+            <code>--aug-l-offset</code>
+          </div>
+
+          <div colspan="2">Description</div>
+          <div colspan="2">Specifies an offset to the center placement of the edge region. On top/bottom a negative value shifts the whole edge region left, on right/left negative values shift the edge region up.</div>
+        </div>
+        <h3 id="core-augs"><a href="#core-augs">Core Augs</a></h3>
+        <div class="core-augs">
+          All <b>16 aug positions</b>: tl1, tl2, t1, t2, tr1, tr2, r1, r2, br1, br2, b1, b2, bl1, bl2, l1, l2<br>
+          Can be set to any of the <b>5 core augs</b>: clip, round, scoop, rect, step<br>
+          <div class="aug-set">
+            <div style="--aug-clip-tl1: initial;" data-augmented-ui></div>
+            <div style="--aug-clip-tr1: initial;" data-augmented-ui></div>
+            <div style="--aug-clip-br1: initial;" data-augmented-ui></div>
+            <div style="--aug-clip-bl1: initial;" data-augmented-ui></div>
+            <div style="grid-column-end: span 4;">clip</div>
+            <code style="grid-column-end: span 4;">--aug-clip-tr1: initial;</code>
+          </div>
+          <div class="aug-set">
+            <div style="--aug-round-tl1: initial;" data-augmented-ui></div>
+            <div style="--aug-round-tr1: initial;" data-augmented-ui></div>
+            <div style="--aug-round-br1: initial;" data-augmented-ui></div>
+            <div style="--aug-round-bl1: initial;" data-augmented-ui></div>
+            <div style="grid-column-end: span 4;">round</div>
+            <code style="grid-column-end: span 4;">--aug-round-t1: initial;</code>
+          </div>
+          <div class="aug-set">
+            <div style="--aug-scoop-tl1: initial;" data-augmented-ui></div>
+            <div style="--aug-scoop-tr1: initial;" data-augmented-ui></div>
+            <div style="--aug-scoop-br1: initial;" data-augmented-ui></div>
+            <div style="--aug-scoop-bl1: initial;" data-augmented-ui></div>
+            <div style="grid-column-end: span 4;">scoop</div>
+            <code style="grid-column-end: span 4;">--aug-scoop-br1: initial;</code>
+          </div>
+          <div class="aug-set">
+            <div style="--aug-rect-tl1: initial;" data-augmented-ui></div>
+            <div style="--aug-rect-tr1: initial;" data-augmented-ui></div>
+            <div style="--aug-rect-br1: initial;" data-augmented-ui></div>
+            <div style="--aug-rect-bl1: initial;" data-augmented-ui></div>
+            <div style="grid-column-end: span 4;">rect</div>
+            <code style="grid-column-end: span 4;">--aug-rect-b1: initial;</code>
+          </div>
+          <div class="aug-set">
+            <div style="--aug-step-tl1: initial;" data-augmented-ui></div>
+            <div style="--aug-step-tr1: initial;" data-augmented-ui></div>
+            <div style="--aug-step-br1: initial;" data-augmented-ui></div>
+            <div style="--aug-step-bl1: initial;" data-augmented-ui></div>
+            <div style="grid-column-end: span 4;">step</div>
+            <code style="grid-column-end: span 4;">--aug-step-l1: initial;</code>
+            <div style="grid-column-end: span 4;">(only useful when used with region insets)</div>
+          </div>
+          <br>
+          <br>
+          To initialize an aug for a position, use this CSS:<br>
+          <code class="highlight">--aug-[aug name]-[aug position]: initial;</code> Ex: <code class="highlight">--aug-clip-tl1: initial;</code><br>
+          If your css steps on itself and you need to turn off an aug somewhere (like for :last-child or any other selector logic), you can set the value to a single space:<br>
+          <code class="highlight">--aug-[aug name]-[aug position]: ;</code> Ex: <code class="highlight">--aug-clip-tl1: ;</code><br>
+          (note: there are DevTools bugs that may prevent you from setting a CSS Variable to space from the console. <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1071296">Chrome</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1630488">Firefox</a>)<br>
+          <br>
+          The 2nd aug position in a region can only be used if the 1st one is also used.<br>
+        </div>
+        <h3 id="core-aug-properties"><a href="#core-aug-properties">Aug Position Properties</a></h3>
+        <div class="legend-details position-props">
+          <div colspan="2" style="font-weight: bold; text-align: center;">Feature</div>
+          <div style="font-weight: bold;">Default Value</div>
+          <div style="font-weight: bold;">CSS Value Type</div>
+          <div style="font-weight: bold;">Property List</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div colspan="2" style="font-weight: bold;">[aug position]</div>
+          <div>15px</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl1</code>,
+            <code>--aug-tl2</code>,
+            <code>--aug-t1</code>,
+            <code>--aug-t2</code>,
+            <code>--aug-tr1</code>,
+            <code>--aug-tr2</code>,
+            <code>--aug-r1</code>,
+            <code>--aug-r2</code>,
+            <code>--aug-br1</code>,
+            <code>--aug-br2</code>,
+            <code>--aug-b1</code>,
+            <code>--aug-b2</code>,
+            <code>--aug-bl1</code>,
+            <code>--aug-bl2</code>,
+            <code>--aug-l1</code>,
+            <code>--aug-l2</code>
+          </div>
+
+          <div style="background: gold; height: 25px;"></div>
+          <div></div>
+          <div colspan="2">Sets the height and width of the aug equipped to the position. If there is no aug in the position, it behaves as 0px. If there is an aug in the position, the default value is 15px. If a % is used, the aug will render in the same aspect ratio as the element. If the ratio isn't 1:1 and clip, scoop, or round is used, the border and inlay gap may appear pinched similar to the standard elliptical border-radius.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div colspan="2" style="font-weight: bold;">[aug pos]-width</div>
+          <div>var(...)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl1-width</code>,
+            <code>--aug-tl2-width</code>,
+            <code>--aug-t1-width</code>,
+            <code>--aug-t2-width</code>,
+            <code>--aug-tr1-width</code>,
+            <code>--aug-tr2-width</code>,
+            <code>--aug-r1-width</code>,
+            <code>--aug-r2-width</code>,
+            <code>--aug-br1-width</code>,
+            <code>--aug-br2-width</code>,
+            <code>--aug-b1-width</code>,
+            <code>--aug-b2-width</code>,
+            <code>--aug-bl1-width</code>,
+            <code>--aug-bl2-width</code>,
+            <code>--aug-l1-width</code>,
+            <code>--aug-l2-width</code>
+          </div>
+
+          <div style="background: gold; height: 25px;"></div>
+          <div></div>
+          <div colspan="2">Sets the width of the aug equipped to the position. Defaults to the corresponding --aug-[aug position] value. If a % is used with clip, scoop, or round and results in a non-square render, the border and inlay gap may appear pinched, similar to the standard elliptical border-radius.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div colspan="2" style="font-weight: bold;">[aug pos]-height</div>
+          <div>var(...)</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage">&lt;length-percentage&gt;</a></div>
+          <div rowspan="2">
+            <code>--aug-tl1-height</code>,
+            <code>--aug-tl2-height</code>,
+            <code>--aug-t1-height</code>,
+            <code>--aug-t2-height</code>,
+            <code>--aug-tr1-height</code>,
+            <code>--aug-tr2-height</code>,
+            <code>--aug-r1-height</code>,
+            <code>--aug-r2-height</code>,
+            <code>--aug-br1-height</code>,
+            <code>--aug-br2-height</code>,
+            <code>--aug-b1-height</code>,
+            <code>--aug-b2-height</code>,
+            <code>--aug-bl1-height</code>,
+            <code>--aug-bl2-height</code>,
+            <code>--aug-l1-height</code>,
+            <code>--aug-l2-height</code>
+          </div>
+
+          <div style="background: gold; height: 25px;"></div>
+          <div></div>
+          <div colspan="2">Sets the height of the aug equipped to the position. Defaults to the corresponding --aug-[aug position] value. If a % is used with clip, scoop, or round and results in a non-square render, the border and inlay gap may appear pinched, similar to the standard elliptical border-radius.</div>
+
+          <div colspan="5" style="background: #ccc;"></div>
+
+          <div colspan="2" style="font-weight: bold;">clipmod-x &amp; y</div>
+          <div>0.5</div>
+          <div><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/number">&lt;number&gt;</a> (0, 1)</div>
+          <div rowspan="2">
+            <code>--aug-[aug pos]-clipmod-x</code>,
+            <code>--aug-[aug pos]-clipmod-y</code>,
+            <code>--aug-tl1-clipmod-x</code>,
+            <code>--aug-tl1-clipmod-y</code>,
+            <code>--aug-tl2-clipmod-x</code>,
+            <code>--aug-tl2-clipmod-y</code>,
+            <code>--aug-t1-clipmod-x</code>,
+            <code>--aug-t1-clipmod-y</code>,
+            <code>...</code>
+          </div>
+
+          <div style="background: gold; height: 25px; --aug-clip-tl1: initial; --aug-tl1: 24px;" data-augmented-ui></div>
+          <div></div>
+          <div colspan="2">
+            Most clip angles in sci-fi are 45deg, but if you'd like to render a clip aug with custom w:h ratios, these will un-pinch the border and inlay gap for any fixed angle you want. To calculate these values:<br>
+            <div style="color: black;">
+              --augw = --aug-[aug pos]-width;<br>
+              --augh = --aug-[aug pos]-height;<br>
+              --aug-[aug pos]-clipmod-x = --augw / (--augw + --augh);<br>
+              --aug-[aug pos]-clipmod-y = --augh / (--augw + --augh);<br>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="text-article" id="ecosystem-compatibility">
+        <h2><a href="#ecosystem-compatibility">Ecosystem Compatibility</a></h2><br>
+        <p>
+          augmented-ui relies on dynamic and optional composition of standard comma-separated CSS properties. This requires a leading comma in a custom property + an empty fallback in var(). Here is a minimal example of how that works: <a href="https://jsbin.com/cemujarozo/1/edit?html,css,output">https://jsbin.com/cemujarozo/1/edit?html,css,output</a><br>
+          <br>
+          A common problem in CSS parsers is to erroneously give meaning to commas in custom properties, and then complain about having a leading comma. Even old versions of safari on iOS ran into this issue and they have since fixed it. Fortunately it can be safely feature detected to avoid problems in those versions of iOS: <code class="highlight">@supports (--foo: , 0 0)</code><br>
+          <br>
+        </p>
+        <h3>Compatibility with Create React App</h3>
+        <p>
+          Create React App depends on PostCSS and cssnano. Both of these libraries have parsing bugs that block augmented-ui so you'll need to copy augmented-ui.min.css into the public folder and manually include it in the index.html file to avoid them until they're fixed.<br>
+          <br>
+          You can read more about using the public folder here: <a href="https://create-react-app.dev/docs/using-the-public-folder/">https://create-react-app.dev/docs/using-the-public-folder/</a><br>
+          <br>
+          You can read more about the Post CSS bug here (issue has been open for about 1 year): <a href="https://github.com/postcss/postcss-calc/issues/77">https://github.com/postcss/postcss-calc/issues/77</a><br>
+          <br>
+          You can read more about the cssnano bug here (solved, but there hasn't been a release in over a year): <a href="https://github.com/cssnano/cssnano/issues/822">https://github.com/cssnano/cssnano/issues/822</a><br>
+          <br>
+        </p>
+        <h3>Compatibility in VSCode</h3>
+        <p>
+          VSCode complains about the leading comma and currently the only way to avoid it is to disable its CSS Validation.<br>
+          <br>
+          You can read more about disabling it here: <a href="https://github.com/propjockey/augmented-ui/issues/2#issuecomment-540184111">https://github.com/propjockey/augmented-ui/issues/2#issuecomment-540184111</a><br>
+          <br>
+          You can read more about the issue here: <a href="https://github.com/microsoft/vscode/issues/82178">https://github.com/microsoft/vscode/issues/82178</a><br>
+          <br>
+        </p>
+        <h3>Compatibility with SASS</h3>
+        <p>
+          SASS has multiple implementations/compilers, some have parsing bugs related to the leading comma in custom properties. The compiler used on sassmeister.com handles the leading comma correctly in custom properties (by ignoring it), but trips up when it's used in a supports statement <code class="highlight">@supports (--foo: , 0 0)</code> If you run into trouble, include augmented-ui.min.css separately from your SASS ecosystem.<br>
+          <br>
+        </p>
+        <h3>Other notes?</h3>
+        <p>
+          Please feel free to file an issue if you run into any trouble, I'll be glad to take a look and work on a path forward for you!
+        </p>
+      </article>
+
+      <article class="text-article" id="supporting-augmented-ui">
+        <h2><a href="#supporting-augmented-ui">Supporting augmented-ui</a></h2><br>
+        <style>
+          .paypal,
+          .bitcoin {
+            display: inline-block;
+            width: calc(50% - 20px);
+            min-width: 290px;
+            text-align: center;
+            vertical-align: top;
+            margin-top: 20px;
+          }
+          .qr-code-img {
+            display: inline-block;
+            width: 200px;
+            margin: 0px;
+          }
+
+          .paypal .qr-code-img {
+            margin: 10px;
+            width: 180px;
+          }
+          .crypto-address {
+            font-size: 0.75rem;
+          }
+        </style>
+        <p>
+          augmented-ui is open source and free to use in any project. <a href="https://www.npmjs.com/package/augmented-ui">NPM</a> | <a href="https://github.com/propjockey/augmented-ui">GitHub</a> | <a href="https://github.com/propjockey/augmented-ui/blob/master/LICENSE">BSD 2-Clause License</a><br>
+          Monetary support isn't necessary but it would be very very much appreciated. There were only a couple costs in development up to now, less than $250 total, but I have spent all of my savings working on <a href="https://github.com/propjockey">mostly Open Source projects in the last two years</a> and have nearly maxed my credit card paying rent the last 5 months. (I've finally secured a job, will start soon)<br>
+          Above all else though, I just want help make awesome cyberpunk and sci-fi inspired UI as common on the web as it is in the games and movies.<br>
+          If you use augmented-ui in your project, I would love to see it! I'm not much of a designer so I can't wait to see it in the hands of someone skilled!<br>
+          Find me @James0x57 on <a href="https://twitter.com/James0x57">twitter</a> :)<br>
+        </p>
+        <div class="paypal">
+          <h3>Support With Paypal</h3>
+          <img class="qr-code-img" src="/img/paypalqr.png"><br>
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick" />
+            <input type="hidden" name="hosted_button_id" value="9Z925L3SJJ8BS" />
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+          </form>
+        </div>
+        <div class="bitcoin">
+          <h3>Support With Bitcoin</h3>
+          <img class="qr-code-img" src="/img/btc.png"><br>
+          <span class="crypto-address">3BbiHYTrxk9KCwCoekQu746oDfHRDzfyHw</span>
+        </div><br>
+        <br>
+        <p>
+          You can also support by becoming a Backer on <a href="https://opencollective.com/augmented-ui">Open Collective</a> and you'll get <a href="https://github.com/propjockey/augmented-ui#sponsors">your logo in the README</a> :)
+        </p>
+      </article>
+      <style>
+        #chubie {
+          display: inline-block;
+          transform-origin: 50% 50%;
+          transform: scaleX(-1) translateX(17px) translateY(20rem);
+        }
+        #chubie img {
+          height: 4rem;
+          filter: brightness(1.5);
+        }
+      </style>
+      <a id="chubie" title="Chubie from Deus Ex: Human Revolution, the game that inspired the creation of augmented-ui" href="https://youtu.be/AhXoYgB7rPU?t=13693">
+        <img src="/img/chubie.png" alt="Chubie from Deus Ex: Human Revolution">
+      </a>
+    </main>
+  </div>
+</body>
+</html>

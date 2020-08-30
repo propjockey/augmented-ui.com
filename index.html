@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>augmented-ui - Integrate your apps with technology</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#a88d00">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:image" content="http://augmented-ui.com/socialmedia_1.9to1.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="632">
+  <link rel="stylesheet" type="text/css" href="/modules/augmented-ui.min.css">
+  <link rel="stylesheet" type="text/css" href="/modules/css-media-vars.css">
+  <script type="module" src="./propjockey-animations.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-146833088-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-146833088-1');
+  </script>
+  <style>
+    html {
+      --xs-fs: var(--media-xs) 1.35vw;
+      --sm-fs: var(--media-sm) 1.35vw;
+      --md-fs: var(--media-md) 12px;
+      font-size: var(--xs-fs, var(--sm-fs, var(--md-fs, 16px)));
+      overflow-x: hidden;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+      margin: 0px;
+      padding: 0px;
+    }
+    .hide-scrollbars {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hide-scrollbars::-webkit-scrollbar { 
+      display: none;
+    }
+    body {
+      --media-prefers-light: initial;
+      --c0-l: var(--media-prefers-light) #257ae4;
+      --c0-l-a: var(--media-prefers-light) rgba(37, 122, 228, 0.25);
+      --c0-l-i: var(--media-prefers-light) gold;
+      --c1-l: var(--media-prefers-light) #fffffd;
+      --c1-l-i: var(--media-prefers-light) #1e1e1c;
+      --c2-l: var(--media-prefers-light) #fdfdfa;
+      --c3-l: var(--media-prefers-light) #e4e4e4;
+      --c4-l: var(--media-prefers-light) #fcfcfa;
+      --c0: var(--c0-l, gold);
+      --c0-a: var(--c0-l-a, rgba(255, 215, 0, 0.25));
+      --c0-i: var(--c0-l-i, #257ae4);
+      --c1: var(--c1-l, #1e1e1c);
+      --c1-i: var(--c1-l-i, #fffffd);
+      --c2: var(--c2-l, #1d1d1b);
+      --c3: var(--c3-l, #2c2c2a);
+      --c4: var(--c4-l, #312d18);
+      --hbl: var(--media-prefers-light) #4039a5;
+      --hot-blue: var(--hbl, #b1ffff);
+      --hot-red: #ff604d;
+      --sm-width: var(--media-lte-sm) 100vw;
+      --md-width: var(--media-md) 900px;
+      --width: var(--sm-width, var(--md-width, 1200px));
+      --height: calc(var(--width) / 64 * 27);
+      --bgoffsetx: var(--media-lte-sm) left;
+      background: linear-gradient(
+        to right,
+        var(--c3) 1px, transparent 1px,
+        transparent calc(var(--width) / 5 - 1px),
+        var(--c3) calc(var(--width) / 5 - 1px),
+        var(--c3) calc(var(--width) / 5)
+      ) var(--bgoffsetx, center) top / calc(var(--width) / 5) 100%,
+      linear-gradient(
+        to bottom,
+        var(--c3) 1px, transparent 1px,
+        transparent calc(var(--height) / 5 - 1px),
+        var(--c3) calc(var(--height) / 5 - 1px),
+        var(--c3) calc(var(--height) / 5)
+      ) center top / 100% calc(var(--height) / 5),
+      repeating-linear-gradient(
+        to right,
+        var(--c1), var(--c2) 15%, var(--c1) 20%
+      ) center center / calc(var(--width) / 5) calc(var(--height) / 5);
+      --do-transform: initial;
+    }
+    .explosion {
+      --do-transform: ;
+    }
+    #presentation {
+      position: relative;
+      width: var(--width);
+      height: var(--height);
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(to bottom, transparent 45%, black 50%, transparent 55%, transparent 100%) center center / 100% 20%,
+                  linear-gradient(to right, transparent 47%, black 50%, transparent 53%, transparent 100%) center center / 20% 100%,
+                  radial-gradient(at center, black, var(--c0) 35%, black 95%);
+      --glow: var(--do-transform) 0px 0px 150px var(--c0-a);
+      box-shadow: var(--glow, none);
+      transition: box-shadow 0.66s cubic-bezier(1, -1.5, 0.33, 2.75);
+    }
+    #wrap3d > #backdrop {
+      --pjAnim-frame: 22; /* backdrop v1 animation frame [0,23] */
+      display: none;
+      position: absolute;
+      left: 20%;
+      top: 20%;
+      width: 60%;
+      height: 60%;
+      box-shadow: inset 0px 0px 2rem var(--c0-a);
+      --spritesheet-l: var(--media-prefers-light) url(/img/v1spritesheet-blue.png);
+      background: var(--spritesheet-l, url(/img/v1spritesheet.png)) 0px calc((100% / 23) * var(--pjAnim-frame)) / 100% auto no-repeat, var(--c1);
+    }
+    #presentation.showv1 #backdrop {
+      display: block;
+    }
+    #terminal-frame {
+      --pjAnim-termw: 32%;
+      --pjAnim-termh: 66%;
+      text-align: left;
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      overflow: hidden;
+      width: var(--pjAnim-termw);
+      height: var(--pjAnim-termh);
+      --aug-inlay: initial;
+      --aug-inlay-all: 0px;
+      --aug-inlay-bg: var(--c1);
+      --aug-inlay-opacity: 0.87;
+      --aug-border: initial;
+      --aug-border-all: 5px;
+      --aug-border-bg: radial-gradient(circle at 5px calc(100% - 5px), var(--c0) 5px, transparent 5px),
+                   radial-gradient(circle at calc(100% - 5px) calc(100% - 5px), var(--c0) 5px, transparent 5px),
+                   radial-gradient(circle at calc(100% - 5px) 5px, var(--c0) 5px, transparent 5px),
+                   radial-gradient(circle at 5px 5px, var(--c0) 5px, transparent 5px),
+                   linear-gradient(to bottom, transparent 4px, var(--c0) 4px, var(--c0) 5px, transparent 5px),
+                   linear-gradient(to right, transparent 4px, var(--c0) 4px, var(--c0) 5px, transparent 5px),
+                   linear-gradient(to left, transparent 4px, var(--c0) 4px, var(--c0) 5px, transparent 5px),
+                   linear-gradient(to top, transparent 4px, var(--c0) 4px, var(--c0) 5px, transparent 5px);
+      --aug-border-opacity: 0.57;
+    }
+    #terminal {
+      --pjAnim-termtexth: 0rem;
+      font-family: monospace;
+      font-size: 0.5rem;
+      font-weight: bold;
+      line-height: 1rem;
+      color: var(--c1-i);
+      white-space: nowrap;
+      overflow: hidden;
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      right: 7px;
+      height: var(--pjAnim-termtexth);
+      max-height: calc(100% - 14px);
+    }
+    #term-cmd {
+      --pjAnim-termcmdw: 0%;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      vertical-align: middle;
+      color: var(--c1-i);
+      width: var(--pjAnim-termcmdw);
+    }
+    #wrap3d {
+      position: relative;
+      display: grid;
+      height: 100%;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      perspective: 1077px;
+      transform-style: preserve-3d;
+    }
+    .wrap3d > * {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 1.5;
+      /* --bc: var(--do-transform) 2px solid var(--c0);
+      border: var(--bc, 1px solid var(--c3)); */
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      --rotateX: calc(15deg * var(--row));
+      --rotateY: calc(-15deg * var(--col));
+      --translateZ: calc(-100px * calc(var(--factor) - 4));
+      --translateX: calc(2.3px * (6 - var(--factor)) * var(--col));
+      --translateY: calc(1px * (6 - var(--factor)) * var(--row));
+      --translate: translateZ(var(--translateZ)) translateX(var(--translateX)) translateY(var(--translateY));
+      --tf: var(--do-transform) var(--translate) rotateY(var(--rotateY)) rotateX(var(--rotateX));
+      transform: var(--tf);
+      transition: transform 0.66s cubic-bezier(1, -1.5, 0.33, 2.75), 
+                  border 0.66s cubic-bezier(1, -1.5, 0.33, 2.75),
+                  box-shadow 0.66s cubic-bezier(1, -1.5, 0.33, 2.75);
+    }
+    .wrap3d > [data-augmented-ui] {
+      --aug-border: initial;
+      --aug-border-all: 1px;
+      --aug-border-bg: var(--c3);
+      outline: 1px solid var(--c3);
+      background: repeating-linear-gradient(to right, var(--c1), var(--c2) 15%, var(--c1) 20%);
+      --aug-tl: 0px;
+      --aug-t: 0px;
+      --aug-tr: 0px;
+      --aug-r: 0px;
+      --aug-br: 0px;
+      --aug-b: 0px;
+      --aug-bl: 0px;
+      --aug-l: 0px;
+      --exploded: 0;
+    }
+    .backdropzone {
+      z-index: 10;
+      --aug-inlay: initial;
+      --aug-inlay-all: 0px;
+      --aug-inlay-bg: var(--c0);
+      --aug-inlay-opacity: 0.05;
+    }
+    .backdropzone::before {
+      transition: opacity 1s ease-in;
+    }
+    #presentation.explosion .wrap3d > [data-augmented-ui] {
+      --aug-border-bg: var(--c0);
+      outline: none;
+      --exploded: 1;
+      --aug-tl: 0.75rem;
+      --aug-t: 0.75rem;
+      --aug-tr: 0.75rem;
+      --aug-r: 0.75rem;
+      --aug-br: 0.75rem;
+      --aug-b: 0.75rem;
+      --aug-bl: 0.75rem;
+      --aug-l: 0.75rem;
+    }
+    #presentation.explosion .wrap3d > #pres-center {
+      --aug-tl: 0.5rem;
+      --aug-t: 0.5rem;
+      --aug-tr: 0.5rem;
+      --aug-r: 0.5rem;
+      --aug-br: 0.5rem;
+      --aug-b: 0.5rem;
+      --aug-bl: 0.5rem;
+      --aug-l: 0.5rem;
+    }
+    #presentation.explosion .wrap3d > #get-augmented {
+      --aug-tl1-width: 15%;
+      --aug-tr1-width: 15%;
+      --aug-tl1-height: 50%;
+      --aug-tr1-height: 50%;
+      --aug-br1: 50%;
+      --aug-bl1: 50%;
+      --aug-bl1-clipmod-x: 0.7032967;
+      --aug-br1-clipmod-x: 0.7032967;
+      --aug-bl1-clipmod-y: 0.2967033;
+      --aug-br1-clipmod-y: 0.2967033;
+    }
+    #get-augmented .pres-text {
+      display: none;
+    }
+    #presentation.explosion #get-augmented .pres-text {
+      display: inline-block;
+      color: #777;
+    }
+    #presentation.showv1 .backdropzone {
+      opacity: 0.5;
+      background: transparent;
+    }
+    #presentation.fakeend .backdropzone,
+    #presentation.explosion .backdropzone {
+      --aug-inlay-opacity: 0;
+    }
+    .left-trim {
+      position: absolute;
+      height: 100%;
+      width: 400px;
+      left: 0px;
+      top: 0px;
+      transform-origin: 0% 50%;
+      transform: rotateY(90deg);
+      background: linear-gradient(to bottom, var(--c3) 1px, transparent 1px) bottom left / 100% calc(var(--height) / 5),
+                  linear-gradient(to left, var(--c0), var(--c4) 110%);
+      border: 1px solid var(--c4);
+    }
+    .right-trim {
+      position: absolute;
+      height: 100%;
+      width: 400px;
+      right: 0px;
+      top: 0px;
+      transform-origin: 100% 50%;
+      transform: rotateY(-90deg);
+      background: linear-gradient(to bottom, var(--c3) 1px, transparent 1px) bottom left / 100% calc(var(--height) / 5),
+                  linear-gradient(to right, var(--c0), var(--c4) 110%);
+      border: 1px solid var(--c4);
+    }
+    .bottom-trim {
+      position: absolute;
+      height: 400px;
+      width: 100%;
+      left: 0px;
+      bottom: 0px;
+      transform-origin: 50% 100%;
+      transform: rotateX(90deg);
+      background: linear-gradient(to right, var(--c3) 1px, transparent 1px) bottom right / calc(var(--width) / 5) 100%,
+                  linear-gradient(to bottom, var(--c0), var(--c4) 110%);
+      border: 1px solid var(--c4);
+    }
+    .top-trim {
+      position: absolute;
+      height: 400px;
+      width: 100%;
+      left: 0px;
+      top: 0px;
+      transform-origin: 50% 0%;
+      transform: rotateX(-90deg);
+      background: linear-gradient(to right, var(--c3) 1px, transparent 1px) bottom right / calc(var(--width) / 5) 100%,
+                  linear-gradient(to top, var(--c0), var(--c4) 110%);
+      border: 1px solid var(--c4);
+    }
+    #chubie {
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      width: calc(var(--width) / 25);
+      height: calc(var(--width) / 10);
+      transform: translateZ(-210px) translateX(30px) translateY(2px) scaleX(-1) rotateZ(6deg);
+      --chubie-l: var(--media-prefers-light) url("/img/chubie-blue.png");
+      background: var(--chubie-l, url("/img/chubie.png")) center bottom / calc(var(--width) / 25) auto no-repeat;
+      border: none;
+      overflow: visible;
+    }
+    #chubie::before {
+      content: "";
+      position: absolute;
+      height: 200%;
+      width: 125%;
+      bottom: 0px;
+      left: 25%;
+      border-radius: 50%;
+      transform-origin: 50% 100%;
+      transform: rotateZ(-6deg) rotateX(-90deg) translateZ(-5px) translateY(30px) rotateZ(-5deg);
+      background: radial-gradient(at bottom center, var(--c1), transparent 80%);
+    }
+    .pres-text {
+      display: inline-block;
+      color: var(--c1-i);
+      font-weight: bold;
+      margin-top: 20%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+    }
+    @keyframes fade-in {
+      0% { opacity: 0.0; }
+      100% { opacity: 1.0; }
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fade-in ease-in 1;
+      animation-duration: 1250ms;
+      animation-fill-mode: forwards;
+    }
+    .pres-text .full-shape-mixins-h,
+    .pres-text .full-shape-mixins {
+      display: inline-block;
+      background: var(--c4);
+      --aug-border: initial;
+      --aug-border-all: 2px;
+      color: var(--c0);
+      font-size: 0.9rem;
+      vertical-align: middle;
+      margin-top: 0.125rem;
+      margin-left: 0.125rem;
+      margin-right: 0.125rem;
+      padding-top: 0.125rem;
+    }
+    .pres-text .full-shape-mixins-h {
+      --aug-all-height: 1.75rem;
+    }
+    .pres-text .full-shape-mixins {
+      --aug-all-width: 1.75rem;
+    }
+    @keyframes to164 {
+      0% { content: "0"; }
+      0.609756% { content: "1"; }
+      1.219512% { content: "2"; }
+      1.829268% { content: "3"; }
+      2.439024% { content: "4"; }
+      3.04878% { content: "5"; }
+      3.658536% { content: "6"; }
+      4.268292% { content: "7"; }
+      4.878048% { content: "8"; }
+      5.487804% { content: "9"; }
+      6.09756% { content: "10"; }
+      6.707316% { content: "11"; }
+      7.317072% { content: "12"; }
+      7.926828% { content: "13"; }
+      8.536584% { content: "14"; }
+      9.14634% { content: "15"; }
+      9.756096% { content: "16"; }
+      10.365852% { content: "17"; }
+      10.975608% { content: "18"; }
+      11.585364% { content: "19"; }
+      12.19512% { content: "20"; }
+      12.804876% { content: "21"; }
+      13.414632% { content: "22"; }
+      14.024388% { content: "23"; }
+      14.634144% { content: "24"; }
+      15.2439% { content: "25"; }
+      15.853656% { content: "26"; }
+      16.463412% { content: "27"; }
+      17.073168% { content: "28"; }
+      17.682924% { content: "29"; }
+      18.29268% { content: "30"; }
+      18.902436% { content: "31"; }
+      19.512192% { content: "32"; }
+      20.121948% { content: "33"; }
+      20.731704% { content: "34"; }
+      21.34146% { content: "35"; }
+      21.951216% { content: "36"; }
+      22.560972% { content: "37"; }
+      23.170728% { content: "38"; }
+      23.780484% { content: "39"; }
+      24.39024% { content: "40"; }
+      24.999996% { content: "41"; }
+      25.609752% { content: "42"; }
+      26.219508% { content: "43"; }
+      26.829264% { content: "44"; }
+      27.43902% { content: "45"; }
+      28.048776% { content: "46"; }
+      28.658532% { content: "47"; }
+      29.268288% { content: "48"; }
+      29.878044% { content: "49"; }
+      30.4878% { content: "50"; }
+      31.097556% { content: "51"; }
+      31.707312% { content: "52"; }
+      32.317068% { content: "53"; }
+      32.926824% { content: "54"; }
+      33.53658% { content: "55"; }
+      34.146336% { content: "56"; }
+      34.756092% { content: "57"; }
+      35.365848% { content: "58"; }
+      35.975604% { content: "59"; }
+      36.58536% { content: "60"; }
+      37.195116% { content: "61"; }
+      37.804872% { content: "62"; }
+      38.414628% { content: "63"; }
+      39.024384% { content: "64"; }
+      39.63414% { content: "65"; }
+      40.243896% { content: "66"; }
+      40.853652% { content: "67"; }
+      41.463408% { content: "68"; }
+      42.073164% { content: "69"; }
+      42.68292% { content: "70"; }
+      43.292676% { content: "71"; }
+      43.902432% { content: "72"; }
+      44.512188% { content: "73"; }
+      45.121944% { content: "74"; }
+      45.7317% { content: "75"; }
+      46.341456% { content: "76"; }
+      46.951212% { content: "77"; }
+      47.560968% { content: "78"; }
+      48.170724% { content: "79"; }
+      48.78048% { content: "80"; }
+      49.390236% { content: "81"; }
+      49.999992% { content: "82"; }
+      50.609748% { content: "83"; }
+      51.219504% { content: "84"; }
+      51.82926% { content: "85"; }
+      52.439016% { content: "86"; }
+      53.048772% { content: "87"; }
+      53.658528% { content: "88"; }
+      54.268284% { content: "89"; }
+      54.87804% { content: "90"; }
+      55.487796% { content: "91"; }
+      56.097552% { content: "92"; }
+      56.707308% { content: "93"; }
+      57.317064% { content: "94"; }
+      57.92682% { content: "95"; }
+      58.536576% { content: "96"; }
+      59.146332% { content: "97"; }
+      59.756088% { content: "98"; }
+      60.365844% { content: "99"; }
+      60.9756% { content: "100"; }
+      61.585356% { content: "101"; }
+      62.195112% { content: "102"; }
+      62.804868% { content: "103"; }
+      63.414624% { content: "104"; }
+      64.02438% { content: "105"; }
+      64.634136% { content: "106"; }
+      65.243892% { content: "107"; }
+      65.853648% { content: "108"; }
+      66.463404% { content: "109"; }
+      67.07316% { content: "110"; }
+      67.682916% { content: "111"; }
+      68.292672% { content: "112"; }
+      68.902428% { content: "113"; }
+      69.512184% { content: "114"; }
+      70.12194% { content: "115"; }
+      70.731696% { content: "116"; }
+      71.341452% { content: "117"; }
+      71.951208% { content: "118"; }
+      72.560964% { content: "119"; }
+      73.17072% { content: "120"; }
+      73.780476% { content: "121"; }
+      74.390232% { content: "122"; }
+      74.999988% { content: "123"; }
+      75.609744% { content: "124"; }
+      76.2195% { content: "125"; }
+      76.829256% { content: "126"; }
+      77.439012% { content: "127"; }
+      78.048768% { content: "128"; }
+      78.658524% { content: "129"; }
+      79.26828% { content: "130"; }
+      79.878036% { content: "131"; }
+      80.487792% { content: "132"; }
+      81.097548% { content: "133"; }
+      81.707304% { content: "134"; }
+      82.31706% { content: "135"; }
+      82.926816% { content: "136"; }
+      83.536572% { content: "137"; }
+      84.146328% { content: "138"; }
+      84.756084% { content: "139"; }
+      85.36584% { content: "140"; }
+      85.975596% { content: "141"; }
+      86.585352% { content: "142"; }
+      87.195108% { content: "143"; }
+      87.804864% { content: "144"; }
+      88.41462% { content: "145"; }
+      89.024376% { content: "146"; }
+      89.634132% { content: "147"; }
+      90.243888% { content: "148"; }
+      90.853644% { content: "149"; }
+      91.4634% { content: "150"; }
+      92.073156% { content: "151"; }
+      92.682912% { content: "152"; }
+      93.292668% { content: "153"; }
+      93.902424% { content: "154"; }
+      94.51218% { content: "155"; }
+      95.121936% { content: "156"; }
+      95.731692% { content: "157"; }
+      96.341448% { content: "158"; }
+      96.951204% { content: "159"; }
+      97.56096% { content: "160"; }
+      98.170716% { content: "161"; }
+      98.780472% { content: "162"; }
+      99.390228% { content: "163"; }
+      100% { content: "164"; }
+    }
+    @keyframes to200 {
+      0% { content: "36"; }
+      0.609756% { content: "37"; }
+      1.219512% { content: "38"; }
+      1.829268% { content: "39"; }
+      2.439024% { content: "40"; }
+      3.04878% { content: "41"; }
+      3.658536% { content: "42"; }
+      4.268292% { content: "43"; }
+      4.878048% { content: "44"; }
+      5.487804% { content: "45"; }
+      6.09756% { content: "46"; }
+      6.707316% { content: "47"; }
+      7.317072% { content: "48"; }
+      7.926828% { content: "49"; }
+      8.536584% { content: "50"; }
+      9.14634% { content: "51"; }
+      9.756096% { content: "52"; }
+      10.365852% { content: "53"; }
+      10.975608% { content: "54"; }
+      11.585364% { content: "55"; }
+      12.19512% { content: "56"; }
+      12.804876% { content: "57"; }
+      13.414632% { content: "58"; }
+      14.024388% { content: "59"; }
+      14.634144% { content: "60"; }
+      15.2439% { content: "61"; }
+      15.853656% { content: "62"; }
+      16.463412% { content: "63"; }
+      17.073168% { content: "64"; }
+      17.682924% { content: "65"; }
+      18.29268% { content: "66"; }
+      18.902436% { content: "67"; }
+      19.512192% { content: "68"; }
+      20.121948% { content: "69"; }
+      20.731704% { content: "70"; }
+      21.34146% { content: "71"; }
+      21.951216% { content: "72"; }
+      22.560972% { content: "73"; }
+      23.170728% { content: "74"; }
+      23.780484% { content: "75"; }
+      24.39024% { content: "76"; }
+      24.999996% { content: "77"; }
+      25.609752% { content: "78"; }
+      26.219508% { content: "79"; }
+      26.829264% { content: "80"; }
+      27.43902% { content: "81"; }
+      28.048776% { content: "82"; }
+      28.658532% { content: "83"; }
+      29.268288% { content: "84"; }
+      29.878044% { content: "85"; }
+      30.4878% { content: "86"; }
+      31.097556% { content: "87"; }
+      31.707312% { content: "88"; }
+      32.317068% { content: "89"; }
+      32.926824% { content: "90"; }
+      33.53658% { content: "91"; }
+      34.146336% { content: "92"; }
+      34.756092% { content: "93"; }
+      35.365848% { content: "94"; }
+      35.975604% { content: "95"; }
+      36.58536% { content: "96"; }
+      37.195116% { content: "97"; }
+      37.804872% { content: "98"; }
+      38.414628% { content: "99"; }
+      39.024384% { content: "100"; }
+      39.63414% { content: "101"; }
+      40.243896% { content: "102"; }
+      40.853652% { content: "103"; }
+      41.463408% { content: "104"; }
+      42.073164% { content: "105"; }
+      42.68292% { content: "106"; }
+      43.292676% { content: "107"; }
+      43.902432% { content: "108"; }
+      44.512188% { content: "109"; }
+      45.121944% { content: "110"; }
+      45.7317% { content: "111"; }
+      46.341456% { content: "112"; }
+      46.951212% { content: "113"; }
+      47.560968% { content: "114"; }
+      48.170724% { content: "115"; }
+      48.78048% { content: "116"; }
+      49.390236% { content: "117"; }
+      49.999992% { content: "118"; }
+      50.609748% { content: "119"; }
+      51.219504% { content: "120"; }
+      51.82926% { content: "121"; }
+      52.439016% { content: "122"; }
+      53.048772% { content: "123"; }
+      53.658528% { content: "124"; }
+      54.268284% { content: "125"; }
+      54.87804% { content: "126"; }
+      55.487796% { content: "127"; }
+      56.097552% { content: "128"; }
+      56.707308% { content: "129"; }
+      57.317064% { content: "130"; }
+      57.92682% { content: "131"; }
+      58.536576% { content: "132"; }
+      59.146332% { content: "133"; }
+      59.756088% { content: "134"; }
+      60.365844% { content: "135"; }
+      60.9756% { content: "136"; }
+      61.585356% { content: "137"; }
+      62.195112% { content: "138"; }
+      62.804868% { content: "139"; }
+      63.414624% { content: "140"; }
+      64.02438% { content: "141"; }
+      64.634136% { content: "142"; }
+      65.243892% { content: "143"; }
+      65.853648% { content: "144"; }
+      66.463404% { content: "145"; }
+      67.07316% { content: "146"; }
+      67.682916% { content: "147"; }
+      68.292672% { content: "148"; }
+      68.902428% { content: "149"; }
+      69.512184% { content: "150"; }
+      70.12194% { content: "151"; }
+      70.731696% { content: "152"; }
+      71.341452% { content: "153"; }
+      71.951208% { content: "154"; }
+      72.560964% { content: "155"; }
+      73.17072% { content: "156"; }
+      73.780476% { content: "157"; }
+      74.390232% { content: "158"; }
+      74.999988% { content: "159"; }
+      75.609744% { content: "160"; }
+      76.2195% { content: "161"; }
+      76.829256% { content: "162"; }
+      77.439012% { content: "163"; }
+      78.048768% { content: "164"; }
+      78.658524% { content: "165"; }
+      79.26828% { content: "166"; }
+      79.878036% { content: "167"; }
+      80.487792% { content: "168"; }
+      81.097548% { content: "169"; }
+      81.707304% { content: "170"; }
+      82.31706% { content: "171"; }
+      82.926816% { content: "172"; }
+      83.536572% { content: "173"; }
+      84.146328% { content: "174"; }
+      84.756084% { content: "175"; }
+      85.36584% { content: "176"; }
+      85.975596% { content: "177"; }
+      86.585352% { content: "178"; }
+      87.195108% { content: "179"; }
+      87.804864% { content: "180"; }
+      88.41462% { content: "181"; }
+      89.024376% { content: "182"; }
+      89.634132% { content: "183"; }
+      90.243888% { content: "184"; }
+      90.853644% { content: "185"; }
+      91.4634% { content: "186"; }
+      92.073156% { content: "187"; }
+      92.682912% { content: "188"; }
+      93.292668% { content: "189"; }
+      93.902424% { content: "190"; }
+      94.51218% { content: "191"; }
+      95.121936% { content: "192"; }
+      95.731692% { content: "193"; }
+      96.341448% { content: "194"; }
+      96.951204% { content: "195"; }
+      97.56096% { content: "196"; }
+      98.170716% { content: "197"; }
+      98.780472% { content: "198"; }
+      99.390228% { content: "199"; }
+      100% { content: "200+"; }
+    }
+    .animate-to-164::before {
+      content: "0";
+      animation: to164 step-end 1;
+      animation-duration: 6000ms;
+      animation-fill-mode: forwards;
+    }
+    .animate-to-200::before {
+      content: "36";
+      animation: to200 step-end 1;
+      animation-duration: 6000ms;
+      animation-fill-mode: forwards;
+    }
+    #centerdemo {
+      --pjAnim-augscale: 1.0;
+      --pjAnim-tl-augscale: 1rem;
+      --pjAnim-t-augscale: 1rem;
+      --pjAnim-tr-augscale: 1rem;
+      --pjAnim-r-augscale: 1rem;
+      --pjAnim-br-augscale: 1rem;
+      --pjAnim-b-augscale: 1rem;
+      --pjAnim-bl-augscale: 1rem;
+      --pjAnim-l-augscale: 1rem;
+      position: absolute;
+      top: 30%;
+      bottom: 30%;
+      left: 30%;
+      right: 30%;
+      width: auto;
+      height: auto;
+      z-index: 20;
+      background: transparent;
+      --aug-inlay: initial;
+      --aug-inlay-all: 0px;
+      --aug-inlay-bg: var(--c2);
+      --aug-inlay-opacity: calc(0.25 * var(--pjAnim-augscale));
+      --aug-tl: var(--pjAnim-tl-augscale);
+      --aug-t: var(--pjAnim-t-augscale);
+      --aug-tr: var(--pjAnim-tr-augscale);
+      --aug-r: var(--pjAnim-r-augscale);
+      --aug-br: var(--pjAnim-br-augscale);
+      --aug-b: var(--pjAnim-b-augscale);
+      --aug-bl: var(--pjAnim-bl-augscale);
+      --aug-l: var(--pjAnim-l-augscale);
+      --bv-tl: calc(var(--aug-tl) * 4);
+      --bv-t: calc(var(--aug-t) * 10);
+      --bv-tr: calc(var(--aug-tr) * 4);
+      --bv-r: calc(var(--aug-r) * 10);
+      --bv-br: calc(var(--aug-br) * 4);
+      --bv-b: calc(var(--aug-b) * 10);
+      --bv-bl: calc(var(--aug-bl) * 4);
+      --bv-l: calc(var(--aug-l) * 10);
+      --aug-border: initial;
+      --aug-border-all: 2px;
+      --aug-border-opacity: 0.75;
+      --aug-border-bg: linear-gradient(
+        to bottom right, var(--c0) var(--bv-tl), transparent var(--bv-tl)
+      ), linear-gradient(
+        to bottom, var(--c0) var(--bv-t), transparent var(--bv-t)
+      ) center top / var(--bv-t) 50% no-repeat,
+      linear-gradient(
+        to bottom left, var(--c0) var(--bv-tr), transparent var(--bv-tr)
+      ), linear-gradient(
+        to left, var(--c0) var(--bv-r), transparent var(--bv-r)
+      ) right center / 50% var(--bv-r) no-repeat,
+      linear-gradient(
+        to top left, var(--c0) var(--bv-br), transparent var(--bv-br)
+      ), linear-gradient(
+        to top, var(--c0) var(--bv-b), transparent var(--bv-b)
+      ) center bottom / var(--bv-b) 50% no-repeat,
+      linear-gradient(
+        to top right, var(--c0) var(--bv-bl), transparent var(--bv-bl)
+      ), linear-gradient(
+      to right, var(--c0) var(--bv-l), transparent var(--bv-l)
+      ) left center / 50% var(--bv-l) no-repeat;
+      transform: translateZ(0);
+    }
+    #centerdemo::after {
+      will-change: background;
+    }
+    .corepropsdemo #centerdemo {
+      --aug-border-bg: var(--c0);
+      /* mixin prop values are all 1rem at the start of this and the edge augs are centered */
+      --base: 1rem;
+      --pjAnim-corepropsscale: 0;
+      --aug-tl1: calc(var(--base) + 2.5rem * var(--pjAnim-corepropsscale));
+      --aug-tl-extend2: calc(var(--base) * 2 - 0.5rem * var(--pjAnim-corepropsscale));
+      --aug-tl2: calc(var(--base) - 0.5rem * var(--pjAnim-corepropsscale));
+      --aug-t1: calc(var(--base) + 1rem * var(--pjAnim-corepropsscale));
+      --aug-t2: calc(var(--base) - 0.75rem * var(--pjAnim-corepropsscale));
+      --aug-tr: calc(var(--base) - 0.5rem * var(--pjAnim-corepropsscale));
+      --aug-tr-extend1: calc(var(--base) * 2 + 1.5rem * var(--pjAnim-corepropsscale));
+      --aug-br1-height: calc(var(--base) + 1rem * var(--pjAnim-corepropsscale));
+      --aug-br2-width: calc(var(--base) + 2.5rem * var(--pjAnim-corepropsscale));
+      --aug-b1-height: calc(var(--base) + 1rem * var(--pjAnim-corepropsscale));
+      --aug-b2-width: calc(var(--base) + 1rem * var(--pjAnim-corepropsscale));
+      --aug-b-extend1: calc(var(--base) + 1rem * var(--pjAnim-corepropsscale));
+      --aug-bl: calc(var(--base) - 0.75rem * var(--pjAnim-corepropsscale));
+      --aug-bl1-alt-join-in: initial;
+      --aug-bl2-alt-join-out: initial;
+      --aug-bl-inset1: calc(1rem * var(--pjAnim-corepropsscale));
+      --aug-bl-inset2: calc(1rem * var(--pjAnim-corepropsscale));
+      --aug-l: calc(var(--base) - 0.5rem * var(--pjAnim-corepropsscale));
+      --aug-l-inset1: calc(2.5rem * var(--pjAnim-corepropsscale));
+      --aug-t-center: calc(50% + 15% * var(--pjAnim-corepropsscale));
+      --aug-r-center: calc(50% - 15% * var(--pjAnim-corepropsscale));
+      --aug-b-center: calc(50% - 15% * var(--pjAnim-corepropsscale));
+      --aug-l-center: calc(50% + 15% * var(--pjAnim-corepropsscale));
+    }
+    .lock-bg #centerdemo {
+      --aug-border-bg: var(--c0);
+    }
+  </style>
+</head>
+<body>
+  <!-- factor map
+    2 3 4 3 2
+    3 4 5 4 3
+    4 5 6 5 4
+    3 4 5 4 3
+    2 3 4 3 2
+  -->
+  <div id="presentation">
+    <div id="wrap3d" class="wrap3d">
+      <div class="left-trim"></div>
+      <div class="right-trim"></div>
+      <div class="bottom-trim"></div>
+      <div class="top-trim"></div>
+      <a title="Chubie from Deus Ex: Human Revolution, the game that inspired the creation of augmented-ui <3" href="https://youtu.be/AhXoYgB7rPU?t=13693" id="chubie"></a>
+      <div id="backdrop">
+        <div id="terminal-frame" data-augmented-ui>
+          <div id="terminal">
+            C:\SS\augmented-ui $<span id="term-cmd">&nbsp;&nbsp;augui update -f</span><br>
+            &nbsp;&nbsp;PropJockey AUGUI Updater -><br>
+            &nbsp;&nbsp;...<br>
+            &nbsp;&nbsp;Version installed is v1.1.2<br>
+            &nbsp;&nbsp;Version latest    is v2.0.0<br>
+            &nbsp;&nbsp;Version upgrade initialized AUG-2020<br>
+            &nbsp;&nbsp;...<br>
+            &nbsp;&nbsp;Fin.<br>
+            &nbsp;&nbsp;BSD 2-Clause License<br>
+            &nbsp;&nbsp;Copyright (c) 2020 James0x57, PropJockey<br>
+            &nbsp;&nbsp;RELAUNCH...
+          </div>
+        </div>
+      </div>
+
+      <div data-augmented-ui="tl-2-clip-xy tr-rect r-step-xy br-2-rect-x b-rect bl-2-rect-xy" style="--factor: 2; --row: -2; --col: -2;"></div>
+      <div data-augmented-ui="r-scoop-y br-2-round-xy b-round-x bl-2-round-x l-clip-y" style="--factor: 3; --row: -2; --col: -1;"></div>
+      <div data-augmented-ui="r-round-xy br-2-scoop b-scoop-x bl-2-scoop l-round-xy" style="--factor: 4; --row: -2; --col: 0;"></div>
+      <div data-augmented-ui="t-clip-xy br-clip-y b-rect-xy bl-round-x l-clip-x" style="--factor: 3; --row: -2; --col: 1;"></div>
+      <div data-augmented-ui="tl-rect tr-2-clip-xy br-2-rect-xy b-rect bl-2-rect-x l-step-xy" style="--factor: 2; --row: -2; --col: 2;"></div>
+
+      <div data-augmented-ui="tl-round-x r-rect br-round b-scoop-x bl-scoop" style="--factor: 3; --row: -1; --col: -2;"></div>
+      <div data-augmented-ui="tr-2-scoop-y br-clip-inset bl-scoop-inset tl-clip" style="--factor: 4; --row: -1; --col: -1;" class="loop-tl backdropzone outer-loop"></div>
+      <div data-augmented-ui="tl-round tr-rect-x br-2-clip-y bl-clip" style="--factor: 5; --row: -1; --col: 0;" class="loop-t backdropzone outer-loop"></div>
+      <div data-augmented-ui="tr-clip-x br-2-scoop-x l-clip-xy" style="--factor: 4; --row: -1; --col: 1;" class="loop-tr backdropzone outer-loop"></div>
+      <div data-augmented-ui="tr-2-round b-clip-xy bl-clip-inset l-rect" style="--factor: 3; --row: -1; --col: 2;"></div>
+
+      <div data-augmented-ui="tr-2-round-xy br-round-inset bl-round l-rect-y" style="--factor: 4; --row: 0; --col: -2;"></div>
+      <div data-augmented-ui="tl-rect-y t-rect tr-rect b-clip-y" style="--factor: 5; --row: 0; --col: -1;" class="loop-l backdropzone outer-loop"></div>
+      <div data-augmented-ui="tl-2-clip-x t-scoop-x tr-2-clip-x r-rect-y br-2-clip-x b-scoop-x bl-2-clip-x l-rect-y" style="--factor: 6; --row: 0; --col: 0;" class="backdropzone" id="pres-center">
+        <span class="pres-text">augmented-ui<br>version 2</span>
+      </div>
+      <div data-augmented-ui="tr-2-clip-xy br-rect bl-clip-inset l-clip" style="--factor: 5; --row: 0; --col: 1;" class="loop-r backdropzone outer-loop"></div>
+      <div data-augmented-ui="tr-2-rect-xy br-2-rect-xy l-clip-xy" style="--factor: 4; --row: 0; --col: 2;"></div>
+
+      <div data-augmented-ui="tl-round tr-round-x l-scoop-xy br-round-x bl-round" style="--factor: 3; --row: 1; --col: -2; --aug-br: calc(1.75rem * var(--exploded))"></div>
+      <div data-augmented-ui="tl-clip br-2-clip-xy" style="--factor: 4; --row: 1; --col: -1;" class="loop-bl backdropzone outer-loop"></div>
+      <div data-augmented-ui="tl-clip t-clip-x tr-clip br-clip b-clip-x bl-clip" style="--factor: 5; --row: 1; --col: 0;" class="loop-b backdropzone outer-loop"></div>
+      <div data-augmented-ui="tl-2-scoop-xy br-2-scoop-xy" style="--factor: 4; --row: 1; --col: 1;" class="loop-br backdropzone outer-loop"></div>
+      <div data-augmented-ui="tl-round-inset r-round-y bl-clip-inset" style="--factor: 3; --row: 1; --col: 2;"></div>
+
+      <div data-augmented-ui="tr-clip bl-clip tl-round br-round" style="--factor: 2; --row: 2; --col: -2; --aug-tr: calc(3rem * var(--exploded)); --aug-bl: calc(3rem * var(--exploded)); --aug-tl: calc(0.33rem * var(--exploded)); --aug-br: calc(0.33rem * var(--exploded));"></div>
+      <div data-augmented-ui="tl-2-clip-x br-2-clip-x" style="--factor: 3; --row: 2; --col: -1;"></div>
+      <div data-augmented-ui="tl-rect tr-rect bl-clip br-clip" style="--factor: 4; --row: 2; --col: 0;" id="get-augmented">
+        <span class="pres-text fade-in">Learn more!<br>↓</span>
+      </div>
+      <div data-augmented-ui="tr-2-clip-x bl-2-clip-x" style="--factor: 3; --row: 2; --col: 1;"></div>
+      <div data-augmented-ui="tl-clip br-clip tr-round bl-round" style="--factor: 2; --row: 2; --col: 2; --aug-tl: calc(3rem * var(--exploded)); --aug-br: calc(3rem * var(--exploded)); --aug-tr: calc(0.33rem * var(--exploded)); --aug-bl: calc(0.33rem * var(--exploded));"></div>
+    </div>
+    <div data-augmented-ui="tl-2-clip-x tr-2-clip-x br-2-clip-x bl-2-clip-x t-scoop-x b-scoop-x r-rect-y l-rect-y" id="centerdemo"></div>
+  </div>
+  <style>
+    .section-1 {
+      margin-top: calc(var(--height) / 5 * 1.5);
+      position: relative;
+      --aug-tl: calc(var(--height) / 5 * 0.25);
+      --aug-tr: calc(var(--height) / 5 * 0.25);
+      --aug-tl-extend2: 30%;
+      --aug-tr-extend1: 30%;
+      --aug-border-bg: var(--c0);
+      --aug-border-all: 1px;
+      --aug-border-opacity: 0.25;
+      --s1smh: var(--media-lte-sm) calc(var(--height) / 10 * 13);
+      height: var(--s1smh, calc(var(--height) / 10 * 11));
+      background: linear-gradient(to bottom right, var(--c2), transparent),
+                  repeating-radial-gradient(var(--c0-a), var(--c0-a) 1px, transparent 2px, transparent 50px),
+                  repeating-linear-gradient(to right, transparent, transparent 24px, var(--c0-a) 25px, transparent 26px, transparent 100px),
+                  repeating-linear-gradient(to bottom, transparent, transparent 24px, var(--c0-a) 25px, transparent 26px, transparent 100px),
+                  linear-gradient(var(--c0-a), var(--c0-a)), var(--c1);
+      background-size: auto auto, 50px 50px, 100px 100px, 100px 100px, auto auto;
+      border-bottom: 0.5rem solid var(--c0);
+
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas: "code demo info";
+      grid-gap: 2rem;
+      padding-top: 3rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      color: var(--c1-i);
+    }
+    h1 {
+      position: absolute;
+      top: 0.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--c0);
+      font-size: 1.5rem;
+      font-weight: normal;
+      opacity: 0.75;
+    }
+    .section-1 .code-area {
+      grid-area: code;
+    }
+    .section-1 .demo-3d {
+      grid-area: demo;
+      position: relative;
+    }
+    .section-1 .section-info {
+      grid-area: info;
+    }
+    h2 {
+      font-size: 2rem;
+      font-weight: normal;
+      color: var(--c1-i);
+      text-transform: lowercase;
+    }
+    h3 {
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--c0);
+    }
+    .section-1 ul {
+      list-style-position: outside;
+      line-height: 1.75;
+      width: calc(100% - 4rem);
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    .section-1 a {
+      color: var(--c1-i);
+      text-decoration: underline;
+    }
+
+    .my-augfiguration {
+      --aug-tr: 1.5rem;
+      --aug-br: 1.5rem;
+      --aug-bl: 3rem;
+      --aug-br-inset2: 40%;
+      --aug-border-all: 0.5rem;
+      --aug-border-bg: linear-gradient(to bottom right, var(--hot-blue), var(--hot-red));
+      --aug-inlay-all: 0.5rem;
+      --aug-inlay-bg: #fbe806;
+      background: linear-gradient(var(--hot-red), var(--hot-blue));
+      color: var(--hot-blue);
+      font-size: 3rem;
+      text-align: center;
+      text-shadow: 0px 0px 10px blue;
+      line-height: 10rem;
+    }
+    .my-augfiguration.info-border,
+    .my-augfiguration.info-html,
+    .my-augfiguration.info-inlay {
+      background: none;
+    }
+    .my-augfiguration.info-inlay {
+      --aug-border-bg: transparent;
+      background: none;
+    }
+
+    .group-3d {
+      height: 30rem;
+      position: relative;
+      left: 0px;
+      top: -3rem;
+      transform-style: preserve-3d;
+      transform-origin: 50% 100%;
+      transform: scale(0.75) rotateY(-30deg) rotateX(45deg);
+      transition: transform 0.5s ease, left 0.5s ease;
+    }
+    .my-augfiguration {
+      position: absolute;
+      height: 70%;
+      width: 50%;
+      top: 0px;
+      left: 0px;
+      transition: transform 0.5s ease;
+      transition-delay: 0.5s;
+    }
+    .my-augfiguration:nth-child(1) {
+      transform: translateZ(14rem);
+    }
+    .my-augfiguration:nth-child(2) {
+      transform: translateZ(9rem);
+    }
+    .my-augfiguration:nth-child(3) {
+      transform: translateZ(4.5rem);
+    }
+    .my-augfiguration:nth-child(4) {
+      transform: translateZ(0px);
+    }
+    .compressed {
+      left: 40%;
+      transform: scale(0.75);
+      transition-delay: 0.5s;
+    }
+    .compressed .my-augfiguration {
+      transition-delay: 0s;
+    }
+    .compressed .my-augfiguration:nth-child(1) {
+      transform: translateZ(2.5px);
+    }
+    .compressed .my-augfiguration:nth-child(2) {
+      transform: translateZ(2px);
+    }
+    .compressed .my-augfiguration:nth-child(3) {
+      transform: translateZ(1.5px);
+    }
+    .compressed .my-augfiguration:nth-child(4) {
+      transform: translateZ(1px);
+    }
+    .expanded-labels {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      text-align: right;
+      color: var(--c1-i);
+      font-family: monospace;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      width: 0px;
+      overflow: hidden;
+      transition: transform 250ms ease, width 250ms ease;
+      transition-delay: 0s;
+    }
+    .group-3d:not(.compressed) .expanded-labels {
+      width: 50%;
+      transform: rotateX(-45deg) translateY(-9rem);
+      transition-delay: 1s;
+    }
+    .label-line {
+      --aug-bl-inset2: 75%;
+      --aug-bl: 0.5rem;
+      height: 0.6rem;
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+    .code-area {
+      position: relative;
+    }
+    .code-container {
+      position: absolute;
+      left: 0px;
+      right: 1rem;
+      top: 0.5rem;
+      bottom: 2rem;
+      --aug-tl: 1rem;
+      --aug-border-all: 1px;
+      --aug-border-bg: var(--c0);
+      --aug-inlay-all: 0.5rem;
+      --aug-inlay-bg: var(--c1);
+      --aug-tr: 0.5rem;
+      --aug-tr-inset1: 15%;
+      --aug-br: 0.5rem;
+      --aug-br-extend1: 55%;
+      --aug-br-extend2: 55%;
+    }
+    .code-type-label {
+      display: block;
+      margin-top: 2rem;
+      margin-left: 1rem;
+      margin-right: 2rem;
+      padding: 0.125rem;
+      padding-left: 0.25rem;
+      font-size: 0.75rem;
+      background: var(--c1-i);
+      color: var(--c1);
+      font-weight: bold;
+      opacity: 0.66;
+      border-top-left-radius: 0.25rem;
+      --aug-clip-br1: initial;
+      --aug-br1: 1rem;
+    }
+    .section-1 code {
+      display: block;
+      margin: 0.5rem;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      overflow: hidden;
+    }
+
+    .section-1 code,
+    .section-1 code span {
+      font-family: monospace;
+      font-size: 0.75rem;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    [data-highlight-info="info-settings"] .code-area .info-settings,
+    [data-highlight-info="info-augs"] .code-area .info-augs,
+    [data-highlight-info="info-props"] .code-area .info-props,
+    [data-highlight-info="info-clip"] .code-area .info-clip,
+    [data-highlight-info="info-augmented"] .code-area .info-augmented,
+    [data-highlight-info="info-border"] .code-area .info-border,
+    [data-highlight-info="info-html"] .code-area .info-html,
+    [data-highlight-info="info-inlay"] .code-area .info-inlay,
+    [data-highlight-info="info-background"] .code-area .info-background,
+    .section-1 code span:hover {
+      background: var(--c1-i);
+      color: var(--c1);
+    }
+
+    .highlighted-info {
+      position: absolute;
+      left: -1rem;
+      top: 15%;
+      width: 50%;
+      height: 50%;
+      color: var(--c1-i);
+      font-family: monospace;
+      padding: 1rem;
+      font-size: 1rem;
+      line-height: 2rem;
+      --aug-tl: 1rem;
+      --aug-tr: 1rem;
+      --aug-br: 1rem;
+      --aug-bl: 1rem;
+      --aug-border-all: 2px;
+      --aug-border-bg: radial-gradient(circle at top left, var(--hot-blue), var(--hot-blue) 1.75rem, transparent 1.75rem),
+                       radial-gradient(circle at top right, var(--hot-blue), var(--hot-blue) 1.75rem, transparent 1.75rem),
+                       radial-gradient(circle at bottom left, var(--hot-blue), var(--hot-blue) 1.75rem, transparent 1.75rem),
+                       radial-gradient(circle at bottom right, var(--hot-blue), var(--hot-blue) 1.75rem, transparent 1.75rem);
+      opacity: 1;
+      transition: opacity 0.25s ease, width 0.33s ease;
+      transition-delay: 0.33s;
+    }
+
+    [data-highlight-info=""] .highlighted-info {
+      width: 0px;
+      opacity: 0;
+      transition: opacity 0.25s ease, width 0.33s ease;
+      transition-delay: 0s;
+    }
+
+    .highlighted-info > div {
+      display: none;
+    }
+
+    [data-highlight-info="info-fallback"] .highlighted-info .show-fallback,
+    [data-highlight-info="info-settings"] .highlighted-info .show-settings,
+    [data-highlight-info="info-augs"] .highlighted-info .show-augs,
+    [data-highlight-info="info-props"] .highlighted-info .show-props,
+    [data-highlight-info="info-clip"] .highlighted-info .show-clip,
+    [data-highlight-info="info-augmented"] .highlighted-info .show-augmented,
+    [data-highlight-info="info-border"] .highlighted-info .show-border,
+    [data-highlight-info="info-html"] .highlighted-info .show-html,
+    [data-highlight-info="info-inlay"] .highlighted-info .show-inlay,
+    [data-highlight-info="info-background"] .highlighted-info .show-background {
+      display: block;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+    }
+  </style>
+  <section class="section-1" data-augmented-ui="tl-2-clip-x tr-2-clip-x border" data-highlight-info="">
+    <h1>augmented-ui</h1>
+    <div class="code-area" onmouseenter="compressGroup3d()" onmouseleave="expandGroup3d()" data-augmented-ui-reset>
+      <div class="code-container" data-augmented-ui="tl-clip tr-clip-y br-2-clip-xy both">
+        <span class="code-type-label" data-augmented-ui>CSS</span>
+        <code>
+          .<span class="info-settings">my-augfiguration</span> {<br>
+          &nbsp;&nbsp;<span class="info-clip">--aug-tr: 25px;</span><br>
+          &nbsp;&nbsp;<span class="info-clip">--aug-bl: 57px;</span><br>
+          &nbsp;&nbsp;<span class="info-props">--aug-br: 25px;</span><br>
+          &nbsp;&nbsp;<span class="info-props">--aug-br-inset2: 40%;</span><br>
+          &nbsp;&nbsp;<span class="info-border">--aug-border-all: 10px;</span><br>
+          &nbsp;&nbsp;<span class="info-border">--aug-border-bg: linear-gradient(to botto...);</span><br>
+          &nbsp;&nbsp;<span class="info-inlay">--aug-inlay-all: 10px;</span><br>
+          &nbsp;&nbsp;<span class="info-inlay">--aug-inlay-bg: #fbe806;</span><br>
+          &nbsp;&nbsp;<span class="info-background">background: linear-gradient(#ff604d, #b1ffff);</span><br>
+          &nbsp;&nbsp;<span class="info-html">color: #b1ffff;</span><br>
+          &nbsp;&nbsp;<span class="info-html">font-size...</span><br>
+          }
+        </code>
+        <span class="code-type-label" data-augmented-ui>HTML</span>
+        <code>
+          &lt;<span class="info-background">div</span> class="<span class="info-settings">my-augfiguration</span>"<br>
+          &nbsp;&nbsp;<span class="info-augs">data-augmented-ui</span>="<span class="info-clip">tr-clip</span>
+          <span class="info-clip">bl-clip</span> <span class="info-props">br-clip-y</span>
+          <span class="info-augmented">both</span>"<br>
+          &gt;<br>
+          &nbsp;&nbsp;<span class="info-html">&amp;lt; / &amp;gt;</span><br>
+          &lt;<span class="info-background">/div</span>&gt;
+        </code>
+      </div>
+    </div>
+    <div class="demo-3d" data-augmented-ui-reset>
+      <div class="highlighted-info" data-augmented-ui="tl-clip tr-clip br-clip bl-clip border">
+        <div class="show-settings">
+          Just a class name to style the element
+        </div>
+        <div class="show-augs">
+          Add this attribute to elements you want to augment. If you equip augs with CSS using augmented-ui's core, no value is needed!
+        </div>
+        <div class="show-props">
+          Every region has a common set of core properties (like inset2) that will override the mixin's default values
+        </div>
+        <div class="show-clip">
+          Top-Right and Bottom-Left clip augs. Equipped by putting the mixin names in the attr, sized by CSS. All mixins in all regions can be sized with --aug-[region]
+        </div>
+        <div class="show-augmented">
+          This turns on both the border and inlay
+        </div>
+        <div class="show-border">
+          Borders can be set to any size (including individual top / right / bottom / left properties), with any background supported by CSS (including multi-layerd ones!)
+        </div>
+        <div class="show-html">
+          Typical CSS to style the content inside →
+        </div>
+        <div class="show-inlay">
+          Similar properties to the border, creates a smaller inlay background, inset the distance(s) specified
+        </div>
+        <div class="show-background">
+          Normal background for the element. Don't set one if you want the border-inlay gap to be transparent!
+        </div>
+      </div>
+      <script>
+        const compressGroup3d = () => {
+          const el = document.getElementById("group3d")
+          el && el.classList.add("compressed")
+        }
+        const expandGroup3d = () => {
+          const el = document.getElementById("group3d")
+          el && el.classList.remove("compressed")
+          const el2 = document.querySelector(".section-1")
+          el2 && el2.setAttribute("data-highlight-info", "")
+        }
+        const mouseenterInfo = (ev) => {
+          const cn = ev.target.className
+          if (cn.indexOf("info-") === 0) {
+            document.querySelector(".section-1").setAttribute("data-highlight-info", cn)
+          }
+        }
+        document.querySelector(".section-1 .code-area").addEventListener("mouseenter", mouseenterInfo, true)
+      </script>
+      <div id="group3d" class="group-3d compressed" onmouseenter="expandGroup3d()" data-augmented-ui-reset>
+        <div class="info-border my-augfiguration" data-augmented-ui="tr-clip bl-clip br-clip-y border"></div>
+        <div class="info-html my-augfiguration" data-augmented-ui="tr-clip bl-clip br-clip-y">&lt; / &gt;</div>
+        <div class="info-inlay my-augfiguration" data-augmented-ui="tr-clip bl-clip br-clip-y both"></div>
+        <div class="info-background my-augfiguration" data-augmented-ui="tr-clip bl-clip br-clip-y"></div>
+        <div class="expanded-labels">
+          ::after
+          <div class="label-line" data-augmented-ui="bl-clip-x" style="background: #d8aea4;"></div>
+          innerHTML
+          <div class="label-line" data-augmented-ui="bl-clip-x" style="background: var(--hot-blue);"></div>
+          ::before
+          <div class="label-line" data-augmented-ui="bl-clip-x" style="background: #fbe806;"></div>
+          style.background
+          <div class="label-line" data-augmented-ui="bl-clip-x" style="background: var(--hot-red);"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-info" onmouseenter="expandGroup3d()">
+      <h2>High&nbsp;Tech, Low&nbsp;Effort</h2>
+      <br>
+      <h3>augmented-ui is just CSS.</h3>
+      <ul>
+        <li>Futuristic, Sci-Fi shaping for any element</li>
+        <li>Add mixin names to the "data-augmented-ui" attribute to equip augs with preset property configurations</li>
+        <li>Customize the --aug-properties to make it feel just right</li>
+        <li>Full support, global user reach of 92.96%!</li>
+      </ul>
+      <h3>Namespaced to avoid crossing wires.</h3>
+      <ul>
+        <li>All custom properties begin with "--aug-"</li>
+        <li>Selectors only use "data-augmented-ui" attributes</li>
+      </ul>
+      <h3>Use augmented-ui in any project, for free.</h3>
+      <ul>
+        <li>Free :: BSD 2-Clause License</li>
+        <li>Open Source :: <a href="https://www.npmjs.com/package/augmented-ui">NPM</a>&nbsp;&nbsp;<a href="https://github.com/propjockey/augmented-ui">GitHub</a></li>
+      </ul>
+    </div>
+  </section>
+  <style>
+    .section-2 {
+      height: calc(var(--height) / 10 * 14);
+      padding-top: 3rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      display: grid;
+      grid-template-areas: "left right";
+      grid-template-columns: 2fr 3fr;
+      grid-gap: 2rem;
+      perspective: 1077px;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+    .section-2 .section-info {
+      grid-area: left;
+    }
+    .section-2 .section-right {
+      grid-area: right;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      transform: rotateY(-15deg);
+      position: relative;
+    }
+    .glow {
+      position: absolute;
+      background: radial-gradient(at bottom center, var(--hot-blue), transparent);
+      top: 2rem;
+      left: 10%;
+      width: 80%;
+      height: 68%;
+      transform-origin: 50% 100%;
+      transform-style: preserve-3d;
+      transform: rotateX(-90deg);
+    }
+    .img-frame {
+      margin-top: 2rem;
+      margin-left: 10%;
+      width: 80%;
+      height: 68%;
+      transform-origin: 50% 100%;
+      transform-style: preserve-3d;
+      transform: scaleX(-1);
+      --size: 0.25rem;
+      background: var(--hot-blue);
+      position: relative;
+      --aug-r-center: 75%;
+      --aug-r-extend1: 30%;
+      --aug-r: var(--size);
+      --aug-tl: calc(var(--size) * 2);
+      --aug-bl: var(--size);
+      --aug-br: var(--size);
+      --aug-tr1: calc(var(--size) * 2);
+      --aug-tr2: var(--size);
+      --aug-tl-extend1: 7.5%;
+      --aug-tr-extend1: 35%;
+      --aug-tr-extend2: 7.5%;
+      --aug-bl-extend2: 30%;
+      --aug-l: calc(var(--size) * 2);
+      --aug-l-center: 55%;
+      --aug-l-extend1: 10%;
+    }
+    .img-frame .img-eye {
+      display: block;
+      position: absolute;
+      left: calc(50% + var(--size));
+      top: var(--size);
+      transform: translate(-50%, -50%);
+      background: var(--c1);
+      border-radius: 50%;
+      height: calc(var(--size) * 1.25);
+      width: calc(var(--size) * 1.25);
+    }
+    .img-frame .inner-frame {
+      background: #ffffff;
+      box-shadow: inset 0 0 3rem var(--hot-blue);
+      position: absolute;
+      top: calc(var(--size) * 2 + 0.125rem);
+      left: calc(var(--size) * 2 + 0.125rem);
+      right: calc(var(--size) + 0.125rem);
+      bottom: 0.125rem;
+      --aug-b: var(--size);
+      --aug-b-center: 33%;
+      --aug-b-extend1: 45%;
+      --aug-br: var(--size);
+      --aug-br-inset1: 7.5%;
+      --aug-bl: var(--size);
+      --aug-tl: var(--size);
+      --aug-tr: var(--size);
+      --aug-tl-inset1: 15%;
+      --aug-tr-inset2: 15%;
+    }
+    .img-frame .inner-frame img {
+      transform: scaleX(-1);
+      transform-style: preserve-3d;
+      filter: brightness(1.25);
+      display: block;
+      height: 90%;
+      position: relative;
+      top: 1rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section-2 h2 {
+      color: var(--hot-blue);
+      text-shadow: 0px 0px 1.5rem var(--hot-blue);
+    }
+    .section-2 .section-info p {
+      color: var(--c1-i);
+      line-height: 1.5;
+    }
+    .section-2 .section-info b {
+      color: var(--hot-blue);
+    }
+    .bonus-shapes [data-augmented-ui] {
+      display: inline-block;
+      margin: 0.5rem;
+      color: var(--hot-blue);
+      --aug-all-width: 3rem;
+      --aug-border-all: 2px;
+    }
+    .bonus-shapes .height [data-augmented-ui] {
+      --aug-all-width: initial;
+      --aug-all-height: 3rem;
+      margin-left: 0.7rem;
+      margin-right: 0.7rem;
+    }
+    .section-2 a {
+      text-decoration: none;
+    }
+  </style>
+  <section class="section-2">
+    <div class="section-info" onmouseenter="expandGroup3d()">
+      <h2>Mixin Mixer</h2>
+      <br>
+      <p>
+        Thanks to the wide customizations possible with the new augmented core, 164 NEW preset mixin configurations have been added to the 36 from version 1! That's 200 total region mixins in version 2!<br>
+        <br>
+        So, to make augmented-ui even easier than before, <a href="/mixinmixer"><b>Mixin Mixer</b></a> will show you all 200 region mixins and lets you rapidly generate the HTML from your selections.<br>
+        Pick, click, repeat, copy, paste.
+      </p>
+      <br>
+      <div class="bonus-shapes">
+        <h3>BONUS</h3>
+        <br>
+        <p>
+          Beyond the region mixins shown in <a href="/mixinmixer"><b>Mixin Mixer</b></a>, there are also a handful of common fixed-aspect-ratio shapes
+          available that take advantage of core's new any-angle clip properties automatically:
+        </p>
+        <br>
+        <div style="position: relative;">
+          <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; filter: blur(0.25rem) brightness(1.25);">
+            <div data-augmented-ui="border all-hex-alt"></div>
+            <div data-augmented-ui="border all-triangle-up"></div>
+            <div data-augmented-ui="border all-triangle-down"></div>
+            <div data-augmented-ui="border all-hexangle-up"></div>
+            <div data-augmented-ui="border all-hexangle-down"></div>
+          </div>
+          <div data-augmented-ui="border all-hex-alt"></div>
+          <div data-augmented-ui="border all-triangle-up"></div>
+          <div data-augmented-ui="border all-triangle-down"></div>
+          <div data-augmented-ui="border all-hexangle-up"></div>
+          <div data-augmented-ui="border all-hexangle-down"></div>
+        </div>
+        <div class="height" style="position: relative;">
+          <div class="height" style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; filter: blur(0.25rem) brightness(1.25);">
+            <div data-augmented-ui="border all-hex"></div>
+            <div data-augmented-ui="border all-triangle-right"></div>
+            <div data-augmented-ui="border all-triangle-left"></div>
+            <div data-augmented-ui="border all-hexangle-right"></div>
+            <div data-augmented-ui="border all-hexangle-left"></div>
+          </div>
+          <div data-augmented-ui="border all-hex"></div>
+          <div data-augmented-ui="border all-triangle-right"></div>
+          <div data-augmented-ui="border all-triangle-left"></div>
+          <div data-augmented-ui="border all-hexangle-right"></div>
+          <div data-augmented-ui="border all-hexangle-left"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-right">
+      <div class="img-frame" data-augmented-ui="tl-2-clip-y l-clip-y bl-2-clip-y br-clip r-clip-y tr-2-clip-xy">
+        <span class="img-eye"></span>
+        <div data-augmented-ui-reset>
+          <div class="inner-frame" data-augmented-ui="tl-clip-x tr-clip-x bl-clip b-clip-x br-clip-x">
+            <img src="/img/mixinmixer_site.png" alt="Screenshot of Mixin Mixer">
+          </div>
+        </div>
+      </div>
+      <div class="glow"></div>
+    </div>
+  </section>
+  <style>
+    .section-3 {
+      border-top: 0.5rem solid var(--c0);
+      border-bottom: 0.5rem solid var(--c3);
+      height: calc(var(--height) / 10 * 14);
+      padding-top: 3rem;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 0.5rem;
+      perspective: 1077px;
+      background: linear-gradient(to bottom left, var(--c1) 30%, transparent 150%), var(--hot-red);
+    }
+    .section-3 h2 {
+      margin-top: 1rem;
+      color: var(--hot-red);
+      filter: drop-shadow(0px 0px 0.125rem var(--hot-red));
+      -webkit-mask-image: repeating-linear-gradient(black, black 2px, transparent 3px);
+      mask-image: repeating-linear-gradient(black, black 2px, transparent 3px);
+    }
+    .section-3 .section-info {
+      padding-left: 2rem;
+      color: var(--c1-i);
+      line-height: 2;
+    }
+    .section-3 a {
+      color: var(--hot-red);
+    }
+    .warn {
+      display: inline-block;
+      vertical-align: middle;
+      --aug-all-height: 2rem;
+      font-size: 1.125rem;
+      --aug-border-all: 0.25rem;
+    }
+    .core-left,
+    .core-right {
+      --aug-border: initial;
+      --aug-border-all: 0.25rem;
+      --aug-border-bg: var(--hot-red);
+      padding: 1rem;
+      position: relative;
+      background: var(--c1);
+      color: var(--c1-i);
+      --aug-tl: 1.5rem;
+      --aug-tr: 1.5rem;
+      --aug-l: 1rem;
+      --aug-l-extend1: 50%;
+      --aug-r: 1rem;
+      --aug-r-extend1: 50%;
+      --aug-bl: 1rem;
+      --aug-br: 1rem;
+      margin-bottom: 2rem;
+      transform-origin: 50% 50%;
+    }
+    .core-left {
+      transform: rotateY(5deg);
+    }
+    .core-right {
+      transform: rotateY(-5deg);
+    }
+    .core-head {
+      position: absolute;
+      top: 0.5rem;
+      left: 0px;
+      width: 100%;
+      display: block;
+      text-align: center;
+      color: var(--hot-red);
+      font-weight: bold;
+    }
+    .section-3 code {
+      font-size: 0.6rem;
+      font-family: monospace;
+      overflow: auto;
+      white-space: nowrap;
+    }
+    .section-3 .code-css {
+      position: absolute;
+      top: 2.5rem;
+      left: 1rem;
+      height: 50%;
+      width: 45%;
+    }
+    .core-left .code-css {
+      left: 2rem;
+    }
+    .section-3 .code-html {
+      position: absolute;
+      top: calc(50% + 3.5rem);
+      right: 2rem;
+      left: 1rem;
+      bottom: 1rem;
+    }
+    .core-left .code-html {
+      left: 2rem;
+      right: 1rem;
+    }
+    .dna-demo {
+      position: absolute;
+      right: 1rem;
+      top: 2.5rem;
+      --aug-border: initial;
+      --aug-border-all: 1px;
+      --aug-border-bg: var(--hot-red);
+      width: 45%;
+      height: 50%;
+      padding: 1rem;
+      box-shadow: inset 0px 0px 1rem var(--hot-red);
+      -webkit-mask-image: repeating-linear-gradient(black, black 0.125rem, rgba(0, 0, 0, 0.5) 0.25rem);
+      mask-image: repeating-linear-gradient(black, black 0.125rem, rgba(0, 0, 0, 0.5) 0.25rem);
+    }
+    .core-right .dna-demo {
+      --aug-br: 1rem;
+      --aug-br-inset2: calc(100% - 7.5rem);
+    }
+    .dna-demo ul {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      list-style: none;
+      width: 8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-size: 0.75rem;
+      border-left: 0.125rem solid var(--hot-blue);
+      border-right: 0.125rem solid var(--hot-blue);
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      filter: drop-shadow(0px 0px 0.125rem var(--hot-blue));
+    }
+    .dna-demo li {
+      text-align: center;
+      padding: 0.125rem;
+      height: 1rem;
+      margin: 0.125rem;
+      --aug-border-all: 0.05rem;
+      --aug-border-bg: var(--c0);
+    }
+    .dna-demo-core li {
+      --aug-border: initial;
+      --aug-l1: 0.5rem;
+      --aug-l2: 0.5rem;
+      --aug-r1: 0.5rem;
+      --aug-r2: 0.5rem;
+      --aug-tl1: 0.5rem;
+      --aug-tr1: 0.5rem;
+      --aug-bl1: 0.5rem;
+      --aug-br1: 0.5rem;
+    }
+    .dna-demo-core [data-C]:nth-child(2n - 1) {
+      --aug-scoop-r1: initial;
+      --aug-scoop-r2: initial;
+    }
+    .dna-demo-core [data-C]:nth-child(2n) {
+      --aug-scoop-l1: initial;
+      --aug-scoop-l2: initial;
+    }
+    .dna-demo-core [data-G]:nth-child(2n - 1) {
+      --aug-round-tr1: initial;
+      --aug-round-br1: initial;
+    }
+    .dna-demo-core [data-G]:nth-child(2n) {
+      --aug-round-tl1: initial;
+      --aug-round-bl1: initial;
+    }
+    .dna-demo-core [data-A]:nth-child(2n - 1) {
+      --aug-clip-tr1: initial;
+      --aug-clip-br1: initial;
+    }
+    .dna-demo-core [data-A]:nth-child(2n) {
+      --aug-clip-tl1: initial;
+      --aug-clip-bl1: initial;
+    }
+    .dna-demo-core [data-T]:nth-child(2n - 1) {
+      --aug-clip-r1: initial;
+      --aug-clip-r2: initial;
+    }
+    .dna-demo-core [data-T]:nth-child(2n) {
+      --aug-clip-l1: initial;
+      --aug-clip-l2: initial;
+    }
+
+    .dna-demo-mixins li {
+      --aug-l: 0.5rem;
+      --aug-r: 0.5rem;
+      --aug-tl: 0.5rem;
+      --aug-tr: 0.5rem;
+      --aug-bl: 0.5rem;
+      --aug-br: 0.5rem;
+    }
+  </style>
+  <section class="section-3">
+    <div class="core-left" data-augmented-ui="tl-clip-x tr-clip-x l-clip-y br-clip">
+      <span class="core-head">Using Mixins</span>
+      <div data-augmented-ui-reset>
+        <code class="code-css hide-scrollbars">
+          .dna-demo-mixins li {<br>
+          &nbsp;&nbsp;--aug-l: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-r: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-tl: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-tr: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-bl: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-br: 0.5rem;<br>
+          }<br>
+          /* The remaining CSS is common<br>
+          &nbsp;&nbsp;&nbsp;between both approaches.<br>
+          &nbsp;&nbsp;&nbsp;The mixins are hard-coded<br>
+          &nbsp;&nbsp;&nbsp;individually per letter,<br>
+          &nbsp;&nbsp;&nbsp;per left/right side.<br>
+          &nbsp;&nbsp;&nbsp;<br>
+          &nbsp;&nbsp;&nbsp;The core approach can<br>
+          &nbsp;&nbsp;&nbsp;instead use CSS selectors<br>
+          &nbsp;&nbsp;&nbsp;to make the augs dynamic<br>
+          &nbsp;&nbsp;&nbsp;just by adding a class<br>
+          &nbsp;&nbsp;&nbsp;(or attr) to identify<br>
+          &nbsp;&nbsp;&nbsp;the C/G/T/A nucleotide.<br>
+          &nbsp;*/
+        </code>
+        <code class="code-html hide-scrollbars">
+          &lt;ul class="dna-demo-mixins"&gt;<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-clip"&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-clip bl-clip"&gt;A<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tr-round br-round"&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border l-scoop"&gt;C<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-clip"&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-clip bl-clip"&gt;A<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tr-clip br-clip"&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border l-clip"&gt;T<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tr-clip br-clip"&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border l-clip"&gt;T<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-clip"&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-clip bl-clip"&gt;A<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tr-clip br-clip"&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border l-clip"&gt;T<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tr-round br-round"&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border l-scoop"&gt;C<br>
+          <br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border r-scoop"&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-augmented-ui="border tl-round bl-round"&gt;G<br>
+          &lt;/ul&gt;
+        </code>
+        <div class="dna-demo dna-demo-mixins" data-augmented-ui>
+          <ul data-augmented-ui-reset>
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+
+            <li data-augmented-ui="border r-clip">T
+            <li data-augmented-ui="border tl-clip bl-clip">A
+
+            <li data-augmented-ui="border tr-round br-round">G
+            <li data-augmented-ui="border l-scoop">C
+
+            <li data-augmented-ui="border r-clip">T
+            <li data-augmented-ui="border tl-clip bl-clip">A
+
+            <li data-augmented-ui="border tr-clip br-clip">A
+            <li data-augmented-ui="border l-clip">T
+
+            <li data-augmented-ui="border tr-clip br-clip">A
+            <li data-augmented-ui="border l-clip">T
+
+            <li data-augmented-ui="border r-clip">T
+            <li data-augmented-ui="border tl-clip bl-clip">A
+
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+
+            <li data-augmented-ui="border tr-clip br-clip">A
+            <li data-augmented-ui="border l-clip">T
+
+            <li data-augmented-ui="border tr-round br-round">G
+            <li data-augmented-ui="border l-scoop">C
+
+            <li data-augmented-ui="border r-scoop">C
+            <li data-augmented-ui="border tl-round bl-round">G
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="core-right" data-augmented-ui="tl-clip-x tr-clip-x r-clip-y bl-clip">
+      <span class="core-head">Using Core</span>
+      <div data-augmented-ui-reset>
+        <code class="code-css hide-scrollbars">
+          .dna-demo-core li {<br>
+          &nbsp;&nbsp;--aug-border: initial;<br>
+          &nbsp;&nbsp;--aug-l1: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-l2: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-r1: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-r2: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-tl1: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-tr1: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-bl1: 0.5rem;<br>
+          &nbsp;&nbsp;--aug-br1: 0.5rem;<br>
+          }<br>
+          .dna-demo-core [data-C]:nth-child(2n - 1) {<br>
+          &nbsp;&nbsp;--aug-scoop-r1: initial;<br>
+          &nbsp;&nbsp;--aug-scoop-r2: initial;<br>
+          }<br>
+          .dna-demo-core [data-C]:nth-child(2n) {<br>
+          &nbsp;&nbsp;--aug-scoop-l1: initial;<br>
+          &nbsp;&nbsp;--aug-scoop-l2: initial;<br>
+          }<br>
+          .dna-demo-core [data-G]:nth-child(2n - 1) {<br>
+          &nbsp;&nbsp;--aug-round-tr1: initial;<br>
+          &nbsp;&nbsp;--aug-round-br1: initial;<br>
+          }<br>
+          .dna-demo-core [data-G]:nth-child(2n) {<br>
+          &nbsp;&nbsp;--aug-round-tl1: initial;<br>
+          &nbsp;&nbsp;--aug-round-bl1: initial;<br>
+          }<br>
+          .dna-demo-core [data-A]:nth-child(2n - 1) {<br>
+          &nbsp;&nbsp;--aug-clip-tr1: initial;<br>
+          &nbsp;&nbsp;--aug-clip-br1: initial;<br>
+          }<br>
+          .dna-demo-core [data-A]:nth-child(2n) {<br>
+          &nbsp;&nbsp;--aug-clip-tl1: initial;<br>
+          &nbsp;&nbsp;--aug-clip-bl1: initial;<br>
+          }<br>
+          .dna-demo-core [data-T]:nth-child(2n - 1) {<br>
+          &nbsp;&nbsp;--aug-clip-r1: initial;<br>
+          &nbsp;&nbsp;--aug-clip-r2: initial;<br>
+          }<br>
+          .dna-demo-core [data-T]:nth-child(2n) {<br>
+          &nbsp;&nbsp;--aug-clip-l1: initial;<br>
+          &nbsp;&nbsp;--aug-clip-l2: initial;<br>
+          }
+        </code>
+        <code class="code-html hide-scrollbars">
+          &lt;ul class="dna-demo-core"&gt;<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-T data-augmented-ui&gt;T &lt;li data-A data-augmented-ui&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-G data-augmented-ui&gt;G &lt;li data-C data-augmented-ui&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-T data-augmented-ui&gt;T &lt;li data-A data-augmented-ui&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-A data-augmented-ui&gt;A &lt;li data-T data-augmented-ui&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-A data-augmented-ui&gt;A &lt;li data-T data-augmented-ui&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-T data-augmented-ui&gt;T &lt;li data-A data-augmented-ui&gt;A<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &nbsp;&nbsp;&lt;li data-A data-augmented-ui&gt;A &lt;li data-T data-augmented-ui&gt;T<br>
+          &nbsp;&nbsp;&lt;li data-G data-augmented-ui&gt;G &lt;li data-C data-augmented-ui&gt;C<br>
+          &nbsp;&nbsp;&lt;li data-C data-augmented-ui&gt;C &lt;li data-G data-augmented-ui&gt;G<br>
+          &lt;/ul&gt;
+        </code>
+        <div class="dna-demo dna-demo-core" data-augmented-ui="br-clip-y">
+          <ul data-augmented-ui-reset>
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+            <li data-T data-augmented-ui>T <li data-A data-augmented-ui>A
+            <li data-G data-augmented-ui>G <li data-C data-augmented-ui>C
+            <li data-T data-augmented-ui>T <li data-A data-augmented-ui>A
+            <li data-A data-augmented-ui>A <li data-T data-augmented-ui>T
+            <li data-A data-augmented-ui>A <li data-T data-augmented-ui>T
+            <li data-T data-augmented-ui>T <li data-A data-augmented-ui>A
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+            <li data-A data-augmented-ui>A <li data-T data-augmented-ui>T
+            <li data-G data-augmented-ui>G <li data-C data-augmented-ui>C
+            <li data-C data-augmented-ui>C <li data-G data-augmented-ui>G
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="section-info">
+      <h2>augmented core <span class="warn" data-augmented-ui="border all-hexangle-up">!</span></h2>
+      <p>
+        <b>Skip the attribute value, augment {CSS} itself</b><br>
+        Mixins are a great way to get started and move fast, and they're a great way to learn core and its nuances at your own pace, but they are optional!<br>
+        <br>
+        Core is still just CSS; built using inverted <a href="https://github.com/propjockey/css-sweeper#basics-of-space-toggle">CSS Space Toggles</a>.<br>
+        As a result, you can equip any augs to any element with the <b style="white-space: nowrap;">data-augmented-ui</b> attribute from your CSS.<br>
+        No need to import a separate JS library with more edge cases than use cases! ;)
+      </p>
+    </div>
+  </section>
+  <style>
+    .section-4 {
+      margin-top: calc(var(--height) / 5);
+      margin-bottom: calc(var(--height) / 5);
+      position: relative;
+      width: var(--width);
+      height: var(--height);
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid var(--c0);
+    }
+    .area-s4 {
+      width: calc(20% - 1rem);
+      height: calc(20% - 1rem);
+      position: absolute;
+      text-align: center;
+      padding-top: 2rem;
+      font-size: 1rem;
+      color: var(--c1-i);
+      --aug-clip-tl1: initial;
+      --aug-clip-tr1: initial;
+      --aug-clip-br1: initial;
+      --aug-clip-bl1: initial;
+      --aug-border: initial;
+      --aug-border-all: 2px;
+      --aug-border-bg: var(--c0-a);
+      --aug-tl1: 1rem;
+      --aug-tr1: 1rem;
+      --aug-br1: 1rem;
+      --aug-bl1: 1rem;
+      transform: translate(0.5rem, 0.5rem);
+    }
+    .area-s4-ty {
+      left: 0%;
+      top: 80%;
+    }
+    .area-s4-twitter {
+      left: 0%;
+      top: 0%;
+    }
+    .area-s4-docs {
+      left: 0%;
+      top: 20%;
+    }
+    .area-s4-github {
+      left: 0%;
+      top: 40%;
+    }
+    .area-s4-support {
+      left: 0%;
+      top: 60%;
+    }
+    .propjockey {
+      position: absolute;
+      left: 40%;
+      top: 20%;
+      height: 60%;
+      width: 40%;
+      background: radial-gradient(ellipse at bottom center, black, var(--c1) 50%) bottom center / 250% 100% no-repeat;
+      --aug-border: initial;
+      --aug-border-all: 0.125rem;
+      --aug-border-bg: linear-gradient(
+        to right,
+        var(--c3) 0.125rem,
+        var(--c0) 0.25rem,
+        var(--c0) calc(100% - 0.25rem),
+        var(--c3) calc(100% - 0.125rem)
+      );
+      --aug-scoop-t1: initial;
+      --aug-scoop-t2: initial;
+      --aug-t1-width: 50%;
+      --aug-t2-width: 50%;
+      --aug-t1-height: 0.5rem;
+      --aug-t2-height: 0.5rem;
+      --aug-scoop-b1: initial;
+      --aug-scoop-b2: initial;
+      --aug-b1-width: 50%;
+      --aug-b2-width: 50%;
+      --aug-b1-height: 0.5rem;
+      --aug-b2-height: 0.5rem;
+    }
+    .propjockey img {
+      height: 100%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+  <section class="section-4">
+    <h2 data-augmented-ui class="area-s4 area-s4-ty">Thank you &lt;3</h2>
+    <a data-augmented-ui class="area-s4 area-s4-twitter" href="https://twitter.com/James0x57">Follow me on twitter!</a>
+    <a data-augmented-ui class="area-s4 area-s4-docs" href="/docs/#install">Check out the docs!</a>
+    <a data-augmented-ui class="area-s4 area-s4-github" href="https://github.com/propjockey/augmented-ui">Add a star on GitHub!</a>
+    <a data-augmented-ui class="area-s4 area-s4-support" href="/docs/#supporting-augmented-ui">Please consider $upporting!</a>
+    <a data-augmented-ui class="propjockey" href="https://github.com/propjockey"><img src="/img/propjockey_silhouette.png" alt="propjockey"></a>
+  </section>
+</body>
+</html>
