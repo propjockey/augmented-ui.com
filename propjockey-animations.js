@@ -28,7 +28,8 @@ const beats = {
   corepropsdemo: 7500 + 5500 + 5800 + 2000,
   fakeendstart:  7500 + 5500 + 5800 + 2000 + 600 + 4000 + 1750,
   futureisaug:   7500 + 5500 + 5800 + 2000 + 600 + 4000 + 1750 + 5000,
-  explosion:     7500 + 5500 + 5800 + 2000 + 600 + 4000 + 1750 + 5000 + 8000
+  explosion:     7500 + 5500 + 5800 + 2000 + 600 + 4000 + 1750 + 5000 + 7000,
+  end:           7500 + 5500 + 5800 + 2000 + 600 + 4000 + 1750 + 5000 + 8000 + 13000
 }
 const presentationAnim = new PropJockey({
   repeat: true,
@@ -132,7 +133,7 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3500, value: `<span class="pres-text fade-in">But...</span>`, ease: "ease.step-end" },
         { position: beats.futureisaug, value: `<span class="pres-text" style="color: var(--c0);">the future is augmented!</span>`, ease: "ease.step-end" },
         { position: beats.explosion, value: `<span class="pres-text"><span style="color: var(--c0);">augmented-ui version 2</span><br>available now, for free!</span>`, ease: "ease.step-end" },
-        { position: beats.explosion + 13000, value: "", ease: "ease.step-end" },
+        { position: beats.explosion + 13000, value: "", ease: "ease.step-end" }
       ]
     },
     "--pjAnim-tl-augscale": {
@@ -147,7 +148,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-t-augscale": {
@@ -162,7 +164,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-tr-augscale": {
@@ -177,7 +180,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-r-augscale": {
@@ -192,7 +196,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-br-augscale": {
@@ -207,7 +212,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-b-augscale": {
@@ -222,7 +228,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-bl-augscale": {
@@ -237,7 +244,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     "--pjAnim-l-augscale": {
@@ -252,7 +260,8 @@ const presentationAnim = new PropJockey({
         { position: beats.fakeendstart + 3750, value: 0.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 2000, value: 1.0, ease: "ease.ease-out" },
         { position: beats.futureisaug + 3000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" }
+        { position: beats.futureisaug + 4500, value: 0, ease: "ease.ease-out" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     },
     cAugScale: {
@@ -319,7 +328,8 @@ const presentationAnim = new PropJockey({
         { position: 0, value: 0, ease: "ease.step-end" },
         { position: beats.corepropsdemo + 600, value: 0, ease: "ease.out-back" },
         { position: beats.corepropsdemo + 600 + 4000, value: 1.0, ease: "ease.ease-out" },
-        { position: beats.corepropsdemo + 600 + 4000 + 1000, value: 0, ease: "ease.ease-in" }
+        { position: beats.corepropsdemo + 600 + 4000 + 1000, value: 0, ease: "ease.ease-in" },
+        { position: beats.end, value: 0, ease: "ease.ease-out" }
       ]
     }
   }
@@ -331,12 +341,9 @@ let playing = true
 presentationAnim.play(presetnationEl)
 
 if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  presentationAnim.seek(presetnationEl, beats.explosion)
-    .animationState(presetnationEl)
-    .forceTick(0)
-  setTimeout(() => presentationAnim.stop(presetnationEl), 100)
+  presentationAnim.seek(presetnationEl, beats.explosion).pause(presetnationEl)
 } else {
-  window.addEventListener("scroll", () => {
+  const scrollPosToggle = () => {
     const scrollY = window.scrollY
     if (playing && scrollY > presHeight) {
       presentationAnim.pause(presetnationEl)
@@ -345,5 +352,7 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       presentationAnim.resume(presetnationEl)
       playing = true
     }
-  })
+  }
+  window.addEventListener("scroll", scrollPosToggle)
+  scrollPosToggle()
 }

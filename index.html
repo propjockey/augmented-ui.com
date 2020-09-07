@@ -51,6 +51,27 @@
     .hide-scrollbars::-webkit-scrollbar { 
       display: none;
     }
+    #logo {
+      --size: 1.5rem;
+      width: var(--size);
+      height: var(--size);
+      padding-top: calc(var(--size) / 40 * 12);
+      font-family: sans-serif;
+      font-size: calc(var(--size) / 4);
+      font-weight: bold;
+      text-align: center;
+      --aug-border: initial;
+      --aug-border-all: calc(var(--size) / 20);
+      --aug-clip-tl1: initial;
+      --aug-tl1: calc(var(--size) / 40 * 12);
+      --aug-clip-tr1: initial;
+      --aug-tr1: calc(var(--size) / 40 * 12);
+      --aug-clip-b1: initial;
+      --aug-clip-b2: initial;
+      --aug-b1: calc(var(--size) / 10);
+      --aug-b2: calc(var(--size) / 10);
+      --aug-b-extend1: calc(var(--size) * 0.35);
+    }
     body {
       --media-prefers-light: initial;
       --c0-l: var(--media-prefers-light) #257ae4;
@@ -72,6 +93,7 @@
       --hbl: var(--media-prefers-light) #4039a5;
       --hot-blue: var(--hbl, #b1ffff);
       --hot-red: #ff604d;
+      --hot-green: #b9ffb1;
       --sm-width: var(--media-lte-sm) 100vw;
       --md-width: var(--media-md) 900px;
       --width: var(--sm-width, var(--md-width, 1200px));
@@ -1314,7 +1336,7 @@
         <li>Futuristic, Sci-Fi shaping for any element</li>
         <li>Add mixin names to the "data-augmented-ui" attribute to equip augs with preset property configurations</li>
         <li>Customize the --aug-properties to make it feel just right</li>
-        <li>Full support, global user reach of 92.96%!</li>
+        <li>Full support, global user reach of <a href="/docs/#browser-support">92.96%</a>!</li>
       </ul>
       <h3>Namespaced to avoid crossing wires.</h3>
       <ul>
@@ -1607,6 +1629,7 @@
     }
     .core-left .code-css {
       left: 2rem;
+      width: calc(45% - 1rem);
     }
     .section-3 .code-html {
       position: absolute;
@@ -1619,6 +1642,16 @@
       left: 2rem;
       right: 1rem;
     }
+    @keyframes retro-future-tv-lines {
+      0% {
+        -webkit-mask-position: center 0rem;
+        mask-position: center 0rem;
+      }
+      100% {
+        -webkit-mask-position: center -1.5rem;
+        mask-position: center -1.5rem;
+      }
+    }
     .dna-demo {
       position: absolute;
       right: 1rem;
@@ -1630,8 +1663,14 @@
       height: 50%;
       padding: 1rem;
       box-shadow: inset 0px 0px 1rem var(--hot-red);
-      -webkit-mask-image: repeating-linear-gradient(black, black 0.125rem, rgba(0, 0, 0, 0.5) 0.25rem);
-      mask-image: repeating-linear-gradient(black, black 0.125rem, rgba(0, 0, 0, 0.5) 0.25rem);
+      -webkit-mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+      mask-image: repeating-linear-gradient(black, black 0.5rem, rgba(0, 0, 0, 0.5) 0.75rem);
+      -webkit-mask-position: center 0rem;
+      mask-position: center 0rem;
+      animation: retro-future-tv-lines linear infinite;
+      animation-duration: 500ms;
+      --playstate: var(--media-prefers-reduced-motion) paused;
+      animation-play-state: var(--playstate, running);
     }
     .core-right .dna-demo {
       --aug-br: 1rem;
@@ -1933,100 +1972,349 @@
   </section>
   <style>
     .section-4 {
-      margin-top: calc(var(--height) / 5);
+      padding-top: calc(var(--height) / 5);
       margin-bottom: calc(var(--height) / 5);
       position: relative;
-      width: var(--width);
-      height: var(--height);
+      height: calc(var(--height) / 5 * 6);
       margin-left: auto;
       margin-right: auto;
-      border: 1px solid var(--c0);
+      background: radial-gradient(at top, var(--hot-blue), transparent 55%) 50% 0 / 160% 65% no-repeat;
     }
-    .area-s4 {
-      width: calc(20% - 1rem);
-      height: calc(20% - 1rem);
-      position: absolute;
-      text-align: center;
-      padding-top: 2rem;
-      font-size: 1rem;
-      color: var(--c1-i);
-      --aug-clip-tl1: initial;
-      --aug-clip-tr1: initial;
-      --aug-clip-br1: initial;
+    .lightbar {
+      width: 33%;
+      height: 1.5rem;
+      --aug-border: initial;
       --aug-clip-bl1: initial;
-      --aug-border: initial;
-      --aug-border-all: 2px;
-      --aug-border-bg: var(--c0-a);
-      --aug-tl1: 1rem;
-      --aug-tr1: 1rem;
-      --aug-br1: 1rem;
-      --aug-bl1: 1rem;
-      transform: translate(0.5rem, 0.5rem);
-    }
-    .area-s4-ty {
-      left: 0%;
-      top: 80%;
-    }
-    .area-s4-twitter {
-      left: 0%;
-      top: 0%;
-    }
-    .area-s4-docs {
-      left: 0%;
-      top: 20%;
-    }
-    .area-s4-github {
-      left: 0%;
-      top: 40%;
-    }
-    .area-s4-support {
-      left: 0%;
-      top: 60%;
-    }
-    .propjockey {
+      --aug-clip-br1: initial;
+      --aug-bl1-width: 15%;
+      --aug-br1-width: 15%;
+      --aug-bl1-height: 1.5rem;
+      --aug-br1-height: 1.5rem;
+      --aug-border-top: 0px;
+      --aug-border-bottom: 0.25rem;
+      --aug-border-left: 1.5rem;
+      --aug-border-right: 1.5rem;
+      --aug-border-bg: var(--hot-blue);
       position: absolute;
-      left: 40%;
-      top: 20%;
-      height: 60%;
-      width: 40%;
-      background: radial-gradient(ellipse at bottom center, black, var(--c1) 50%) bottom center / 250% 100% no-repeat;
-      --aug-border: initial;
-      --aug-border-all: 0.125rem;
-      --aug-border-bg: linear-gradient(
-        to right,
-        var(--c3) 0.125rem,
-        var(--c0) 0.25rem,
-        var(--c0) calc(100% - 0.25rem),
-        var(--c3) calc(100% - 0.125rem)
-      );
-      --aug-scoop-t1: initial;
-      --aug-scoop-t2: initial;
-      --aug-t1-width: 50%;
-      --aug-t2-width: 50%;
-      --aug-t1-height: 0.5rem;
-      --aug-t2-height: 0.5rem;
-      --aug-scoop-b1: initial;
-      --aug-scoop-b2: initial;
-      --aug-b1-width: 50%;
-      --aug-b2-width: 50%;
-      --aug-b1-height: 0.5rem;
-      --aug-b2-height: 0.5rem;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--c3);
     }
-    .propjockey img {
-      height: 100%;
+    .all-hex-grid {
+      position: absolute;
+      bottom: 2rem;
+      left: 1rem;
+      --gg: 1rem;
+      --hexgridw: calc(var(--width) / 5 * 2.125 - var(--gg) * 2);
+      width: calc(var(--hexgridw) + var(--gg) * 2);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(3, calc(var(--hexgridw) / 3.4641));
+      grid-gap: var(--gg);
+      transform-style: preserve-3d;
+      transform: perspective(1077px) rotateX(30deg) rotateY(15deg);
+      --r: -20deg;
+      --z: 2.25rem;
+    }
+    .all-hex-grid:hover {
+      --r: 0deg;
+      --z: 0px;
+    }
+    .all-hex-grid * {
+      transform-style: preserve-3d;
+    }
+    @keyframes scrollbg {
+      0% { background-position: bottom calc(var(--height) / 5) left calc((100vw - var(--width)) / 2); }
+      100% { background-position: bottom calc(var(--height) / 5 - var(--height)) left calc((100vw - var(--width)) / 2); }
+    }
+    .all-hex-grid > a > [data-augmented-ui] {
+      --aug-all-width: calc(var(--hexgridw) / 3);
+      --aug-border-bg: var(--hot-blue);
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.3, 0, 0.3, 4), background-position 2.25s linear;
+      background: var(--c3); /* url(/img/mixinmixer_site.png) fixed repeat-y, var(--c3);
+      background-size: auto var(--height);
+      animation: scrollbg 10s linear infinite; */
+      position: relative;
+      --aug-inlay: initial;
+      --aug-inlay-all: 0px;
+      --aug-inlay-opacity: 0;
+      --aug-inlay-bg: var(--hot-blue);
+    }
+    .all-hex-grid:hover > a > [data-augmented-ui] {
+      transition: transform 0.5s cubic-bezier(0.2, 0.3, 0, 2), background-position 2.25s linear;
+    }
+    .all-hex-grid > a > [data-augmented-ui]::before {
+      transition: opacity 0.5s cubic-bezier(0.3, 0, 0.3, 4);
+    }
+    .all-hex-grid:hover > a > [data-augmented-ui]::before {
+      transition: opacity 0.5s cubic-bezier(0.2, 0.3, 0, 2);
+      opacity: 0.27;
+    }
+    .all-hex-grid > :nth-child(4) > [data-augmented-ui] {
+      transform: translateZ(var(--z));
+    }
+    .all-hex-grid > :nth-child(1) [data-augmented-ui] {
+      transform: rotateZ(60deg) rotateY(var(--r)) rotateZ(-60deg);
+    }
+    .all-hex-grid > :nth-child(2) [data-augmented-ui] {
+      transform: rotateZ(-60deg) rotateY(calc(var(--r) * -1)) rotateZ(60deg);
+    }
+    .all-hex-grid > :nth-child(3) [data-augmented-ui] {
+      transform: rotateY(var(--r));
+    }
+    .all-hex-grid > :nth-child(5) [data-augmented-ui] {
+      transform: rotateY(calc(var(--r) * -1));
+    }
+    .all-hex-grid > :nth-child(6) [data-augmented-ui] {
+      transform: rotateZ(-60deg) rotateY(var(--r)) rotateZ(60deg);
+    }
+    .all-hex-grid > :nth-child(7) [data-augmented-ui] {
+      transform: rotateZ(60deg) rotateY(calc(var(--r) * -1)) rotateZ(-60deg);
+    }
+    #logo {
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      background: transparent;
+      color: black;
+      --size: 5rem;
+      text-decoration: none;
+    }
+    .glowyreset {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      filter: drop-shadow(0px 0px 1rem gold);
+    }
+    .all-hex-grid .ty,
+    .all-hex-grid .help,
+    .all-hex-grid [data-augmented-ui] > img,
+    .all-hex-grid [data-augmented-ui] > svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+      opacity: 0.35;
+    }
+    .all-hex-grid .ty {
+      color: black;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .all-hex-grid .help {
+      font-size: 5rem;
+      color: black;
+    }
+    #pjl {
+      opacity: 1;
+      filter: drop-shadow(0px 0px 1rem rebeccapurple) drop-shadow(0px 0px 1rem rebeccapurple) brightness(1.25);
+    }
+    .all-hex-grid [data-augmented-ui-reset] {
+      transform-style: initial;
+    }
+    #browser-support {
+      position: absolute;
+      top: 3rem;
+      right: calc((100vw - var(--width)) / 2 + 1rem);
+      width: calc(var(--width) / 5 * 2);
+      text-align: center;
+    }
+    #browser-support td {
+      font-size: 0.75rem;
+      text-align: center;
+      padding: 0.175rem;
+    }
+    #browser-support .unsupported td {
+      background: var(--hot-red);
+      color: black; /* var(--c1); */
+    }
+    #browser-support .supported td {
+      background: var(--hot-green);
+      color: black; /* var(--c1); */
+    }
+    .global-user-support {
+      font-size: 1rem;
+    }
+    .global-user-support span {
+      color: var(--hot-green);
+      font-weight: bold;
+      font-size: 2rem;
+    }
+    #browser-support table {
+      background: var(--c3);
+      margin-left: auto;
+      margin-right: auto;
+      --aug-border: initial;
+      --aug-border-all: 2px;
+      --aug-border-bg: var(--hot-blue);
+      --aug-br: 2rem;
+      --aug-br-inset2: 20%;
+      --aug-b: 1rem;
+      --aug-b-center: 30%;
+    }
+    #browser-support .theader {
+      color: var(--hot-blue);
+      font-weight: bold;
+    }
+    #browser-support .theader td {
+      padding-top: 0.5rem;
+      padding-bottom: 0.25rem;
+    }
+    #browser-support td ~ td {
+      font-weight: bold;
     }
   </style>
-  <section class="section-4">
-    <h2 data-augmented-ui class="area-s4 area-s4-ty">Thank you &lt;3</h2>
-    <a data-augmented-ui class="area-s4 area-s4-twitter" href="https://twitter.com/James0x57">Follow me on twitter!</a>
-    <a data-augmented-ui class="area-s4 area-s4-docs" href="/docs/#install">Check out the docs!</a>
-    <a data-augmented-ui class="area-s4 area-s4-github" href="https://github.com/propjockey/augmented-ui">Add a star on GitHub!</a>
-    <a data-augmented-ui class="area-s4 area-s4-support" href="/docs/#supporting-augmented-ui">Please consider $upporting!</a>
-    <a data-augmented-ui class="propjockey" href="https://github.com/propjockey"><img src="/img/propjockey_silhouette.png" alt="propjockey"></a>
+  <section class="section-4" id="area-s4">
+    <div class="lightbar" data-augmented-ui></div>
+    <div class="all-hex-grid">
+      <a style="grid-column-end: span 3; justify-self: right;" href="https://github.com/propjockey/augmented-ui" title="Leave a star for augmented-ui on GitHub!">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.6;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 34 34"><path fill="#000000" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </div>
+      </a>
+      <a style="grid-column-end: span 3;" href="https://twitter.com/James0x57" title="Follow me on Twitter for augmented-ui and other PropJockey project updates and info!">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.85;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -15 400 385"><path fill="#000000" d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23"/></svg>
+        </div>
+      </a>
+      <a style="grid-column-end: span 2;" href="https://github.com/propjockey/css-media-vars" title="css-media-vars - a brand new way to write responsive CSS. Named breakpoints, DRY selectors, no scripts, no builds, vanilla CSS.">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.2;">
+          <img src="/img/css-media-vars.png" alt="css-media-vars logo">
+        </div>
+      </a>
+      <a href="#area-s4" style="grid-column-end: span 2;" title="Thank you for checking out augmented-ui!">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.33;">
+          <span class="ty">Thank<br>You!</span>
+        </div>
+      </a>
+      <a style="grid-column-end: span 2;" href="/docs/#supporting-augmented-ui" title="Please consider supporting augmented-ui">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.6;">
+          <span class="help">$</span>
+        </div>
+      </a>
+      <a href="https://github.com/propjockey" style="grid-column-end: span 3; justify-self: right;" title="PropJockey GitHub org, home of augmented-ui and many other web libraries and experiments">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.09;">
+          <img id="pjl" src="/img/propjockey.png" alt="propjockey logo">
+        </div>
+      </a>
+      <a style="grid-column-end: span 3;" href="/docs/#install" title="augmented-ui technical documentation">
+        <div data-augmented-ui="all-hex border" style="--aug-inlay-opacity: 0.2;">
+          <div data-augmented-ui-reset><div id="logo" data-augmented-ui style="opacity: 0.35;">DOCS</div></div>
+        </div>
+      </a>
+    </div>
+    <div id="browser-support">
+      <div class="global-user-support">
+        <h2><span>92.96%</span> <b>Global User Support</b></h2><br>
+        (according to browser usage percentages<br>
+        from caniuse.com in mid August 2020)
+      </div>
+      <br>
+      <table data-augmented-ui="br-clip-y b-clip">
+        <tr class="theader">
+          <td>Browser</td>
+          <td>Edge</td>
+          <td>Firefox</td>
+          <td>Chrome</td>
+          <td>Safari</td>
+          <td>iOS<br>Safari</td>
+        </tr>
+        <tr class="unsupported">
+          <td>Unsupported</td>
+          <td>0.91%</td>
+          <td>0.36%</td>
+          <td>0.55%</td>
+          <td>0.16%</td>
+          <td>0.56%</td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Since Version</td>
+          <td>79+</td>
+          <td>54+</td>
+          <td>51+</td>
+          <td>9.1+</td>
+          <td>11.2+</td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Global Usage</td>
+          <td>1.89%</td>
+          <td>3.70%</td>
+          <td>30.66%</td>
+          <td>3.70%</td>
+          <td>11.20%</td>
+        </tr>
+        <tr class="theader">
+          <td>Browser</td>
+          <td>Android Browser</td>
+          <td>Chrome for<br>Android</td>
+          <td>Firefox for<br>Android</td>
+          <td>UC<br>Browser</td>
+          <td>Samsung<br>Internet</td>
+        </tr>
+        <tr class="unsupported">
+          <td>Unsupported</td>
+          <td>0.17%</td>
+          <td style="background: none;"></td>
+          <td style="background: none;"></td>
+          <td>0.00%</td>
+          <td>0.30%</td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Since Version</td>
+          <td>81+</td>
+          <td>84</td>
+          <td>68</td>
+          <td>12+</td>
+          <td>5+</td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Global Usage</td>
+          <td>0.00%</td>
+          <td>35.38%</td>
+          <td>0.26%</td>
+          <td>1.47%</td>
+          <td>3.62%</td>
+        </tr>
+        <tr class="theader">
+          <td>Browser</td>
+          <td>IE</td>
+          <td>Opera</td>
+          <td>Opera<br>Mini</td>
+          <td>Opera<br>Mobile</td>
+          <td style="background: none;"></td>
+        </tr>
+        <tr class="unsupported">
+          <td>Unsupported</td>
+          <td>1.65%</td>
+          <td>0.24%</td>
+          <td>0.91%</td>
+          <td>0.00%</td>
+          <td style="background: none;"></td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Since Version</td>
+          <td style="background: none;"></td>
+          <td>38+</td>
+          <td style="background: none;"></td>
+          <td>46+</td>
+          <td style="background: none;"></td>
+        </tr>
+        <tr class="supported">
+          <td>Supported<br>Global Usage</td>
+          <td style="background: none;"></td>
+          <td>1.07%</td>
+          <td style="background: none;"></td>
+          <td>0.01%</td>
+          <td style="background: none;"></td>
+        </tr>
+      </table>
+    </div>
   </section>
 </body>
 </html>
